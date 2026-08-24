@@ -1,0 +1,950 @@
+{
+  "test": "test",
+  "common": {
+    "none": "None"
+  },
+  "pages": {
+    "dashboard": "Dashboard",
+    "preferences": "Preferences",
+    "email": "E-Mail",
+    "sources": "Sources",
+    "repositories": "Repositories",
+    "llm_filter": "LLM Filters",
+    "llm_create_artifact": "LLM Create Artifacts",
+    "automations": "Automations",
+    "admin": "Admin"
+  },
+  "rules": {
+    "invalid_field": "Field is invalid",
+    "password": {
+      "type": "Password must be a string",
+      "required": "Password is required",
+      "too_short": "Password must be at least 12 characters long",
+      "too_long": "Password is too long",
+      "missing_lower": "Password must contain a lowercase letter",
+      "missing_upper": "Password must contain an uppercase letter",
+      "missing_number": "Password must contain a number",
+      "missing_special": "Password must contain a special character",
+      "mismatch": "Passwords do not match"
+    },
+    "account": {
+      "user": {
+        "type": "User ID must be a string",
+        "invalid_email": "User ID must be a valid email address"
+      },
+      "email": {
+        "type": "Forwarding email must be a string",
+        "invalid": "Forwarding email is invalid"
+      },
+      "password": {
+        "type": "Password must be a string",
+        "too_short": "Password too short (min 12)",
+        "too_long": "Password too long"
+      },
+      "lang": {
+        "invalid": "Invalid language selected"
+      },
+      "roles": {
+        "type": "Roles must be an array",
+        "item": {
+          "type": "Role must be a string"
+        }
+      },
+      "limits": {
+        "type": "Limits must be a string"
+      },
+      "validated": {
+        "type": "Validated must be a boolean"
+      }
+    },
+    "role": {
+      "name": {
+        "type": "Role name must be a string",
+        "too_short": "Role name too short",
+        "too_long": "Role name too long"
+      },
+      "tags": {
+        "type": "Tags must be an array",
+        "item": {
+          "type": "Tag must be a string"
+        }
+      }
+    },
+    "email": {
+      "from": {
+        "type": "Sender must be a string",
+        "invalid": "Sender email is invalid"
+      },
+      "to": {
+        "type": "Recipient must be a string",
+        "invalid": "Recipient email is invalid"
+      },
+      "subject": {
+        "type": "Subject must be a string",
+        "too_long": "Subject is too long"
+      },
+      "text": {
+        "type": "Content must be a string"
+      },
+      "html": {
+        "type": "HTML content must be a string"
+      },
+      "date": {
+        "type": "Date must be a string"
+      }
+    },
+    "report_spec": {
+      "name": {
+        "type": "Name must be a string",
+        "min": "Name too short",
+        "max": "Name too long"
+      },
+      "dow": {
+        "invalid": "Schedule is invalid"
+      },
+      "desc": {
+        "min": "Description too short (min 20)",
+        "max": "Description too long (max 300)"
+      }
+    },
+    "report_item": {
+      "email_id": {
+        "type": "Email ID must be a string",
+        "required": "Email ID is required"
+      },
+      "spec_id": {
+        "type": "Specification ID must be a string",
+        "required": "Specification ID is required"
+      },
+      "text": {
+        "type": "Overview text must be a string",
+        "required": "Overview text is required",
+        "too_long": "Overview text is too long"
+      },
+      "sent": {
+        "type": "Sent flag must be a boolean"
+      }
+    },
+    "connections_imap": {
+      "name": {
+        "invalid": "Name must be a string",
+        "min": "Name is too short",
+        "max": "Name is too long"
+      },
+      "folders": {
+        "invalid": "Folders must be valid"
+      },
+      "tag": {
+        "invalid": "Tag must be a string",
+        "min": "Tag is too short",
+        "max": "Tag is too long"
+      },
+      "host": {
+        "invalid": "Host must be a string",
+        "min": "Host is too short",
+        "max": "Host is too long"
+      },
+      "port": {
+        "range": "Port must be between 1 and 65535",
+        "invalid": "Port must be a valid number"
+      },
+      "username": {
+        "invalid": "Username must be a string",
+        "min": "Username is too short",
+        "max": "Username is too long"
+      },
+      "poll_seconds": {
+        "min": "Poll seconds must be at least 10 seconds",
+        "invalid": "Poll seconds must be a valid number"
+      },
+      "config": {
+        "credential": {
+          "required": "Password/Credential is required"
+        },
+        "oauth_refresh_token": {
+          "required": "OAuth Refresh Token is required"
+        },
+        "oauth_token_expiry": {
+          "invalid": "Expiry must be a valid number"
+        }
+      }
+    },
+    "imap_search": {
+      "name": {
+        "invalid": "Name must be a string",
+        "min": "Name too short",
+        "max": "Name too long"
+      },
+      "search": {
+        "invalid": "Search query must be valid"
+      }
+    },
+    "llm_filter": {
+      "name": {
+        "invalid": "Name must be a string",
+        "min": "Name too short",
+        "max": "Name too long"
+      },
+      "prompt": {
+        "invalid": "Prompt must be a string",
+        "min": "Prompt cannot be empty"
+      },
+      "description": {
+        "invalid": "Description must be a string",
+        "min": "Description is too short",
+        "max": "Description is too long"
+      }
+    },
+    "llm_create_artifact": {
+      "name": {
+        "invalid": "Name must be a string",
+        "min": "Name too short",
+        "max": "Name too long"
+      },
+      "prompt": {
+        "invalid": "Prompt must be a string",
+        "min": "Prompt cannot be empty"
+      },
+      "description": {
+        "invalid": "Description must be a string",
+        "min": "Description is too short",
+        "max": "Description is too long"
+      }
+    },
+    "automation": {
+      "name": {
+        "invalid": "Name must be a string",
+        "min": "Name too short",
+        "max": "Name too long"
+      },
+      "imap_connection_id": {
+        "invalid": "IMAP Connection ID must be a string",
+        "required": "IMAP Connection ID is required"
+      },
+      "imap_folder": {
+        "invalid": "IMAP Folder must be a string",
+        "required": "IMAP Folder is required"
+      },
+      "search_id": {
+        "invalid": "Search ID must be a string",
+        "required": "Search ID is required"
+      },
+      "llm_filter_id": {
+        "invalid": "LLM Filter ID must be a string",
+        "required": "LLM Filter ID is required"
+      },
+      "tasks": {
+        "invalid": "Tasks must be a valid object"
+      },
+      "poll_seconds": {
+        "min": "Poll seconds must be at least 10 seconds",
+        "invalid": "Poll seconds must be a valid number"
+      }
+    },
+    "report": {
+      "name": {
+        "required": "Report name is required"
+      },
+      "dow": {
+        "invalid": "Invalid days of week selected"
+      },
+      "desc": {
+        "too_long": "Description is too long"
+      },
+      "lang": {
+        "invalid": "Invalid language selected"
+      }
+    },
+    "invalid_field": "Invalid field",
+    "required": "This field is required",
+    "unique_name": "Name must be unique for this task type",
+    "update": {
+      "empty": "Update data is empty"
+    }
+  },
+  "form": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "actions": {
+      "update": "Update",
+      "delete": "Delete",
+      "setPassword": "Set Password"
+    }
+  },
+  "table": {
+    "report_spec": {
+      "title": "Report Specifications",
+      "name": "Name",
+      "desc": "Description",
+      "lang": "Language",
+      "dow": "Schedule (DOW)",
+      "enum_labels": {
+        "dow_short": [
+          "Su",
+          "Mo",
+          "Tu",
+          "We",
+          "Th",
+          "Fr",
+          "Sa"
+        ]
+      }
+    },
+    "email": {
+      "title": "Emails",
+      "messageId": "Message ID",
+      "date": "Date",
+      "from": "From",
+      "to": "To",
+      "subject": "Subject",
+      "no_subject": "(No Subject)",
+      "text": "Content"
+    },
+    "report_item": {
+      "title": "Generated Report Items",
+      "date": "Date",
+      "email_id": "Email ID",
+      "email_subject": "Email Subject",
+      "report_spec_name": "Report Spec",
+      "text": "Overview"
+    },
+    "connections_imap": {
+      "title": "Connections",
+      "name": "Name",
+      "folders": "Folders",
+      "tag": "Tag",
+      "host": "Host",
+      "port": "Port",
+      "use_ssl": "Use SSL",
+      "auth_type": "Auth Type",
+      "username": "Username",
+      "poll_seconds": "Poll Seconds",
+      "config": "Config",
+      "credential": "Password/Credential",
+      "oauth_refresh_token": "OAuth Refresh Token",
+      "oauth_token_expiry": "Token Expiry (Epoch)",
+      "read": {
+        "success": "IMAP connections retrieved successfully"
+      },
+      "create": {
+        "success": "IMAP connection created successfully",
+        "failed": "Failed to create IMAP connection"
+      },
+      "update": {
+        "success": "IMAP connection updated successfully",
+        "failed": "Failed to update IMAP connection"
+      },
+      "delete": {
+        "success": "IMAP connection deleted successfully",
+        "failed": "Failed to delete IMAP connection"
+      }
+    },
+    "imap_search": {
+      "title": "Searches",
+      "name": "Name",
+      "search": "Search Criteria",
+      "read": {
+        "success": "IMAP searches retrieved successfully"
+      },
+      "create": {
+        "success": "IMAP search created successfully",
+        "failed": "Failed to create IMAP search"
+      },
+      "update": {
+        "success": "IMAP search updated successfully",
+        "failed": "Failed to update IMAP search"
+      },
+      "delete": {
+        "success": "IMAP search deleted successfully",
+        "failed": "Failed to delete IMAP search"
+      }
+    },
+    "llm_filter": {
+      "title": "LLM Filters",
+      "name": "Name",
+      "description": "Description",
+      "prompt": "Prompt",
+      "read": {
+        "success": "LLM filters retrieved successfully"
+      },
+      "create": {
+        "success": "LLM filter created successfully",
+        "failed": "Failed to create LLM filter"
+      },
+      "update": {
+        "success": "LLM filter updated successfully",
+        "failed": "Failed to update LLM filter"
+      },
+      "delete": {
+        "success": "LLM filter deleted successfully",
+        "failed": "Failed to delete LLM filter"
+      }
+    },
+    "llm_create_artifact": {
+      "title": "LLM Create Artifacts",
+      "name": "Name",
+      "description": "Description",
+      "prompt": "Prompt"
+    },
+    "automation": {
+      "title": "Automations",
+      "name": "Name",
+      "imap_connection": "IMAP Connection",
+      "imap_folder": "Folder",
+      "search": "IMAP Search",
+      "llm_filter": "LLM Filter",
+      "tasks": "Tasks",
+      "poll_seconds": "Poll Seconds"
+    },
+    "notification_channels": {
+      "title": "Notification Channels",
+      "type": "Type",
+      "created_at": "Created At"
+    },
+    "account": {
+      "set_ident": "Set Identity"
+    },
+    "common": {
+      "owner": "Owner",
+      "actions": "Actions",
+      "none": "None",
+      "view": "View",
+      "close": "Close"
+    }
+  },
+  "$vuetify": {
+    "close": "Close",
+    "dismiss": "X",
+    "datePicker": {
+      "itemsSelected": "{0} selected",
+      "ariaLabel": {
+        "nextMonth": "Next month",
+        "nextYear": "Next year",
+        "prevMonth": "Previous month",
+        "prevYear": "Previous year"
+      },
+      "header": "Select date",
+      "title": "Select date"
+    },
+    "datepicker": {
+      "itemsSelected": "{0} selected",
+      "ariaLabel": {
+        "nextMonth": "Next month",
+        "nextYear": "Next year",
+        "prevMonth": "Previous month",
+        "prevYear": "Previous year"
+      },
+      "header": "Select date",
+      "title": "Select date"
+    },
+    "dataFooter": {
+      "itemsPerPageText": "Items per page:",
+      "itemsPerPageAll": "All",
+      "pageText": "{0}-{1} of {2}",
+      "firstPage": "First page",
+      "prevPage": "Previous page",
+      "nextPage": "Next page",
+      "lastPage": "Last page"
+    },
+    "pagination": {
+      "ariaLabel": {
+        "root": "Pagination Navigation"
+      }
+    },
+    "noDataText": "No data available"
+  },
+  "frontend": {
+    "nav": {
+      "title": "Navigation",
+      "subtitle": "Demo App",
+      "dashboard": "Dashboard",
+      "settings": "Settings",
+      "notifications": "Notifications",
+      "howto": "How does this work?"
+    },
+    "app": {
+      "title": "Email Platform"
+    },
+    "dashboard": {
+      "welcome": "Welcome to the Dashboard",
+      "subtitle": "Built with Nuxt and Vuetify",
+      "description": "This is a basic template setup with Nuxt 4 and Vuetify 3. You can start building your email platform here.",
+      "action1": "Action 1",
+      "action2": "Action 2"
+    },
+    "table": {
+      "name": "Name",
+      "status": "Status"
+    },
+    "stats": {
+      "title": "Statistics",
+      "emails_sent": "Emails Sent"
+    },
+    "message": {
+      "title": "Quick Message",
+      "to": "To",
+      "label": "Message",
+      "send": "Send Now"
+    },
+    "footer": {
+      "legal": "Legal"
+    },
+    "auth": {
+      "login_title": "Sign In",
+      "login_instructions": "Enter your credentials to access your account.",
+      "email": "Email Address",
+      "password": "Password",
+      "login_button": "Log In",
+      "no_account": "No account? Create one here.",
+      "signup_title": "Create Account",
+      "signup_instructions": [
+        "Enter your details to register.",
+        "Check your email for a verification link.",
+        "Activate your account to log in."
+      ],
+      "confirm_password": "Confirm Password",
+      "have_account": "Already have an account? Log in."
+    },
+    "landing": {
+      "hero": {
+        "title": "Master Your Inbox with FOMO-Mail",
+        "subtitle": "Never miss a critical update again. Our AI-driven platform categorizes, summarizes, and prioritizes your emails so you can focus on what matters.",
+        "cta_start": "Get Started for Free",
+        "cta_login": "Sign In"
+      },
+      "features": {
+        "title": "Why FOMO-Mail?",
+        "ai": {
+          "title": "AI-Powered Summaries",
+          "desc": "Get the gist of long email threads in seconds with our advanced LLM integration."
+        },
+        "smart": {
+          "title": "Smart Categorization",
+          "desc": "Automatically organize your emails into intuitive reports based on your preferences."
+        },
+        "privacy": {
+          "title": "Privacy First",
+          "desc": "Your data is yours. We use state-of-the-art security and never share your information."
+        }
+      },
+      "how_it_works": {
+        "title": "Simple Integration",
+        "desc": "Simply forward your important emails to your unique FOMO-Mail address, and let our engine generate perfect reports for you."
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "success": "Login successful",
+      "invalid_credentials": "Invalid email or password"
+    },
+    "logout": {
+      "success": "Logged out successfully"
+    }
+  },
+  "account": {
+    "read": {
+      "success": "Account loaded successfully"
+    },
+    "create": {
+      "success": "Account created successfully",
+      "failed": "Failed to create account"
+    },
+    "update": {
+      "success": "Account updated successfully",
+      "failed": "Failed to update account"
+    },
+    "delete": {
+      "success": "Account deleted successfully",
+      "failed": "Failed to delete account"
+    },
+    "bad_payload": "Invalid account data",
+    "create_failed": "System error: Account creation failed"
+  },
+  "email": {
+    "read": {
+      "success": "Emails retrieved successfully"
+    },
+    "create": {
+      "success": "Email processed successfully",
+      "failed": "Failed to process email",
+      "owner_not_found": "Internal Error: Recipient account not resolved"
+    },
+    "update": {
+      "success": "Email updated successfully",
+      "failed": "Failed to update email"
+    },
+    "delete": {
+      "success": "Email deleted successfully",
+      "failed": "Failed to delete email"
+    },
+    "bad_payload": "Invalid email data"
+  },
+  "permissions": {
+    "read": {
+      "success": "Permissions loaded successfully"
+    }
+  },
+  "role": {
+    "read": {
+      "success": "Roles loaded successfully"
+    },
+    "create": {
+      "success": "Role created successfully",
+      "failed": "Failed to create role"
+    },
+    "update": {
+      "success": "Role updated successfully",
+      "failed": "Failed to update role"
+    },
+    "delete": {
+      "success": "Role deleted successfully",
+      "failed": "Failed to delete role"
+    },
+    "bad_payload": "Invalid role data"
+  },
+  "report_spec": {
+    "read": {
+      "success": "Report specifications loaded"
+    },
+    "create": {
+      "success": "Report specification created",
+      "failed": "Failed to create report specification"
+    },
+    "update": {
+      "success": "Report specification updated",
+      "failed": "Failed to update report specification"
+    },
+    "delete": {
+      "success": "Report specification deleted",
+      "failed": "Failed to delete report specification"
+    },
+    "bad_payload": "Invalid report specification data"
+  },
+  "report_item": {
+    "read": {
+      "success": "Report items retrieved"
+    },
+    "create": {
+      "success": "Report item recorded",
+      "failed": "Failed to record report item"
+    },
+    "update": {
+      "success": "Report item updated",
+      "failed": "Failed to update report item"
+    },
+    "delete": {
+      "success": "Report item deleted",
+      "failed": "Failed to delete report item"
+    },
+    "bad_payload": "Invalid report item data"
+  },
+  "connections_imap": {
+    "read": {
+      "success": "IMAP connections retrieved successfully"
+    },
+    "create": {
+      "success": "IMAP connection created successfully",
+      "failed": "Failed to create IMAP connection"
+    },
+    "update": {
+      "success": "IMAP connection updated successfully",
+      "failed": "Failed to update IMAP connection"
+    },
+    "delete": {
+      "success": "IMAP connection deleted successfully",
+      "failed": "Failed to delete IMAP connection"
+    },
+    "bad_payload": "Invalid IMAP connection data",
+    "insert": {
+      "bad_payload": "Invalid IMAP connection data"
+    }
+  },
+  "notification_channel": {
+    "read": {
+      "success": "Notification channels retrieved successfully"
+    },
+    "create": {
+      "success": "Notification channel created successfully",
+      "failed": "Failed to create notification channel"
+    },
+    "update": {
+      "success": "Notification channel updated successfully",
+      "failed": "Failed to update notification channel"
+    },
+    "delete": {
+      "success": "Notification channel deleted successfully",
+      "failed": "Failed to delete notification channel"
+    },
+    "bad_payload": "Invalid notification channel data"
+  },
+  "notification_channels": {
+    "bad_payload": "Invalid notification channel data",
+    "insert": {
+      "bad_payload": "Invalid notification channel data"
+    }
+  },
+  "imap_search": {
+    "builder": {
+      "and": "AND",
+      "or": "OR",
+      "and_group": "AND",
+      "or_group": "OR",
+      "add_rule": "Rule",
+      "add_and": "AND",
+      "add_or": "OR",
+      "gui_builder": "GUI Builder",
+      "json_view": "JSON View",
+      "delete_group": "Delete Group",
+      "remove_rule": "Remove Rule",
+      "matches": "Matches (=)",
+      "not_matches": "Does NOT match (NOT)",
+      "placeholder_search_value": "Search value...",
+      "placeholder_bytes": "Bytes...",
+      "placeholder_header_name": "Header Name (e.g. X-Spam)",
+      "placeholder_header_value": "Value",
+      "yes": "YES",
+      "no": "NO",
+      "select_date": "Select Date",
+      "empty_group": "Empty group. Add a rule or nested group to filter.",
+      "fields": {
+        "from": "From (Sender)",
+        "to": "To (Recipient)",
+        "cc": "CC",
+        "bcc": "BCC",
+        "subject": "Subject",
+        "body": "Body Text",
+        "text": "Any Text (Header/Body)",
+        "seq": "Sequence Range (e.g. 1:*)",
+        "uid": "UID Range (e.g. 100:*)",
+        "seen": "Read (Seen)",
+        "flagged": "Flagged (Starred)",
+        "answered": "Answered",
+        "deleted": "Deleted",
+        "draft": "Draft",
+        "recent": "Recent",
+        "since": "Since Date",
+        "_since_days": "Since (Days ago)",
+        "before": "Before Date",
+        "_before_days": "Before (Days ago)",
+        "on": "On Date",
+        "_on_days": "On (Days ago)",
+        "sentSince": "Sent Since Date",
+        "_sentSince_days": "Sent Since (Days ago)",
+        "sentBefore": "Sent Before Date",
+        "_sentBefore_days": "Sent Before (Days ago)",
+        "sentOn": "Sent On Date",
+        "_sentOn_days": "Sent On (Days ago)",
+        "larger": "Size Larger Than (Bytes)",
+        "smaller": "Size Smaller Than (Bytes)",
+        "header": "Custom Header"
+      }
+    },
+    "read": {
+      "success": "IMAP searches retrieved successfully"
+    },
+    "create": {
+      "success": "IMAP search created successfully",
+      "failed": "Failed to create IMAP search"
+    },
+    "update": {
+      "success": "IMAP search updated successfully",
+      "failed": "Failed to update IMAP search"
+    },
+    "delete": {
+      "success": "IMAP search deleted successfully",
+      "failed": "Failed to delete IMAP search"
+    },
+    "bad_payload": "Invalid IMAP search data"
+  },
+  "llm_filter": {
+    "read": {
+      "success": "LLM filters retrieved successfully"
+    },
+    "create": {
+      "success": "LLM filter created successfully",
+      "failed": "Failed to create LLM filter"
+    },
+    "update": {
+      "success": "LLM filter updated successfully",
+      "failed": "Failed to update LLM filter"
+    },
+    "delete": {
+      "success": "LLM filter deleted successfully",
+      "failed": "Failed to delete LLM filter"
+    },
+    "bad_payload": "Invalid LLM filter data"
+  },
+  "llm_create_artifact": {
+    "read": {
+      "success": "LLM create artifacts retrieved successfully"
+    },
+    "create": {
+      "success": "LLM create artifact created successfully",
+      "failed": "Failed to create LLM create artifact"
+    },
+    "update": {
+      "success": "LLM create artifact updated successfully",
+      "failed": "Failed to update LLM create artifact"
+    },
+    "delete": {
+      "success": "LLM create artifact deleted successfully",
+      "failed": "Failed to delete LLM create artifact"
+    },
+    "bad_payload": "Invalid LLM create artifact data"
+  },
+  "llm_create_artifacts": {
+    "bad_payload": "Invalid LLM create artifact data",
+    "insert": {
+      "bad_payload": "Invalid LLM create artifact data"
+    }
+  },
+  "automation": {
+    "component": {
+      "task_chooser": {
+        "title": "Task Chooser",
+        "empty": "No operations added yet. Click the \"+\" button to add an operation.",
+        "clear_all": "Clear All",
+        "message": "Message",
+        "create_artifact": "Create LLM Artifact",
+        "imap_mark_read": "Mark as Read",
+        "only_new": "Only New",
+        "send_message": "Send Message",
+        "send_attachment": "Send Attachment",
+        "send_items": "Send Items",
+        "tts": "Text to Speech",
+        "arguments": {
+          "destination": "Destination",
+          "keep_threadid": "Keep Thread ID",
+          "multiple": "Multiple",
+          "name": "Name",
+          "source": "Source",
+          "task_id": "Task Config"
+        }
+      }
+    },
+    "read": {
+      "success": "Automations retrieved successfully"
+    },
+    "create": {
+      "success": "Automation created successfully",
+      "failed": "Failed to create automation"
+    },
+    "update": {
+      "success": "Automation updated successfully",
+      "failed": "Failed to update automation"
+    },
+    "delete": {
+      "success": "Automation deleted successfully",
+      "failed": "Failed to delete automation"
+    },
+    "bad_payload": "Invalid automation data",
+    "imap_connection_id": {
+      "not_found": "Referenced IMAP Connection does not exist"
+    },
+    "search_id": {
+      "not_found": "Referenced IMAP Search Criteria does not exist"
+    },
+    "llm_filter_id": {
+      "not_found": "Referenced LLM Filter does not exist"
+    }
+  },
+  "app": {
+    "report": {
+      "read": {
+        "success": "Report generated successfully"
+      },
+      "missing_id": "Error: Missing report ID"
+    }
+  },
+  "core": {
+    "account": {
+      "create_failed": "Core Service: Account creation failed"
+    }
+  },
+  "accounts": {
+    "bad_payload": "Invalid account data",
+    "insert": {
+      "bad_payload": "Invalid account data"
+    }
+  },
+  "emails": {
+    "bad_payload": "Invalid email data",
+    "insert": {
+      "bad_payload": "Invalid email data"
+    }
+  },
+  "roles": {
+    "bad_payload": "Invalid role data",
+    "insert": {
+      "bad_payload": "Invalid role data"
+    },
+    "permissions": {
+      "invalid_type": "Permissions must be an array of strings",
+      "invalid_permission": "One or more permissions are invalid"
+    }
+  },
+  "report_specs": {
+    "bad_payload": "Invalid specification data",
+    "insert": {
+      "bad_payload": "Invalid specification data"
+    }
+  },
+  "report_items": {
+    "bad_payload": "Invalid report item data",
+    "insert": {
+      "bad_payload": "Invalid report item data"
+    }
+  },
+  "howto": {
+    "title": "How it Works",
+    "subtitle": "Setting up GMail forwards",
+    "step1": {
+      "title": "1. Authorize the Forwarding Address",
+      "p1": "Gmail requires the receiving email to \"accept\" the connection first.",
+      "p2": "Go to Settings (gear icon) > See all settings.",
+      "p3": "Select the Forwarding and POP/IMAP tab.",
+      "p4": "Click Add a forwarding address and enter the destination email.",
+      "p5": "Important: Log into that destination account, open the confirmation email from Google, and click the link to verify."
+    },
+    "step2": {
+      "title": "2. Create the Word-Based Filter",
+      "p1": "Click the Show search options icon (the sliders) in the Gmail search bar.",
+      "p2": "In the Has the words field, type the word you want to filter (e.g., {word}).",
+      "p3": "Click Create filter.",
+      "p4": "Check the box Forward it to: and select the verified email from the dropdown menu.",
+      "p5": "Click Create filter again to finish."
+    },
+    "image_alt": "Gmail Forwarding Settings Example"
+  },
+  "events": {
+    "user": {
+      "info_automation_start": "Automation '{name}' started",
+      "info_automation_end": "Automation '{name}' completed"
+    }
+  },
+  "user_events": {
+    "read": {
+      "success": "User events loaded successfully",
+      "not_logged_in": "Not authorized to read user events"
+    },
+    "update": {
+      "success": "User events updated successfully",
+      "not_logged_in": "Not authorized to update user events"
+    },
+    "id": {
+      "required": "Event ID is required"
+    }
+  },
+  "userinfo_import_export": {
+    "title": "User Information Backup & Restore",
+    "description": "Export all your connections, searches, filters, artifacts, and automations into a single JSON file or restore them from a backup file.",
+    "export_button": "Export User Data",
+    "import_button": "Import User Data",
+    "export_success": "User data exported successfully",
+    "export_failed": "Failed to export user data",
+    "import_success": "User data imported successfully",
+    "import_failed": "Failed to import user data",
+    "invalid_file": "Invalid backup file or unsupported version"
+  }
+}

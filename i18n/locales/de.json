@@ -1,0 +1,956 @@
+{
+  "test": "test",
+  "common": {
+    "none": "Keine"
+  },
+  "pages": {
+    "dashboard": "Dashboard",
+    "preferences": "Einstellungen",
+    "email": "E-Mail",
+    "sources": "Quellen",
+    "repositories": "Repositories",
+    "llm_filter": "LLM-Filter",
+    "llm_create_artifact": "LLM Create-Artefakte",
+    "automations": "Automatisierungen",
+    "admin": "Administration"
+  },
+  "rules": {
+    "invalid_field": "Ungültiges Feld",
+    "password": {
+      "type": "Passwort muss eine Zeichenfolge sein",
+      "required": "Passwort ist erforderlich",
+      "too_short": "Passwort muss mindestens 12 Zeichen lang sein",
+      "too_long": "Passwort ist zu lang",
+      "missing_lower": "Passwort muss einen Kleinbuchstaben enthalten",
+      "missing_upper": "Passwort muss einen Großbuchstaben enthalten",
+      "missing_number": "Passwort muss eine Zahl enthalten",
+      "missing_special": "Passwort muss ein Sonderzeichen enthalten",
+      "mismatch": "Passwörter stimmen nicht überein"
+    },
+    "account": {
+      "user": {
+        "type": "Benutzerkennung muss eine Zeichenfolge sein",
+        "invalid_email": "Benutzerkennung muss eine gültige E-Mail-Adresse sein"
+      },
+      "email": {
+        "type": "Weiterleitungs-E-Mail muss eine Zeichenfolge sein",
+        "invalid": "Weiterleitungs-E-Mail ist ungültig"
+      },
+      "password": {
+        "type": "Passwort muss eine Zeichenfolge sein",
+        "too_short": "Passwort zu kurz (min. 12)",
+        "too_long": "Passwort zu lang"
+      },
+      "lang": {
+        "invalid": "Ungültige Sprache ausgewählt"
+      },
+      "roles": {
+        "type": "Rollen müssen ein Array sein",
+        "item": {
+          "type": "Rolle muss eine Zeichenfolge sein"
+        }
+      },
+      "limits": {
+        "type": "Limits müssen eine Zeichenfolge sein"
+      },
+      "validated": {
+        "type": "Validiert muss ein Boolean sein"
+      }
+    },
+    "role": {
+      "name": {
+        "type": "Rollenname muss eine Zeichenfolge sein",
+        "too_short": "Rollenname zu kurz",
+        "too_long": "Rollenname zu lang"
+      },
+      "tags": {
+        "type": "Tags müssen ein Array sein",
+        "item": {
+          "type": "Tag muss eine Zeichenfolge sein"
+        }
+      }
+    },
+    "email": {
+      "from": {
+        "type": "Absender muss eine Zeichenfolge sein",
+        "invalid": "Absender-E-Mail ist ungültig"
+      },
+      "to": {
+        "type": "Empfänger muss eine Zeichenfolge sein",
+        "invalid": "Empfänger-E-Mail ist ungültig"
+      },
+      "subject": {
+        "type": "Betreff muss eine Zeichenfolge sein",
+        "too_long": "Betreff ist zu lang"
+      },
+      "text": {
+        "type": "Inhalt muss eine Zeichenfolge sein"
+      },
+      "html": {
+        "type": "HTML-Inhalt muss eine Zeichenfolge sein"
+      },
+      "date": {
+        "type": "Datum muss eine Zeichenfolge sein"
+      }
+    },
+    "report_spec": {
+      "name": {
+        "type": "Name muss eine Zeichenfolge sein",
+        "min": "Name zu kurz",
+        "max": "Name zu lang"
+      },
+      "dow": {
+        "invalid": "Zeitplan ist ungültig"
+      },
+      "desc": {
+        "min": "Beschreibung zu kurz (min. 20)",
+        "max": "Beschreibung zu lang (max. 300)"
+      }
+    },
+    "report_item": {
+      "email_id": {
+        "type": "E-Mail-ID muss eine Zeichenfolge sein",
+        "required": "E-Mail-ID ist erforderlich"
+      },
+      "spec_id": {
+        "type": "Spezifikations-ID muss eine Zeichenfolge sein",
+        "required": "Spezifikations-ID ist erforderlich"
+      },
+      "text": {
+        "type": "Übersichtstext muss eine Zeichenfolge sein",
+        "required": "Übersichtstext ist erforderlich",
+        "too_long": "Übersichtstext ist zu lang"
+      },
+      "sent": {
+        "type": "Gesendet-Flag muss ein Boolean sein"
+      }
+    },
+    "connections_imap": {
+      "name": {
+        "invalid": "Name muss eine Zeichenfolge sein",
+        "min": "Name ist zu kurz",
+        "max": "Name ist zu lang"
+      },
+      "folders": {
+        "invalid": "Ordner müssen gültig sein"
+      },
+      "tag": {
+        "invalid": "Tag muss eine Zeichenfolge sein",
+        "min": "Tag ist zu kurz",
+        "max": "Tag ist zu lang"
+      },
+      "host": {
+        "invalid": "Host muss eine Zeichenfolge sein",
+        "min": "Host ist zu kurz",
+        "max": "Host ist zu lang"
+      },
+      "port": {
+        "range": "Port muss zwischen 1 und 65535 liegen",
+        "invalid": "Port muss eine gültige Zahl sein"
+      },
+      "username": {
+        "invalid": "Benutzername muss eine Zeichenfolge sein",
+        "min": "Benutzername ist zu kurz",
+        "max": "Benutzername ist zu lang"
+      },
+      "poll_seconds": {
+        "min": "Abfrage-Intervall muss mindestens 10 Sekunden betragen",
+        "invalid": "Abfrage-Intervall muss eine gültige Zahl sein"
+      },
+      "config": {
+        "credential": {
+          "required": "Passwort/Zugangsdaten sind erforderlich"
+        },
+        "oauth_refresh_token": {
+          "required": "OAuth-Refresh-Token ist erforderlich"
+        },
+        "oauth_token_expiry": {
+          "invalid": "Ablaufzeit muss eine gültige Zahl sein"
+        }
+      }
+    },
+    "imap_search": {
+      "name": {
+        "invalid": "Name muss eine Zeichenfolge sein",
+        "min": "Name ist zu kurz",
+        "max": "Name ist zu lang"
+      },
+      "search": {
+        "invalid": "Suchkriterien müssen gültig sein"
+      }
+    },
+    "llm_filter": {
+      "name": {
+        "invalid": "Name muss eine Zeichenfolge sein",
+        "min": "Name ist zu kurz",
+        "max": "Name ist zu lang"
+      },
+      "prompt": {
+        "invalid": "Prompt muss eine Zeichenfolge sein",
+        "min": "Prompt darf nicht leer sein"
+      },
+      "description": {
+        "invalid": "Beschreibung muss eine Zeichenfolge sein",
+        "min": "Beschreibung ist zu kurz",
+        "max": "Beschreibung ist zu lang"
+      }
+    },
+    "llm_create_artifact": {
+      "name": {
+        "invalid": "Name muss eine Zeichenfolge sein",
+        "min": "Name ist zu kurz",
+        "max": "Name ist zu lang"
+      },
+      "prompt": {
+        "invalid": "Prompt muss eine Zeichenfolge sein",
+        "min": "Prompt darf nicht leer sein"
+      },
+      "description": {
+        "invalid": "Beschreibung muss eine Zeichenfolge sein",
+        "min": "Beschreibung ist zu kurz",
+        "max": "Beschreibung ist zu lang"
+      }
+    },
+    "automation": {
+      "name": {
+        "invalid": "Name muss eine Zeichenfolge sein",
+        "min": "Name ist zu kurz",
+        "max": "Name ist zu lang"
+      },
+      "imap_connection_id": {
+        "invalid": "IMAP-Verbindungs-ID muss eine Zeichenfolge sein",
+        "required": "IMAP-Verbindungs-ID ist erforderlich"
+      },
+      "imap_folder": {
+        "invalid": "IMAP-Ordner muss eine Zeichenfolge sein",
+        "required": "IMAP-Ordner ist erforderlich"
+      },
+      "search_id": {
+        "invalid": "Such-ID muss eine Zeichenfolge sein",
+        "required": "Such-ID ist erforderlich"
+      },
+      "llm_filter_id": {
+        "invalid": "LLM-Filter-ID muss eine Zeichenfolge sein",
+        "required": "LLM-Filter-ID ist erforderlich"
+      },
+      "tasks": {
+        "invalid": "Aufgaben müssen ein gültiges Objekt sein"
+      },
+      "poll_seconds": {
+        "min": "Abfrage-Intervall muss mindestens 10 Sekunden betragen",
+        "invalid": "Abfrage-Intervall muss eine gültige Zahl sein"
+      }
+    },
+    "report": {
+      "name": {
+        "required": "Berichtsname ist erforderlich"
+      },
+      "dow": {
+        "invalid": "Ungültige Wochentage ausgewählt"
+      },
+      "desc": {
+        "too_long": "Beschreibung ist zu lang"
+      },
+      "lang": {
+        "invalid": "Ungültige Sprache ausgewählt"
+      }
+    },
+    "invalid_field": "Ungültiges Feld",
+    "required": "Dieses Feld ist erforderlich",
+    "unique_name": "Der Name muss für diesen Task-Typ eindeutig sein",
+    "update": {
+      "empty": "Keine Daten für Update bereitgestellt"
+    }
+  },
+  "form": {
+    "submit": "Absenden",
+    "cancel": "Abbrechen",
+    "actions": {
+      "update": "Aktualisieren",
+      "delete": "Löschen",
+      "setPassword": "Passwort festlegen"
+    }
+  },
+  "table": {
+    "report_spec": {
+      "title": "Berichtsspezifikationen",
+      "name": "Name",
+      "desc": "Beschreibung",
+      "lang": "Sprache",
+      "dow": "Zeitplan (Wochentage)",
+      "enum_labels": {
+        "dow_short": [
+          "So",
+          "Mo",
+          "Di",
+          "Mi",
+          "Do",
+          "Fr",
+          "Sa"
+        ]
+      }
+    },
+    "email": {
+      "title": "E-Mails",
+      "messageId": "Nachrichten-ID",
+      "date": "Datum",
+      "from": "Von",
+      "to": "An",
+      "subject": "Betreff",
+      "no_subject": "(Kein Betreff)",
+      "text": "Inhalt"
+    },
+    "report_item": {
+      "title": "Generierte Berichte",
+      "date": "Datum",
+      "email_id": "E-Mail ID",
+      "email_subject": "E-Mail Betreff",
+      "report_spec_name": "Bericht",
+      "text": "Übersicht"
+    },
+    "connections_imap": {
+      "title": "Verbindungen",
+      "name": "Name",
+      "folders": "Ordner",
+      "tag": "Tag",
+      "host": "Host",
+      "port": "Port",
+      "use_ssl": "SSL verwenden",
+      "auth_type": "Auth-Typ",
+      "username": "Benutzername",
+      "poll_seconds": "Abfrage-Intervall",
+      "config": "Konfiguration",
+      "credential": "Passwort/Zugangsdaten",
+      "oauth_refresh_token": "OAuth-Refresh-Token",
+      "oauth_token_expiry": "Token-Ablaufzeit (Epoch)",
+      "read": {
+        "success": "IMAP-Verbindungen erfolgreich geladen"
+      },
+      "create": {
+        "success": "IMAP-Verbindung erfolgreich erstellt",
+        "failed": "Erstellung der IMAP-Verbindung fehlgeschlagen"
+      },
+      "update": {
+        "success": "IMAP-Verbindung erfolgreich aktualisiert",
+        "failed": "Aktualisierung der IMAP-Verbindung fehlgeschlagen"
+      },
+      "delete": {
+        "success": "IMAP-Verbindung erfolgreich gelöscht",
+        "failed": "Löschen der IMAP-Verbindung fehlgeschlagen"
+      }
+    },
+    "imap_search": {
+      "title": "Suchen",
+      "name": "Name",
+      "search": "Suchkriterien",
+      "read": {
+        "success": "IMAP-Suchen erfolgreich geladen"
+      },
+      "create": {
+        "success": "IMAP-Suche erfolgreich erstellt",
+        "failed": "Erstellung der IMAP-Suche fehlgeschlagen"
+      },
+      "update": {
+        "success": "IMAP-Suche erfolgreich aktualisiert",
+        "failed": "Aktualisierung der IMAP-Suche fehlgeschlagen"
+      },
+      "delete": {
+        "success": "IMAP-Suche erfolgreich gelöscht",
+        "failed": "Löschen der IMAP-Suche fehlgeschlagen"
+      }
+    },
+    "llm_filter": {
+      "title": "LLM-Filter",
+      "name": "Name",
+      "description": "Beschreibung",
+      "prompt": "Prompt",
+      "read": {
+        "success": "LLM-Filter erfolgreich geladen"
+      },
+      "create": {
+        "success": "LLM-Filter erfolgreich erstellt",
+        "failed": "Erstellung des LLM-Filters fehlgeschlagen"
+      },
+      "update": {
+        "success": "LLM-Filter erfolgreich aktualisiert",
+        "failed": "Aktualisierung des LLM-Filters fehlgeschlagen"
+      },
+      "delete": {
+        "success": "LLM-Filter erfolgreich gelöscht",
+        "failed": "Löschen des LLM-Filters fehlgeschlagen"
+      }
+    },
+    "llm_create_artifact": {
+      "title": "LLM Create-Artefakte",
+      "name": "Name",
+      "description": "Beschreibung",
+      "prompt": "Prompt"
+    },
+    "automation": {
+      "title": "Automatisierungen",
+      "name": "Name",
+      "imap_connection": "IMAP-Verbindung",
+      "imap_folder": "Ordner",
+      "search": "IMAP-Suche",
+      "llm_filter": "LLM-Filter",
+      "tasks": "Aufgaben",
+      "poll_seconds": "Abfrage-Intervall"
+    },
+    "notification_channels": {
+      "title": "Benachrichtigungskanäle",
+      "type": "Typ",
+      "created_at": "Erstellt am"
+    },
+    "account": {
+      "set_ident": "Identität festlegen"
+    },
+    "common": {
+      "owner": "Besitzer",
+      "actions": "Aktionen",
+      "none": "Keine",
+      "view": "Anzeigen",
+      "close": "Schließen"
+    }
+  },
+  "$vuetify": {
+    "close": "Schließen",
+    "dismiss": "X",
+    "datePicker": {
+      "itemsSelected": "{0} ausgewählt",
+      "ariaLabel": {
+        "nextMonth": "Nächster Monat",
+        "nextYear": "Nächstes Jahr",
+        "prevMonth": "Vorheriger Monat",
+        "prevYear": "Vorheriges Jahr"
+      },
+      "header": "Datum auswählen",
+      "title": "Datum auswählen"
+    },
+    "datepicker": {
+      "itemsSelected": "{0} ausgewählt",
+      "ariaLabel": {
+        "nextMonth": "Nächster Monat",
+        "nextYear": "Nächstes Jahr",
+        "prevMonth": "Vorheriger Monat",
+        "prevYear": "Vorheriges Jahr"
+      },
+      "header": "Datum auswählen",
+      "title": "Datum auswählen"
+    },
+    "dataFooter": {
+      "itemsPerPageText": "Elemente pro Seite:",
+      "itemsPerPageAll": "Alle",
+      "pageText": "{0}-{1} von {2}",
+      "firstPage": "Erste Seite",
+      "prevPage": "Vorherige Seite",
+      "nextPage": "Nächste Seite",
+      "lastPage": "Letzte Seite"
+    },
+    "pagination": {
+      "ariaLabel": {
+        "root": "Seitennavigation"
+      }
+    },
+    "noDataText": "Keine Daten verfügbar"
+  },
+  "frontend": {
+    "nav": {
+      "title": "Navigation",
+      "subtitle": "Demo App",
+      "dashboard": "Dashboard",
+      "settings": "Einstellungen",
+      "notifications": "Benachrichtigungen",
+      "howto": "Wie funktioniert das?"
+    },
+    "app": {
+      "title": "E-Mail Plattform"
+    },
+    "dashboard": {
+      "welcome": "Willkommen auf dem Dashboard",
+      "subtitle": "Erstellt mit Nuxt und Vuetify",
+      "description": "Dies ist ein grundlegendes Template-Setup mit Nuxt 4 und Vuetify 3. Sie können hier beginnen, Ihre E-Mail-Plattform aufzubauen.",
+      "action1": "Aktion 1",
+      "action2": "Aktion 2"
+    },
+    "table": {
+      "name": "Name",
+      "status": "Status"
+    },
+    "stats": {
+      "title": "Statistiken",
+      "emails_sent": "Gesendete E-Mails"
+    },
+    "message": {
+      "title": "Schnellnachricht",
+      "to": "An",
+      "label": "Nachricht",
+      "send": "Jetzt senden"
+    },
+    "footer": {
+      "legal": "Impressum"
+    },
+    "auth": {
+      "login_title": "Anmelden",
+      "login_instructions": "Geben Sie Ihre Zugangsdaten ein, um auf Ihr Konto zuzugreifen.",
+      "email": "E-Mail Adresse",
+      "password": "Passwort",
+      "login_button": "Einloggen",
+      "no_account": "Kein Konto? Hier erstellen.",
+      "signup_title": "Konto erstellen",
+      "signup_instructions": [
+        "Geben Sie Ihre Daten ein, um sich zu registrieren.",
+        "Prüfen Sie Ihre E-Mails auf einen Bestätigungslink.",
+        "Aktivieren Sie Ihr Konto, um sich anzumelden."
+      ],
+      "confirm_password": "Passwort bestätigen",
+      "have_account": "Sie haben bereits ein Konto? Einloggen."
+    },
+    "landing": {
+      "hero": {
+        "title": "Bändigen Sie Ihren Posteingang mit FOMO-Mail",
+        "subtitle": "Verpassen Sie nie wieder ein wichtiges Update. Unsere KI-gesteuerte Plattform kategorisiert, fasst zusammen und priorisiert Ihre E-Mails, damit Sie sich auf das Wesentliche konzentrieren können.",
+        "cta_start": "Kostenlos starten",
+        "cta_login": "Anmelden"
+      },
+      "features": {
+        "title": "Warum FOMO-Mail?",
+        "ai": {
+          "title": "KI-gestützte Zusammenfassungen",
+          "desc": "Erfassen Sie das Wesentliche langer E-Mail-Threads in Sekundenschnelle mit unserer fortschrittlichen LLM-Integration."
+        },
+        "smart": {
+          "title": "Intelligente Kategorisierung",
+          "desc": "Organisieren Sie Ihre E-Mails automatisch in intuitive Berichte basierend auf Ihren Vorlieben."
+        },
+        "privacy": {
+          "title": "Privatsphäre zuerst",
+          "desc": "Ihre Daten gehören Ihnen. Wir verwenden modernste Sicherheit und teilen Ihre Informationen niemals."
+        }
+      },
+      "how_it_works": {
+        "title": "Einfache Integration",
+        "desc": "Leiten Sie Ihre wichtigen E-Mails einfach an Ihre eindeutige FOMO-Mail-Adresse weiter und lassen Sie unsere Engine perfekte Berichte für Sie erstellen."
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "success": "Anmeldung erfolgreich",
+      "invalid_credentials": "E-Mail oder Passwort ungültig"
+    },
+    "logout": {
+      "success": "Erfolgreich abgemeldet"
+    }
+  },
+  "account": {
+    "read": {
+      "success": "Konto erfolgreich geladen"
+    },
+    "create": {
+      "success": "Konto erfolgreich erstellt",
+      "failed": "Erstellung des Kontos fehlgeschlagen"
+    },
+    "update": {
+      "success": "Konto erfolgreich aktualisiert",
+      "failed": "Aktualisierung des Kontos fehlgeschlagen"
+    },
+    "delete": {
+      "success": "Konto erfolgreich gelöscht",
+      "failed": "Löschen des Kontos fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige Kontodaten",
+    "create_failed": "Systemfehler: Kontoerstellung fehlgeschlagen"
+  },
+  "email": {
+    "read": {
+      "success": "E-Mails erfolgreich geladen"
+    },
+    "create": {
+      "success": "E-Mail erfolgreich verarbeitet",
+      "failed": "E-Mail-Verarbeitung fehlgeschlagen",
+      "owner_not_found": "Interner Fehler: Empfängerkonto nicht zugeordnet"
+    },
+    "update": {
+      "success": "E-Mail erfolgreich aktualisiert",
+      "failed": "E-Mail-Aktualisierung fehlgeschlagen"
+    },
+    "delete": {
+      "success": "E-Mail erfolgreich gelöscht",
+      "failed": "E-Mail-Löschung fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige E-Mail-Daten"
+  },
+  "permissions": {
+    "read": {
+      "success": "Berechtigungen erfolgreich geladen"
+    }
+  },
+  "role": {
+    "read": {
+      "success": "Rollen erfolgreich geladen"
+    },
+    "create": {
+      "success": "Rolle erfolgreich erstellt",
+      "failed": "Rollenerstellung fehlgeschlagen"
+    },
+    "update": {
+      "success": "Rolle erfolgreich aktualisiert",
+      "failed": "Rollenaktualisierung fehlgeschlagen"
+    },
+    "delete": {
+      "success": "Rolle erfolgreich gelöscht",
+      "failed": "Rollenlöschung fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige Rollendaten"
+  },
+  "report_spec": {
+    "read": {
+      "success": "Berichtsvorlagen geladen"
+    },
+    "create": {
+      "success": "Berichtsvorlage erstellt",
+      "failed": "Erstellung der Berichtsvorlage fehlgeschlagen"
+    },
+    "update": {
+      "success": "Berichtsvorlage aktualisiert",
+      "failed": "Aktualisierung der Berichtsvorlage fehlgeschlagen"
+    },
+    "delete": {
+      "success": "Berichtsvorlage gelöscht",
+      "failed": "Löschen der Berichtsvorlage fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige Daten für Berichtsvorlage"
+  },
+  "report_item": {
+    "read": {
+      "success": "Berichtselemente geladen"
+    },
+    "create": {
+      "success": "Berichtselement gespeichert",
+      "failed": "Speichern des Berichtselements fehlgeschlagen"
+    },
+    "update": {
+      "success": "Berichtselement aktualisiert",
+      "failed": "Aktualisierung des Berichtselements fehlgeschlagen"
+    },
+    "delete": {
+      "success": "Berichtselement gelöscht",
+      "failed": "Löschen des Berichtselements fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige Daten für Berichtselement"
+  },
+  "connections_imap": {
+    "read": {
+      "success": "IMAP-Verbindungen erfolgreich geladen"
+    },
+    "create": {
+      "success": "IMAP-Verbindung erfolgreich erstellt",
+      "failed": "Erstellung der IMAP-Verbindung fehlgeschlagen"
+    },
+    "update": {
+      "success": "IMAP-Verbindung erfolgreich aktualisiert",
+      "failed": "Aktualisierung der IMAP-Verbindung fehlgeschlagen"
+    },
+    "delete": {
+      "success": "IMAP-Verbindung erfolgreich gelöscht",
+      "failed": "Löschen der IMAP-Verbindung fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige IMAP-Verbindungsdaten",
+    "insert": {
+      "bad_payload": "Ungültige IMAP-Verbindungsdaten"
+    }
+  },
+  "notification_channel": {
+    "read": {
+      "success": "Benachrichtigungskanäle erfolgreich abgerufen"
+    },
+    "create": {
+      "success": "Benachrichtigungskanal erfolgreich erstellt",
+      "failed": "Erstellung des Benachrichtigungskanals fehlgeschlagen"
+    },
+    "update": {
+      "success": "Benachrichtigungskanal erfolgreich aktualisiert",
+      "failed": "Aktualisierung des Benachrichtigungskanals fehlgeschlagen"
+    },
+    "delete": {
+      "success": "Benachrichtigungskanal erfolgreich gelöscht",
+      "failed": "Löschen des Benachrichtigungskanals fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige Benachrichtigungskanal-Daten"
+  },
+  "notification_channels": {
+    "bad_payload": "Ungültige Benachrichtigungskanal-Daten",
+    "insert": {
+      "bad_payload": "Ungültige Benachrichtigungskanal-Daten"
+    }
+  },
+  "imap_search": {
+    "builder": {
+      "and": "UND",
+      "or": "ODER",
+      "and_group": "UND",
+      "or_group": "ODER",
+      "add_rule": "Regel",
+      "add_and": "UND",
+      "add_or": "ODER",
+      "gui_builder": "GUI-Builder",
+      "json_view": "JSON-Ansicht",
+      "delete_group": "Gruppe löschen",
+      "remove_rule": "Regel entfernen",
+      "matches": "Stimmt überein (=)",
+      "not_matches": "Stimmt NICHT überein (NOT)",
+      "placeholder_search_value": "Suchwert...",
+      "placeholder_bytes": "Bytes...",
+      "placeholder_header_name": "Header-Name (z.B. X-Spam)",
+      "placeholder_header_value": "Wert",
+      "yes": "JA",
+      "no": "NEIN",
+      "select_date": "Datum auswählen",
+      "empty_group": "Leere Gruppe. Fügen Sie eine Regel oder eine verschachtelte Gruppe hinzu, um zu filtern.",
+      "fields": {
+        "from": "Von (Absender)",
+        "to": "An (Empfänger)",
+        "cc": "CC",
+        "bcc": "BCC",
+        "subject": "Betreff",
+        "body": "Textinhalt",
+        "text": "Beliebiger Text (Header/Inhalt)",
+        "seq": "Sequenzbereich (z.B. 1:*)",
+        "uid": "UID-Bereich (z.B. 100:*)",
+        "seen": "Gelesen (Seen)",
+        "flagged": "Markiert (Starred)",
+        "answered": "Beantwortet",
+        "deleted": "Gelöscht",
+        "draft": "Entwurf",
+        "recent": "Neu (Recent)",
+        "since": "Seit Datum",
+        "_since_days": "Seit (Tage zurück)",
+        "before": "Vor Datum",
+        "_before_days": "Vor (Tage zurück)",
+        "on": "Am Datum",
+        "_on_days": "Am (Tage zurück)",
+        "sentSince": "Gesendet seit Datum",
+        "_sentSince_days": "Gesendet seit (Tage zurück)",
+        "sentBefore": "Gesendet vor Datum",
+        "_sentBefore_days": "Gesendet vor (Tage zurück)",
+        "sentOn": "Gesendet am Datum",
+        "_sentOn_days": "Gesendet am (Tage zurück)",
+        "larger": "Größer als (Bytes)",
+        "smaller": "Kleiner als (Bytes)",
+        "header": "Benutzerdefinierter Header"
+      }
+    },
+    "read": {
+      "success": "IMAP-Suchen erfolgreich geladen"
+    },
+    "create": {
+      "success": "IMAP-Suche erfolgreich erstellt",
+      "failed": "Erstellung der IMAP-Suche fehlgeschlagen"
+    },
+    "update": {
+      "success": "IMAP-Suche erfolgreich aktualisiert",
+      "failed": "Aktualisierung der IMAP-Suche fehlgeschlagen"
+    },
+    "delete": {
+      "success": "IMAP-Suche erfolgreich gelöscht",
+      "failed": "Löschen der IMAP-Suche fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige IMAP-Suchdaten"
+  },
+  "llm_filter": {
+    "read": {
+      "success": "LLM-Filter erfolgreich geladen"
+    },
+    "create": {
+      "success": "LLM-Filter erfolgreich erstellt",
+      "failed": "Erstellung des LLM-Filters fehlgeschlagen"
+    },
+    "update": {
+      "success": "LLM-Filter erfolgreich aktualisiert",
+      "failed": "Aktualisierung des LLM-Filters fehlgeschlagen"
+    },
+    "delete": {
+      "success": "LLM-Filter erfolgreich gelöscht",
+      "failed": "Löschen des LLM-Filters fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige LLM-Filterdaten"
+  },
+  "llm_create_artifact": {
+    "read": {
+      "success": "LLM Create-Artefakte erfolgreich geladen"
+    },
+    "create": {
+      "success": "LLM Create-Artefakt erfolgreich erstellt",
+      "failed": "Erstellung des LLM Create-Artefakts fehlgeschlagen"
+    },
+    "update": {
+      "success": "LLM Create-Artefakt erfolgreich aktualisiert",
+      "failed": "Aktualisierung des LLM Create-Artefakts fehlgeschlagen"
+    },
+    "delete": {
+      "success": "LLM Create-Artefakt erfolgreich gelöscht",
+      "failed": "Löschen des LLM Create-Artefakts fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige LLM Create-Artefakt-Daten"
+  },
+  "llm_create_artifacts": {
+    "bad_payload": "Ungültige LLM Create-Artefakt-Daten",
+    "insert": {
+      "bad_payload": "Ungültige LLM Create-Artefakt-Daten"
+    }
+  },
+  "automation": {
+    "component": {
+      "task_chooser": {
+        "title": "Aufgabenauswahl",
+        "empty": "Noch keine Operationen hinzugefügt. Klicke auf das \"+\"-Symbol, um eine Operation hinzuzufügen.",
+        "clear_all": "Alle löschen",
+        "message": "Nachricht",
+        "create_artifact": "LLM-Artefakt erstellen",
+        "imap_mark_read": "Als gelesen markieren",
+        "only_new": "Nur neue",
+        "send_message": "Nachricht senden",
+        "send_attachment": "Anhang senden",
+        "send_items": "Elemente senden",
+        "tts": "Text zu Sprache",
+        "arguments": {
+          "destination": "Ziel",
+          "keep_threadid": "Thread-ID beibehalten",
+          "multiple": "Mehrere",
+          "name": "Name",
+          "source": "Quelle",
+          "task_id": "Aufgabenkonfig."
+        }
+      }
+    },
+    "read": {
+      "success": "Automatisierungen erfolgreich geladen"
+    },
+    "create": {
+      "success": "Automatisierung erfolgreich erstellt",
+      "failed": "Erstellung der Automatisierung fehlgeschlagen"
+    },
+    "update": {
+      "success": "Automatisierung erfolgreich aktualisiert",
+      "failed": "Aktualisierung der Automatisierung fehlgeschlagen"
+    },
+    "delete": {
+      "success": "Automatisierung erfolgreich gelöscht",
+      "failed": "Löschen der Automatisierung fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige Automatisierungsdaten",
+    "imap_connection_id": {
+      "not_found": "Referenzierte IMAP-Verbindung existiert nicht"
+    },
+    "search_id": {
+      "not_found": "Referenzierte IMAP-Suchkriterien existieren nicht"
+    },
+    "llm_filter_id": {
+      "not_found": "Referenzierter LLM-Filter existiert nicht"
+    }
+  },
+  "app": {
+    "report": {
+      "read": {
+        "success": "Bericht erfolgreich generiert"
+      },
+      "missing_id": "Fehler: Bericht-ID fehlt"
+    }
+  },
+  "core": {
+    "account": {
+      "create_failed": "Core Service: Kontoerstellung fehlgeschlagen"
+    }
+  },
+  "accounts": {
+    "bad_payload": "Ungültige Kontodaten",
+    "insert": {
+      "bad_payload": "Ungültige Kontodaten"
+    }
+  },
+  "emails": {
+    "bad_payload": "Ungültige E-Mail-Daten",
+    "insert": {
+      "bad_payload": "Ungültige E-Mail-Daten"
+    }
+  },
+  "roles": {
+    "bad_payload": "Ungültige Rollendaten",
+    "insert": {
+      "bad_payload": "Ungültige Rollendaten"
+    },
+    "permissions": {
+      "invalid_type": "Berechtigungen müssen ein Array von Zeichenketten sein",
+      "invalid_permission": "Eine oder mehrere Berechtigungen sind ungültig"
+    }
+  },
+  "report_specs": {
+    "bad_payload": "Ungültige Spezifikationsdaten",
+    "insert": {
+      "bad_payload": "Ungültige Spezifikationsdaten"
+    }
+  },
+  "report_items": {
+    "bad_payload": "Ungültige Berichtselementdaten",
+    "insert": {
+      "bad_payload": "Ungültige Berichtselementdaten"
+    }
+  },
+  "connections_imap": {
+    "bad_payload": "Ungültige IMAP-Verbindungsdaten",
+    "insert": {
+      "bad_payload": "Ungültige IMAP-Verbindungsdaten"
+    }
+  },
+  "howto": {
+    "title": "Wie es funktioniert",
+    "subtitle": "GMail-Weiterleitungen einrichten",
+    "step1": {
+      "title": "1. Autorisieren Sie die Weiterleitungsadresse",
+      "p1": "Gmail erfordert, dass die empfangende E-Mail die Verbindung zuerst „akzeptiert“.",
+      "p2": "Gehen Sie zu Einstellungen (Zahnrad-Symbol) > Alle Einstellungen anzeigen.",
+      "p3": "Wählen Sie den Tab Weiterleitung und POP/IMAP.",
+      "p4": "Klicken Sie auf Weiterleitungsadresse hinzufügen und geben Sie die Ziel-E-Mail-Adresse ein.",
+      "p5": "Wichtig: Melden Sie sich bei diesem Zielkonto an, öffnen Sie die Bestätigungs-E-Mail von Google und klicken Sie auf den Link zur Verifizierung."
+    },
+    "step2": {
+      "title": "2. Erstellen Sie den wortbasierten Filter",
+      "p1": "Klicken Sie auf das Symbol Suchoptionen anzeigen (die Schieberegler) in der Gmail-Suchleiste.",
+      "p2": "Geben Sie im Feld Enthält die Wörter das Wort ein, nach dem Sie filtern möchten (z. B. {word}).",
+      "p3": "Klicken Sie auf Filter erstellen.",
+      "p4": "Aktivieren Sie das Kontrollkästchen Weiterleiten an: und wählen Sie die verifizierte E-Mail-Adresse aus dem Dropdown-Menü aus.",
+      "p5": "Klicken Sie erneut auf Filter erstellen, um den Vorgang abzuschließen."
+    },
+    "image_alt": "Beispiel für Gmail-Weiterleitungseinstellungen"
+  },
+  "events": {
+    "user": {
+      "info_automation_start": "Automatisierung '{name}' gestartet",
+      "info_automation_end": "Automatisierung '{name}' abgeschlossen"
+    }
+  },
+  "user_events": {
+    "read": {
+      "success": "Benutzer-Ereignisse erfolgreich geladen",
+      "not_logged_in": "Nicht berechtigt, Benutzer-Ereignisse zu lesen"
+    },
+    "update": {
+      "success": "Benutzer-Ereignisse erfolgreich aktualisiert",
+      "not_logged_in": "Nicht berechtigt, Benutzer-Ereignisse zu aktualisieren"
+    },
+    "id": {
+      "required": "Ereignis-ID ist erforderlich"
+    }
+  },
+  "userinfo_import_export": {
+    "title": "Benutzerdaten-Sicherung & Wiederherstellung",
+    "description": "Exportieren Sie alle Ihre Verbindungen, Suchen, Filter, Artefakte und Automatisierungen in eine einzelne JSON-Datei oder stellen Sie diese aus einer Sicherungsdatei wieder her.",
+    "export_button": "Benutzerdaten exportieren",
+    "import_button": "Benutzerdaten importieren",
+    "export_success": "Benutzerdaten erfolgreich exportiert",
+    "export_failed": "Fehler beim Exportieren der Benutzerdaten",
+    "import_success": "Benutzerdaten erfolgreich importiert",
+    "import_failed": "Fehler beim Importieren der Benutzerdaten",
+    "invalid_file": "Ungültige Sicherungsdatei oder nicht unterstützte Version"
+  }
+}

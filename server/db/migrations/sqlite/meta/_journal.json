@@ -1,0 +1,48 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1786102284664,
+      "tag": "0000_gifted_taskmaster",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1786106696474,
+      "tag": "0001_lovely_flatman",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1786353494347,
+      "tag": "0002_thin_susan_delgado",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1786376978567,
+      "tag": "0003_rapid_wither",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1787308440868,
+      "tag": "0004_gorgeous_genesis",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1787310381089,
+      "tag": "0005_red_rattler",
+      "breakpoints": true
+    }
+  ]
+}

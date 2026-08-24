@@ -1,0 +1,77 @@
+{
+    "roles": {
+        "admin": [
+            "*"
+        ],
+        "user": []
+    },
+    "admin_role": [
+        "admin"
+    ],
+    "default_roles": [
+        "user"
+    ],
+    "limits": {
+        "queue": {
+            "queue_max_depth": 100,
+            "concurrent_workers": 2
+        },
+        "automation": {
+            "max_emails_per_fetch": 50,
+            "max_input_text_length": 15000
+        },
+        "basic": {
+            "pruning": {
+                "email": {
+                    "retention_days": 60,
+                    "max_size_mb": 100,
+                    "max_emails": 200
+                }
+            }
+        }
+    },
+    "example_content": {
+        "connections_imap": {
+            "en": [
+                {
+                    "name": "My IMAP Account",
+                    "host": "imap.example.com",
+                    "port": 993,
+                    "use_ssl": 1,
+                    "auth_type": "login",
+                    "username": "[EMAIL_ADDRESS]",
+                    "folders": [
+                        "INBOX"
+                    ],
+                    "poll_seconds": 3600
+                }
+            ]
+        },
+        "imap_searches": {
+            "en": [
+                {
+                    "name": "Unread emails from user@example.com",
+                    "search": "{\n                        \"seen\": false,\n                        \"from\": \"user@example.com\"\n                    }"
+                }
+            ]
+        },
+        "llm_filters": {
+            "en": [
+                {
+                    "name": "Newsletter Detector",
+                    "prompt": "Determine if the following email text looks like a newsletter, digest, or marketing blast.",
+                    "description": "Bulk mail detector."
+                }
+            ]
+        },
+        "llm_create_artifacts": {
+            "en": [
+                {
+                    "name": "Create Summarized Email",
+                    "description": "Create a summary of an email.",
+                    "prompt": "Please summarize the text in 200 words or less."
+                }
+            ]
+        }
+    }
+}

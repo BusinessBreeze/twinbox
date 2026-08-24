@@ -1,0 +1,42 @@
+{
+  "/": {
+    "warnings": [],
+    "errors": [],
+    "info": []
+  },
+  "/landing": {
+    "warnings": [],
+    "errors": [],
+    "info": []
+  },
+  "/automations": {
+    "warnings": [],
+    "errors": [],
+    "info": []
+  },
+  "/sources": {
+    "warnings": [],
+    "errors": [],
+    "info": []
+  },
+  "/preferences": {
+    "warnings": [],
+    "errors": [],
+    "info": []
+  },
+  "/repositories": {
+    "warnings": [],
+    "errors": [],
+    "info": []
+  },
+  "/llm_filter": {
+    "warnings": [],
+    "errors": [],
+    "info": []
+  },
+  "/llm_create_artifact": {
+    "warnings": [],
+    "errors": [],
+    "info": []
+  }
+}

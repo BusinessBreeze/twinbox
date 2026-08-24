@@ -1,0 +1,30 @@
+services:
+  apprise:
+    image: caronc/apprise:latest
+    container_name: apprise
+    restart: unless-stopped
+    user: "1000:1000"
+    ports:
+      - "8100:8000"
+    volumes:
+      - apprise-config:/config
+      - apprise-attach:/attach
+
+    environment:
+      - APPRISE_STATEFUL_MODE=disabled
+      - APPRISE_WORKER_COUNT=1
+      - API_ONLY=YES
+      - TZ=Europe/Berlin
+
+    # hardening
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+
+volumes:
+  apprise-config:
+  apprise-attach:

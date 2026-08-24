@@ -1,0 +1,1 @@
+ALTER TABLE `user_events` ADD `read` integer DEFAULT 0;

@@ -1,0 +1,134 @@
+[
+    {
+        "name": "email",
+        "children": [
+            {
+                "name": "crud",
+                "children": [
+                    {
+                        "name": "create"
+                    },
+                    {
+                        "name": "read"
+                    },
+                    {
+                        "name": "update"
+                    },
+                    {
+                        "name": "delete"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "connections_imap",
+        "children": [
+            {
+                "name": "crud",
+                "children": [
+                    {
+                        "name": "create"
+                    },
+                    {
+                        "name": "read"
+                    },
+                    {
+                        "name": "update"
+                    },
+                    {
+                        "name": "delete"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "imap_search",
+        "children": [
+            {
+                "name": "crud",
+                "children": [
+                    {
+                        "name": "create"
+                    },
+                    {
+                        "name": "read"
+                    },
+                    {
+                        "name": "update"
+                    },
+                    {
+                        "name": "delete"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "llm_filter",
+        "children": [
+            {
+                "name": "crud",
+                "children": [
+                    {
+                        "name": "create"
+                    },
+                    {
+                        "name": "read"
+                    },
+                    {
+                        "name": "update"
+                    },
+                    {
+                        "name": "delete"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "automation",
+        "children": [
+            {
+                "name": "crud",
+                "children": [
+                    {
+                        "name": "create"
+                    },
+                    {
+                        "name": "read"
+                    },
+                    {
+                        "name": "update"
+                    },
+                    {
+                        "name": "delete"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "llm_create_artifact",
+        "children": [
+            {
+                "name": "crud",
+                "children": [
+                    {
+                        "name": "create"
+                    },
+                    {
+                        "name": "read"
+                    },
+                    {
+                        "name": "update"
+                    },
+                    {
+                        "name": "delete"
+                    }
+                ]
+            }
+        ]
+    }
+]
