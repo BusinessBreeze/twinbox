@@ -56,31 +56,6 @@ The application ingests your emails locally and automatically triggers processin
 *   **Delivery**: All processed summaries, digests, and safety reports are sent directly back to your email inbox or designated notification channels.
 
 
----
-
-## ⚠️ SMTP Forwarding Troubleshooting
-
-If your email provider rejects forwarding directly to your local instance (due to IP reputation, residential IP blocks, or missing SPF/DKIM alignments), you can pull and forward mail spools locally using utilities like `fdm` and `msmtp`.
-
-#### Configuration Example
-
-Create a file named `fetch.conf`:
-```ini
-account "test" imaps server "mail.mycompany.com" user "[EMAIL_ADDRESS]" pass "[PASSWORD]" new-only keep
-
-action "forward" pipe "msmtp --host=localhost --port=2525 -t --from=[EMAIL_ADDRESS]"
-
-match account "test" action "forward"
-```
-
-Run the fetch command:
-```bash
-fdm -f fetch.conf fetch
-```
-*Note: This workaround can be automated via cron and will be deprecated once native IMAP polling is implemented directly in TwinBox.*
-
----
-
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
