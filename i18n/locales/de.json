@@ -1,7 +1,10 @@
 {
   "test": "test",
   "common": {
-    "none": "Keine"
+    "none": "Keine",
+    "last_run": "Zuletzt ausgeführt",
+    "active": "Aktiv",
+    "inactive": "Inaktiv"
   },
   "pages": {
     "dashboard": "Dashboard",
@@ -217,6 +220,9 @@
         "min": "Name ist zu kurz",
         "max": "Name ist zu lang"
       },
+      "active": {
+        "invalid": "Aktiv muss ein Boolean oder 0/1 sein"
+      },
       "imap_connection_id": {
         "invalid": "IMAP-Verbindungs-ID muss eine Zeichenfolge sein",
         "required": "IMAP-Verbindungs-ID ist erforderlich"
@@ -255,7 +261,6 @@
         "invalid": "Ungültige Sprache ausgewählt"
       }
     },
-    "invalid_field": "Ungültiges Feld",
     "required": "Dieses Feld ist erforderlich",
     "unique_name": "Der Name muss für diesen Task-Typ eindeutig sein",
     "update": {
@@ -389,17 +394,22 @@
     "automation": {
       "title": "Automatisierungen",
       "name": "Name",
+      "active": "Aktiv",
       "imap_connection": "IMAP-Verbindung",
       "imap_folder": "Ordner",
       "search": "IMAP-Suche",
       "llm_filter": "LLM-Filter",
       "tasks": "Aufgaben",
-      "poll_seconds": "Abfrage-Intervall"
+      "poll_seconds": "Abfrage-Intervall",
+      "last_issue": "Letztes Problem"
     },
     "notification_channels": {
       "title": "Benachrichtigungskanäle",
       "type": "Typ",
-      "created_at": "Erstellt am"
+      "created_at": "Erstellt am",
+      "is_default": "Standard",
+      "add_whatsapp": "WhatsApp hinzufügen",
+      "set_default": "Als Standard festlegen"
     },
     "account": {
       "set_ident": "Identität festlegen"
@@ -409,10 +419,14 @@
       "actions": "Aktionen",
       "none": "Keine",
       "view": "Anzeigen",
-      "close": "Schließen"
+      "close": "Schließen",
+      "last_run": "Zuletzt ausgeführt",
+      "inactive": "Inaktiv"
     }
   },
   "$vuetify": {
+    "badge": "Abzeichen",
+    "open": "Öffnen",
     "close": "Schließen",
     "dismiss": "X",
     "datePicker": {
@@ -470,7 +484,9 @@
       "subtitle": "Erstellt mit Nuxt und Vuetify",
       "description": "Dies ist ein grundlegendes Template-Setup mit Nuxt 4 und Vuetify 3. Sie können hier beginnen, Ihre E-Mail-Plattform aufzubauen.",
       "action1": "Aktion 1",
-      "action2": "Aktion 2"
+      "action2": "Aktion 2",
+      "last_issue": "Letztes Problem",
+      "no_recent_automations": "Keine kürzlich ausgeführten Automatisierungen"
     },
     "table": {
       "name": "Name",
@@ -809,6 +825,7 @@
         "create_artifact": "LLM-Artefakt erstellen",
         "imap_mark_read": "Als gelesen markieren",
         "only_new": "Nur neue",
+        "source_links": "Quellenlinks",
         "send_message": "Nachricht senden",
         "send_attachment": "Anhang senden",
         "send_items": "Elemente senden",
@@ -847,7 +864,8 @@
     },
     "llm_filter_id": {
       "not_found": "Referenzierter LLM-Filter existiert nicht"
-    }
+    },
+    "last_issue": "Letztes Problem"
   },
   "app": {
     "report": {
@@ -896,12 +914,6 @@
       "bad_payload": "Ungültige Berichtselementdaten"
     }
   },
-  "connections_imap": {
-    "bad_payload": "Ungültige IMAP-Verbindungsdaten",
-    "insert": {
-      "bad_payload": "Ungültige IMAP-Verbindungsdaten"
-    }
-  },
   "howto": {
     "title": "Wie es funktioniert",
     "subtitle": "GMail-Weiterleitungen einrichten",
@@ -926,7 +938,9 @@
   "events": {
     "user": {
       "info_automation_start": "Automatisierung '{name}' gestartet",
-      "info_automation_end": "Automatisierung '{name}' abgeschlossen"
+      "info_automation_end": "Automatisierung '{name}' abgeschlossen",
+      "warn_automation_already_active": "Bereits in Warteschlange: {name}",
+      "error_queue_full": "Maximale Warteschlangentiefe erreicht ({maxDepth}). Aufgabe wurde abgelehnt"
     }
   },
   "user_events": {
@@ -952,5 +966,9 @@
     "import_success": "Benutzerdaten erfolgreich importiert",
     "import_failed": "Fehler beim Importieren der Benutzerdaten",
     "invalid_file": "Ungültige Sicherungsdatei oder nicht unterstützte Version"
+  },
+  "dashboard": {
+    "last_issue": "Letztes Problem",
+    "no_recent_automations": "Keine kürzlich ausgeführten Automatisierungen"
   }
 }

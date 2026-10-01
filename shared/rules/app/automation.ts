@@ -5,6 +5,13 @@ export const zod_rules = {
     errorMap: () => ({ message: "rules.automation.name.invalid" })
   }).min(1, "rules.automation.name.min").max(100, "rules.automation.name.max"),
 
+  active: z.union([z.boolean(), z.number()]).transform((val) => {
+    if (typeof val === 'boolean') {
+      return val ? 1 : 0;
+    }
+    return val === 1 ? 1 : 0;
+  }).default(1),
+
   imap_connection_id: z.string({
     errorMap: () => ({ message: "rules.automation.imap_connection_id.invalid" })
   }).min(1, "rules.automation.imap_connection_id.required"),

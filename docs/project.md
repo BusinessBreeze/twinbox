@@ -1,26 +1,19 @@
 # Email Platform
 
-Find all API docs at http://localhost:3000/_swagger or http://localhost:3000/_openapi.json
+API contract: http://localhost:3000/_swagger or http://localhost:3000/_scalar
 
-# Goals
-- E-Mail selection: IMAP Search, LLM Filtering
-- Task Options: Work on emails singly or concatenated, mark read
-- Tasks: TTS, LLM content analysis, Web Scraping (future), IMAP Metric analysis (future) 
+# Future Sources
+- E-Mail metrics: topFrom, top recipients
+- Local Document Repository
+- Searches, News, SubScriptions
 
-## Note: Currently, previously downloaded emails are skipped. The effect is that all tasks will only process new emails.
 ## TTS: Currently, hardcoded as English.
-
-- Web Scraping Examples:
-  - Get RAM prices weekly and notify if price drops.
-- IMAP Metric Examples:
-  - top From:
-  - Top reponded to / read
 
 ## Frontend (Future)
 
 ### UI General
 - [ ] tooltips: all icons and buttons
-- [ ] add to service pulldown "- no attachments"
+- [ ] add to service pulldown "- no attachments" if relevant
 
 ### Enhancements
 - [ ] support streaming imap socket: use abortsignal timeouts to avoid leaks
@@ -29,18 +22,15 @@ Find all API docs at http://localhost:3000/_swagger or http://localhost:3000/_op
 - [ ] forms: my getRules and llm's getRules - refactor
 - [ ] add limits subsystem. Per plan: (cron, llm, tts, notifications, etc.)
 - [ ] CHLOE: traefik style most specific action takes priority (executed first)
-- [ ] oauth app/imap login
 - [ ] Automations Table: add active/disabled boolean.
 - [ ] Table Delete:  Redo "are you sure?" popup.
 - [ ] clean up email text before persisting
-- [ ] Rate limiting: allow automations to only read X emails per poll. Define app wide max policy. Max email size
 - [-] IMAP CONNECTIONS: add IMAP folder manager
 - [ ] Table - optional cols / search
 - [ ] TTS: ffmpeg speed control (is a bit fast currently)
 - [ ] Tasks == Plugins.  Support arbitrary integrations.
 - [ ] Make task header booleans => on/off icons
 - [ ] Potential feature: Intersect UIDs from multiple searches to support repeated AND criteria.
-- [ ] Ephemeral / one-time tasks
 - [ ] Automations: multiple notification channels.
 - [ ] Websock for "events" to avoid polling
 
@@ -53,13 +43,11 @@ Find all API docs at http://localhost:3000/_swagger or http://localhost:3000/_op
 UX:
 - [ ] wizard w predefined templates: freeze sus emails, overview, create drafts for specific ppl, put thematic emails (newsletters) in folders
 - [ ] LLM Wizard:  Create documentation for whole process and data structures and have llm create whole pipeline.
-- [ ] LLM Create Filter/Artifact - add "restate my request"
 - [ ] TASK: make a literal artifact : ex:  "attached are all the items."
 - [ ] TASK: make merge texts artifact.
 
 UI:
 - [ ] TASK: set order chips/mime_types manually
-- [ ] mk prefs like admin 1/2-1/2 core/user
 
 Infrastructure:
 - [ ] docker container
@@ -80,8 +68,6 @@ Housekeeping:
 - [ ] review all zod rules, tighten
 - [ ]   no zod rules for notifications.
 - [ ] remove extraneous console.log messages
-- [ ] all routes return i18n-able messages (one is printing in blue/info)
-- [ ] all UI/Route messages exist in both locales
 - [ ] Create every vitest imaginable to stress and break everything.
 - [ ] full code review: middleware, route permissions
 - [ ] remediate all browser console warnings.
@@ -89,9 +75,57 @@ Housekeeping:
 - [ ] review where i18n messages were placed in de/en
 
 
-## LARGER: consider other input sources and compartmentializing IMAP.  Make sources plug-in-able == different containers, web components
+## LARGER: consider other input sources and compartmentializing IMAP.  
+## Make sources plug-in-able == different containers, web components
 
+
+
+
+- [ ] build and deploy via docker, 
+- [ ] image creation on github
+
+### Near Term
+- [ ] Chat History
+- [ ] oauth app/imap login
+- [ ] Ephemeral / one-time tasks
 
 - [ ] AI IMAP filter suggestions
+- [ ] AI: add restate my request to prompts
+
 - [ ] add "test" to imap/search form
 - [ ] Automations: run now button
+
+
+- [ ] Dashboard: incl context issues
+  hamburger right
+  mv speedial to left drawer , color at bottom.
+  user at top w icon preface
+  good morning
+  
+  Top: month/week/day tasks run, emails ingested,  artifacts created, notifications sent, healthy, 
+  Middle: right: activity, left errors. both with clickable => task
+  Bottom: main timer/on/off, automations +: with frequency badges, run now, last status.
+
+  what model you are using, select from dropdown in settings/ai / URL => settings
+  
+  New tables: metrics
+  websocket for activity
+  add plusses in automation 
+
+- [ ] wizard  
+
+CREATE TABLE metrics (
+  id TEXT PRIMARY KEY,
+  automation_id TEXT,
+  model TEXT,
+  input_tokens INTEGER,
+  output_tokens INTEGER,
+  duration_ms INTEGER,
+  tok_per_sec REAL,
+  created_at TIMESTAMP
+);
+
+
+Automation library w templates for UI
+
+- [ ] Imap action: mark as important

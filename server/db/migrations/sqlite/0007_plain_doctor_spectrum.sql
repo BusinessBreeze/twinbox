@@ -1,0 +1,1 @@
+ALTER TABLE `automations` ADD `active` integer DEFAULT 1;

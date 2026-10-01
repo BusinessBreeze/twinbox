@@ -110,6 +110,11 @@ export class InMemoryQueue {
     return this.runningCount;
   }
 
+  public getPendingForUser(ownerId?: string): number {
+    if (!ownerId) return 0;
+    return this.queue.filter(j => j.ownerId === ownerId).length;
+  }
+
   private async startConsumer() {
     this.isProcessing = true;
 

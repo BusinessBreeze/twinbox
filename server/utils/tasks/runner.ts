@@ -1,5 +1,6 @@
 import automationTasks from '../../services/app/automation_tasks';
 import { printTaskContext } from '#server/utils/telemetry/print_task_context';
+import { userMetrics } from '#server/utils/telemetry/user';
 
 export interface TaskContext {
   source?: Record<string, Record<string, any>>;
@@ -98,6 +99,11 @@ export const runTasks = async (automationName: string, context: TaskContext, tas
       console.log(`[Task Runner] Executing task "${taskRequest.name}"...`);
       const result = await taskDef.handler(...args, context);
 
+      const userId = context.owner_id || context.user_id || context.userId;
+      if (userId) {
+        userMetrics.recordTaskRun(userId);
+      }
+
       if (result) {
         const taskName = taskRequest.name;
         const artName = taskRequest.arguments?.name || taskRequest.name || 'default';
@@ -116,6 +122,10 @@ export const runTasks = async (automationName: string, context: TaskContext, tas
         context.source = context.source || {};
         context.source[taskName] = context.source[taskName] || {};
         context.source[taskName][artName] = artifactObj;
+
+        if (userId && (taskRequest.name === 'create_artifact' || taskRequest.name?.includes('artifact'))) {
+          userMetrics.recordArtifactCreated(userId);
+        }
       }
 
     } catch (error) {

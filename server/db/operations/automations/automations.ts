@@ -1,4 +1,5 @@
 import { db } from "hub:db";
+import { accounts } from "hub:db:schema";
 import { automations, connectionsIMAP, imapSearches, llmFilters } from "#server/db/schema";
 import { eq, inArray, sql } from "drizzle-orm";
 import { decryptConfig } from "#server/services/app/connections_imap";
@@ -16,9 +17,11 @@ export const getDueAutomations = async () => {
             automation: automations,
             connection: connectionsIMAP,
             search: imapSearches,
-            llmFilter: llmFilters
+            llmFilter: llmFilters,
+            account: accounts
         })
         .from(automations)
+        .leftJoin(accounts, eq(automations.owner_id, accounts.id))
         .innerJoin(connectionsIMAP, eq(automations.imap_connection_id, connectionsIMAP.id))
         .leftJoin(imapSearches, eq(automations.search_id, imapSearches.id))
         .leftJoin(llmFilters, eq(automations.llm_filter_id, llmFilters.id))
@@ -26,8 +29,21 @@ export const getDueAutomations = async () => {
             sql`${automations.last_poll} + ${automations.poll_seconds} <= ${nowSec}`
         );
 
-    if (results.length > 0) {
-        const ids = results.map(r => r.automation.id);
+    // Check automations.active and accounts.cron_active integers as booleans; if 0 (false), filter from the list
+    const activeResults = results.filter(r => {
+        // Automation active state (default 1)
+        const autoActive = r.automation?.active;
+        if (autoActive !== undefined && autoActive !== null && !Boolean(autoActive)) {
+            return false;
+        }
+
+        // Account cron_active state (default 1)
+        const cronActive = r.account?.cron_active;
+        return cronActive === undefined || cronActive === null ? true : Boolean(cronActive);
+    });
+
+    if (activeResults.length > 0) {
+        const ids = activeResults.map(r => r.automation.id);
 
         // Update last_poll to now for these automations
         await db
@@ -36,7 +52,7 @@ export const getDueAutomations = async () => {
             .where(inArray(automations.id, ids));
     }
 
-    return results.map(r => ({
+    return activeResults.map(r => ({
         ...r,
         connection: r.connection ? {
             ...r.connection,
@@ -44,3 +60,4 @@ export const getDueAutomations = async () => {
         } : r.connection
     }));
 };
+

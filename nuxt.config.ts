@@ -6,7 +6,8 @@ export default defineNuxtConfig({
   // extends: ['../nuxt-base-app'],
   extends: [
     //'github:mwolf-pi3g/nuxt-base-app',
-    '/home/mwolf/Desktop/test/nuxt-base-app'
+    // '/home/mwolf/Desktop/test/nuxt-base-app'
+    '/home/mwolf/Desktop/Git/GITHUB/nuxt-base-app'
   ],
   ignore: [
     'app/schemas/fake_data.ts',

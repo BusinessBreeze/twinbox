@@ -48,6 +48,7 @@ export default async function (t: any) {
         title: 'table.automation.title',
         headers: [
             { title: 'table.automation.name', key: 'name', get_type: "string", set_type: "string_line", rules: rules.name },
+            { title: 'table.automation.active', key: 'active', get_type: "boolean", set_type: "boolean", set_as_number: true, default: 1 },
             { title: 'table.automation.imap_connection', key: 'imap_connection_id', get_type: "enum", set_type: "enum", enum_values: imapConnections, rules: rules.imap_connection_id },
             {
                 title: 'table.automation.imap_folder',

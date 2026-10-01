@@ -1,4 +1,4 @@
-import { llm } from '../llm';
+import { llm, metricsCallback } from '../llm';
 import { z } from 'zod/v4';
 import { emitTelemetryEvent, EventScope, EventLevel } from '#bs/utils/telemetry/event';
 
@@ -30,7 +30,9 @@ Instruction: Determine if the text matches the Filter Criteria. You must respond
         const structuredLlm = llm.withStructuredOutput(outputSchema, {
             method: "jsonSchema",
         });
-        const response = await structuredLlm.invoke(prompt);
+        const response = await structuredLlm.invoke(prompt, {
+            callbacks: [metricsCallback]
+        });
         return !!response?.result;
     } catch (error: any) {
         await emitTelemetryEvent({

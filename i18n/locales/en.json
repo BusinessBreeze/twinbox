@@ -1,7 +1,10 @@
 {
   "test": "test",
   "common": {
-    "none": "None"
+    "none": "None",
+    "last_run": "Last run",
+    "active": "Active",
+    "inactive": "Inactive"
   },
   "pages": {
     "dashboard": "Dashboard",
@@ -15,7 +18,7 @@
     "admin": "Admin"
   },
   "rules": {
-    "invalid_field": "Field is invalid",
+    "invalid_field": "Invalid field",
     "password": {
       "type": "Password must be a string",
       "required": "Password is required",
@@ -217,6 +220,9 @@
         "min": "Name too short",
         "max": "Name too long"
       },
+      "active": {
+        "invalid": "Active must be a boolean or 0/1"
+      },
       "imap_connection_id": {
         "invalid": "IMAP Connection ID must be a string",
         "required": "IMAP Connection ID is required"
@@ -255,7 +261,6 @@
         "invalid": "Invalid language selected"
       }
     },
-    "invalid_field": "Invalid field",
     "required": "This field is required",
     "unique_name": "Name must be unique for this task type",
     "update": {
@@ -389,17 +394,22 @@
     "automation": {
       "title": "Automations",
       "name": "Name",
+      "active": "Active",
       "imap_connection": "IMAP Connection",
       "imap_folder": "Folder",
       "search": "IMAP Search",
       "llm_filter": "LLM Filter",
       "tasks": "Tasks",
-      "poll_seconds": "Poll Seconds"
+      "poll_seconds": "Poll Seconds",
+      "last_issue": "Last issue"
     },
     "notification_channels": {
       "title": "Notification Channels",
       "type": "Type",
-      "created_at": "Created At"
+      "created_at": "Created At",
+      "is_default": "Default",
+      "add_whatsapp": "Add WhatsApp",
+      "set_default": "Set Default"
     },
     "account": {
       "set_ident": "Set Identity"
@@ -409,10 +419,14 @@
       "actions": "Actions",
       "none": "None",
       "view": "View",
-      "close": "Close"
+      "close": "Close",
+      "last_run": "Last run",
+      "inactive": "Inactive"
     }
   },
   "$vuetify": {
+    "badge": "Badge",
+    "open": "Open",
     "close": "Close",
     "dismiss": "X",
     "datePicker": {
@@ -470,7 +484,9 @@
       "subtitle": "Built with Nuxt and Vuetify",
       "description": "This is a basic template setup with Nuxt 4 and Vuetify 3. You can start building your email platform here.",
       "action1": "Action 1",
-      "action2": "Action 2"
+      "action2": "Action 2",
+      "last_issue": "Last issue",
+      "no_recent_automations": "No Recent Automations Run"
     },
     "table": {
       "name": "Name",
@@ -809,6 +825,7 @@
         "create_artifact": "Create LLM Artifact",
         "imap_mark_read": "Mark as Read",
         "only_new": "Only New",
+        "source_links": "Source Links",
         "send_message": "Send Message",
         "send_attachment": "Send Attachment",
         "send_items": "Send Items",
@@ -847,7 +864,8 @@
     },
     "llm_filter_id": {
       "not_found": "Referenced LLM Filter does not exist"
-    }
+    },
+    "last_issue": "Last issue"
   },
   "app": {
     "report": {
@@ -920,7 +938,9 @@
   "events": {
     "user": {
       "info_automation_start": "Automation '{name}' started",
-      "info_automation_end": "Automation '{name}' completed"
+      "info_automation_end": "Automation '{name}' completed",
+      "warn_automation_already_active": "Already in queue: {name}",
+      "error_queue_full": "Queue max depth reached ({maxDepth}). Task was rejected"
     }
   },
   "user_events": {
@@ -946,5 +966,9 @@
     "import_success": "User data imported successfully",
     "import_failed": "Failed to import user data",
     "invalid_file": "Invalid backup file or unsupported version"
+  },
+  "dashboard": {
+    "last_issue": "Last issue",
+    "no_recent_automations": "No Recent Automations Run"
   }
 }

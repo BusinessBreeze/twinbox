@@ -1,0 +1,1 @@
+ALTER TABLE `accounts` ADD `cron_active` integer DEFAULT 1;

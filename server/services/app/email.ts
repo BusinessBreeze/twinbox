@@ -5,6 +5,7 @@ import { genericService } from "#layers/nuxt-base-app/server/services/generic";
 import { simpleParser } from 'mailparser';
 import { lt, and, eq } from 'drizzle-orm';
 import { emitTelemetryEvent, EventScope, EventLevel } from '#bs/utils/telemetry/event';
+import { userMetrics } from '#server/utils/telemetry/user';
 
 class emailService extends genericService {
     async truncate() {
@@ -105,7 +106,11 @@ class emailService extends genericService {
         }
 
         try {
-            return await super.create(record);
+            const res = await super.create(record);
+            if (res && this.user_id) {
+                userMetrics.recordIngestedMail(this.user_id);
+            }
+            return res;
         } catch (err: any) {
             await emitTelemetryEvent({
                 scope: EventScope.SYSTEM,

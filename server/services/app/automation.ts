@@ -11,6 +11,9 @@ class automationsService extends genericService {
             if (item && !item.tasks) {
                 item.tasks = { multiple: false, tasks: [] };
             }
+            if (item && item.active === undefined) {
+                item.active = 1;
+            }
             return item;
         };
         if (Array.isArray(res)) {

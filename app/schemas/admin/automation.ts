@@ -7,9 +7,10 @@ const rules = getRules(zod_rules);
 const getHeaders = (t: any) => [
     { title: 'table.common.owner', key: 'owner_id', get_type: "string", set_type: "string_line", rules: [(v: string) => !!v || 'rules.invalid_field'] },
     { title: 'table.automation.name', key: 'name', get_type: "string", set_type: "string_line", rules: rules.name },
-    { title: 'table.automation.imap_connection_id', key: 'imap_connection_id', get_type: "string", set_type: "string_line", rules: rules.imap_connection_id },
-    { title: 'table.automation.search_id', key: 'search_id', get_type: "string", set_type: "string_line", rules: rules.search_id },
-    { title: 'table.automation.llm_filter_id', key: 'llm_filter_id', get_type: "string", set_type: "string_line", rules: rules.llm_filter_id },
+    { title: 'table.automation.active', key: 'active', get_type: "boolean", set_type: "boolean", set_as_number: true, default: 1 },
+    { title: 'table.automation.imap_connection', key: 'imap_connection_id', get_type: "string", set_type: "string_line", rules: rules.imap_connection_id },
+    { title: 'table.automation.search', key: 'search_id', get_type: "string", set_type: "string_line", rules: rules.search_id },
+    { title: 'table.automation.llm_filter', key: 'llm_filter_id', get_type: "string", set_type: "string_line", rules: rules.llm_filter_id },
     { title: 'table.automation.poll_seconds', key: 'poll_seconds', get_type: "string", set_type: "integer", rules: rules.poll_seconds, default: 3600 },
     { title: 'table.common.actions', key: 'actions', sortable: false },
 ];

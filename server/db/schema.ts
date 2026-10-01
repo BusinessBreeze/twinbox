@@ -78,6 +78,7 @@ export const automations = sqliteTable('automations', {
     id: text('id').primaryKey(),
     owner_id: text('owner_id').notNull(),
     name: text('name').notNull(),
+    active: integer('active').default(1), // 0 or 1 
     imap_connection_id: text('imap_connection_id').notNull(),
     imap_folder: text('imap_folder').notNull(),
     search_id: text('search_id'),
