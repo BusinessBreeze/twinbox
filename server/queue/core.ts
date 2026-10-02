@@ -49,7 +49,7 @@ export class InMemoryQueue {
           category: 'automation',
           message: 'events.user.warn_automation_already_active',
           owner_id: job.ownerId,
-          metadata: { name: job.name || job.id, reason }
+          metadata: { id: job.id, name: job.name || job.id, reason }
         });
       }
 
@@ -73,7 +73,7 @@ export class InMemoryQueue {
           category: 'automation',
           message: 'events.user.error_queue_full',
           owner_id: job.ownerId,
-          metadata: { name: job.name || job.id, maxDepth: this.maxDepth }
+          metadata: { id: job.id, name: job.name || job.id, maxDepth: this.maxDepth }
         });
       }
 

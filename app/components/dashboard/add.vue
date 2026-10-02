@@ -1,11 +1,11 @@
 <template>
   <v-card
-    class="add-automation-card flex-grow-0 rounded-lg d-flex flex-column align-center justify-center pa-4 cursor-pointer"
+    class="add-automation-card flex-grow-0 rounded-lg d-flex flex-column align-center justify-center pa-3 cursor-pointer"
     variant="flat"
     @click="onAddClick"
   >
     <div class="circle-btn d-flex align-center justify-center">
-      <v-icon size="28" color="white" icon="mdi-plus" />
+      <v-icon size="24" color="white" icon="mdi-plus" />
     </div>
   </v-card>
 </template>
@@ -28,23 +28,25 @@ const onAddClick = () => {
 
 <style scoped>
 .add-automation-card {
-  min-width: 130px;
-  max-width: 160px;
+  height: 100%;
+  min-height: 100px;
+  min-width: 90px;
+  max-width: 120px;
   background-color: rgb(var(--v-theme-surface));
   border: 2px dashed rgb(var(--v-theme-primary)) !important;
   box-shadow: 0 2px 8px rgba(var(--v-theme-primary), 0.08);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-style 0.15s ease;
+  transition: border-width 0.15s ease, box-shadow 0.15s ease, border-style 0.15s ease;
 }
 
 .add-automation-card:hover {
-  transform: translateY(-2px);
+  border-width: 3px !important;
   border-style: solid !important;
-  box-shadow: 0 6px 16px rgba(var(--v-theme-primary), 0.18);
+  box-shadow: 0 4px 14px rgba(var(--v-theme-primary), 0.2);
 }
 
 .circle-btn {
-  width: 56px;
-  height: 56px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background-color: rgb(var(--v-theme-primary));
   border: 1.5px solid rgb(var(--v-theme-primary));

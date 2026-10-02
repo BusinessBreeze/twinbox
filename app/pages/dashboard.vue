@@ -3,6 +3,16 @@
     <!-- Top Tier - User Stats & KPIs -->
     <div class="dashboard-tier tier-top">
       <div class="kpi-container d-flex flex-nowrap align-center justify-center ga-3 w-100">
+        <!-- Greeting -->
+        <div class="greeting-wrapper d-flex flex-column justify-center px-1">
+          <div class="greeting-title font-weight-bold text-truncate" :title="greetingTitle">
+            {{ greetingTitle }}
+          </div>
+          <div class="greeting-subtitle text-caption text-medium-emphasis text-truncate mt-1">
+            {{ $t('dashboard.greeting_subtitle') }}
+          </div>
+        </div>
+
         <!-- 1. Ingested Mails -->
         <div class="kpi-wrapper">
           <KpiText
@@ -41,6 +51,28 @@
             color="#5C6B73"
             icon="mdi-tray-full"
           />
+        </div>
+
+        <!-- 5. Toggleable Cron Button Card -->
+        <div class="cron-toggle-wrapper d-flex align-stretch flex-shrink-0">
+          <v-card
+            class="cron-toggle-card rounded-lg d-flex flex-column align-center justify-center cursor-pointer select-none"
+            :class="{
+              'cron-toggle-card--on': isCronOn,
+              'cron-toggle-card--off': !isCronOn
+            }"
+            flat
+            @click="toggleCron"
+          >
+            <v-icon
+              :icon="isCronOn ? 'mdi-clock-check-outline' : 'mdi-clock-remove-outline'"
+              size="28"
+              class="mb-1"
+            />
+            <span class="text-caption font-weight-bold letter-spacing-wide">
+              {{ isCronOn ? ($t('dashboard.cron_on') || 'Cron On') : ($t('dashboard.cron_off') || 'Cron Off') }}
+            </span>
+          </v-card>
         </div>
       </div>
     </div>
@@ -135,9 +167,58 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useI18n } from 'vue-i18n';
 import KpiText from '~/components/kpi/text.vue';
 import KpiTextSparkline from '~/components/kpi/text_sparkline.vue';
 import DashboardRow from '~/components/dashboard/row.vue';
+
+const { t } = useI18n();
+const { user } = useUserSession();
+
+const userName = computed(() => {
+  const raw = (user.value?.username || user.value?.email || (user.value as any)?.user || (user.value as any)?.name || '') as string;
+  if (!raw) return '';
+  const beforeAt = raw.includes('@') ? raw.split('@')[0] : raw;
+  return beforeAt;
+});
+
+const greetingTitle = computed(() => {
+  const hour = new Date().getHours();
+  const name = userName.value;
+
+  if (hour < 12) {
+    return name ? t('dashboard.greeting_morning', { name }) : t('dashboard.greeting_morning_simple');
+  } else if (hour < 18) {
+    return name ? t('dashboard.greeting_afternoon', { name }) : t('dashboard.greeting_afternoon_simple');
+  } else {
+    return name ? t('dashboard.greeting_evening', { name }) : t('dashboard.greeting_evening_simple');
+  }
+});
+
+const isCronOn = computed(() => {
+  return Boolean(metrics.value?.cron_active);
+});
+
+const togglingCron = ref(false);
+
+const toggleCron = async () => {
+  if (togglingCron.value) return;
+  togglingCron.value = true;
+  const nextVal = isCronOn.value ? 0 : 1;
+  metrics.value.cron_active = nextVal;
+  const targetId = user.value?.id || 'me';
+  try {
+    await $fetch(`/api/user/account/${targetId}`, {
+      method: 'PATCH',
+      body: { cron_active: nextVal }
+    });
+  } catch (err) {
+    console.error('Failed to toggle cron active:', err);
+    metrics.value.cron_active = nextVal === 1 ? 0 : 1;
+  } finally {
+    togglingCron.value = false;
+  }
+};
 
 interface StatusMetrics {
   healthy: boolean;
@@ -280,6 +361,24 @@ onUnmounted(() => {
   width: 100%;
 }
 
+.greeting-wrapper {
+  flex: 1 1 0px;
+  min-width: 180px;
+  max-width: 270px;
+}
+
+.greeting-title {
+  font-size: clamp(1.15rem, 1.6vw, 1.45rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: rgb(var(--v-theme-on-surface));
+}
+
+.greeting-subtitle {
+  font-size: clamp(0.75rem, 0.95vw, 0.85rem);
+  line-height: 1.25;
+}
+
 .kpi-wrapper {
   flex: 1 1 0px;
   min-width: 0;
@@ -298,5 +397,50 @@ onUnmounted(() => {
 
 .system-text-card:hover {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+}
+
+.cron-toggle-wrapper {
+  height: 100%;
+}
+
+.cron-toggle-card {
+  width: 105px;
+  min-height: 105px;
+  height: 100%;
+  aspect-ratio: 1;
+  border-radius: 8px !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.cron-toggle-card--on {
+  background-color: rgb(var(--v-theme-primary)) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgb(var(--v-theme-primary)) !important;
+  box-shadow: 0 2px 8px rgba(var(--v-theme-primary), 0.25) !important;
+}
+
+.cron-toggle-card--on:hover {
+  box-shadow: 0 4px 14px rgba(var(--v-theme-primary), 0.38) !important;
+  transform: translateY(-1px);
+}
+
+.cron-toggle-card--off {
+  background-color: rgb(var(--v-theme-surface)) !important;
+  color: #757575 !important;
+  border: 1px solid rgba(var(--v-theme-on-surface), 0.12) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.cron-toggle-card--off:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12) !important;
+  transform: translateY(-1px);
+}
+
+.letter-spacing-wide {
+  letter-spacing: 0.05em;
+}
+
+.select-none {
+  user-select: none;
 }
 </style>

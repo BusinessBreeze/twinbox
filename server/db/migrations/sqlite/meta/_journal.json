@@ -57,6 +57,20 @@
       "when": 1790772341778,
       "tag": "0007_plain_doctor_spectrum",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1790866432632,
+      "tag": "0008_yellow_shooting_star",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1790866798118,
+      "tag": "0009_sharp_shiva",
+      "breakpoints": true
     }
   ]
 }

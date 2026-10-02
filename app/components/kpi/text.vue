@@ -66,8 +66,8 @@ const footerStyle = computed(() => ({
 }));
 
 const iconColor = computed(() => {
-  if (props.disabled) return '#BDBDBD';
-  return '#4B5563';
+  if (props.disabled) return '#9E9E9E';
+  return accentColor.value;
 });
 
 const formattedValue = computed(() => {
@@ -120,8 +120,9 @@ const formattedValue = computed(() => {
 }
 
 .kpi-icon-wrapper {
-  color: rgba(var(--v-theme-on-surface), 0.6);
-  opacity: 0.85;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .kpi-footer-strip {

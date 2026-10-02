@@ -8,6 +8,7 @@ export const processAutomationItem = async (item: any) => {
   const startTime = Date.now();
   const name = item.automation?.name || 'Unnamed Automation';
   const ownerId = item.automation?.owner_id;
+  const id = item.automation?.id;
 
   try {
     await emitTelemetryEvent({
@@ -16,7 +17,7 @@ export const processAutomationItem = async (item: any) => {
       category: 'automation',
       message: 'events.user.info_automation_start',
       owner_id: ownerId,
-      metadata: { name }
+      metadata: { id, name }
     });
 
     let tasksObj = item.automation.tasks;
@@ -198,7 +199,7 @@ export const processAutomationItem = async (item: any) => {
       category: 'automation',
       message: 'events.user.info_automation_end',
       owner_id: ownerId,
-      metadata: { name, durationMs: duration }
+      metadata: { id, name, durationMs: duration }
     });
   } catch (err: any) {
     await emitTelemetryEvent({
@@ -207,7 +208,7 @@ export const processAutomationItem = async (item: any) => {
       category: 'automation',
       message: `Automation ${name} failed: ${err?.message || String(err)}`,
       owner_id: ownerId,
-      metadata: { name, error: String(err) }
+      metadata: { id, name, error: String(err) }
     });
     throw err;
   }

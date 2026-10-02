@@ -4,7 +4,16 @@
     "none": "Keine",
     "last_run": "Zuletzt ausgeführt",
     "active": "Aktiv",
-    "inactive": "Inaktiv"
+    "inactive": "Inaktiv",
+    "info": "Info",
+    "warning": "Warnung",
+    "error": "Fehler",
+    "mark_read": "Als gelesen markieren",
+    "date": "Datum",
+    "message": "Nachricht",
+    "loading": "Ereignisse werden geladen...",
+    "no_events": "Keine Ereignisse für diese Automatisierung gefunden",
+    "items_per_page": "Einträge"
   },
   "pages": {
     "dashboard": "Dashboard",
@@ -405,6 +414,8 @@
     },
     "notification_channels": {
       "title": "Benachrichtigungskanäle",
+      "name": "Name",
+      "provider": "Anbieter",
       "type": "Typ",
       "created_at": "Erstellt am",
       "is_default": "Standard",
@@ -412,6 +423,9 @@
       "set_default": "Als Standard festlegen"
     },
     "account": {
+      "lang": "Sprache",
+      "email": "E-Mail",
+      "role": "Rolle",
       "set_ident": "Identität festlegen"
     },
     "common": {
@@ -843,6 +857,9 @@
     "read": {
       "success": "Automatisierungen erfolgreich geladen"
     },
+    "update_failed": "Aktualisierung der Automatisierung fehlgeschlagen",
+    "create_failed": "Erstellung der Automatisierung fehlgeschlagen",
+    "delete_failed": "Löschen der Automatisierung fehlgeschlagen",
     "create": {
       "success": "Automatisierung erfolgreich erstellt",
       "failed": "Erstellung der Automatisierung fehlgeschlagen"
@@ -866,6 +883,23 @@
       "not_found": "Referenzierter LLM-Filter existiert nicht"
     },
     "last_issue": "Letztes Problem"
+  },
+  "automations": {
+    "update_failed": "Aktualisierung der Automatisierung fehlgeschlagen",
+    "create_failed": "Erstellung der Automatisierung fehlgeschlagen",
+    "delete_failed": "Löschen der Automatisierung fehlgeschlagen",
+    "create": {
+      "success": "Automatisierung erfolgreich erstellt",
+      "failed": "Erstellung der Automatisierung fehlgeschlagen"
+    },
+    "update": {
+      "success": "Automatisierung erfolgreich aktualisiert",
+      "failed": "Aktualisierung der Automatisierung fehlgeschlagen"
+    },
+    "delete": {
+      "success": "Automatisierung erfolgreich gelöscht",
+      "failed": "Löschen der Automatisierung fehlgeschlagen"
+    }
   },
   "app": {
     "report": {
@@ -968,7 +1002,16 @@
     "invalid_file": "Ungültige Sicherungsdatei oder nicht unterstützte Version"
   },
   "dashboard": {
+    "greeting_morning": "Guten Morgen, {name}!",
+    "greeting_morning_simple": "Guten Morgen!",
+    "greeting_afternoon": "Guten Tag, {name}!",
+    "greeting_afternoon_simple": "Guten Tag!",
+    "greeting_evening": "Guten Abend, {name}!",
+    "greeting_evening_simple": "Guten Abend!",
+    "greeting_subtitle": "Hier ist, was heute Ihre Aufmerksamkeit erfordert.",
     "last_issue": "Letztes Problem",
-    "no_recent_automations": "Keine kürzlich ausgeführten Automatisierungen"
+    "no_recent_automations": "Keine kürzlich ausgeführten Automatisierungen",
+    "cron_on": "Cron Ein",
+    "cron_off": "Cron Aus"
   }
 }

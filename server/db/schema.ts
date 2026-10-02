@@ -36,7 +36,8 @@ export const connectionsIMAP = sqliteTable('connections_imap', {
     updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
 }, (table) => [
     // Adds a native SQLite CHECK constraint to enforce port boundaries
-    check('port_range_check', sql`${table.port} >= 1 AND ${table.port} <= 65535`)
+    check('port_range_check', sql`${table.port} >= 1 AND ${table.port} <= 65535`),
+    uniqueIndex('connections_imap_owner_name_unique').on(table.owner_id, table.name)
 ]);
 
 // --- IMAP Search Table ---
@@ -49,7 +50,9 @@ export const imapSearches = sqliteTable('imap_searches', {
         .default([]),
     createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
     updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
-});
+}, (table) => [
+    uniqueIndex('imap_searches_owner_name_unique').on(table.owner_id, table.name)
+]);
 
 // --- LLM Filters Table ---
 export const llmFilters = sqliteTable('llm_filters', {
@@ -60,7 +63,9 @@ export const llmFilters = sqliteTable('llm_filters', {
     description: text('description').notNull(),
     createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
     updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
-});
+}, (table) => [
+    uniqueIndex('llm_filters_owner_name_unique').on(table.owner_id, table.name)
+]);
 
 // --- LLM Create Artifacts Table ---
 export const llmCreateArtifacts = sqliteTable('llm_create_artifacts', {
@@ -71,7 +76,9 @@ export const llmCreateArtifacts = sqliteTable('llm_create_artifacts', {
     description: text('description').notNull(),
     createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
     updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
-});
+}, (table) => [
+    uniqueIndex('llm_create_artifacts_owner_name_unique').on(table.owner_id, table.name)
+]);
 
 // --- Automations table ---
 export const automations = sqliteTable('automations', {
@@ -90,4 +97,6 @@ export const automations = sqliteTable('automations', {
     last_poll: integer('last_poll', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
     createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
     updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
-});
+}, (table) => [
+    uniqueIndex('automations_owner_name_unique').on(table.owner_id, table.name)
+]);

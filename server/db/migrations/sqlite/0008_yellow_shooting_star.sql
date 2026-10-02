@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `automations_owner_name_unique` ON `automations` (`owner_id`,`name`);

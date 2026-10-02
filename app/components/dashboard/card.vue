@@ -1,31 +1,32 @@
 <template>
   <v-card
-    class="automation-card flex-grow-1 rounded-lg d-flex flex-column pa-4"
+    class="automation-card flex-grow-1 rounded-lg d-flex flex-column pa-3"
+    :class="{ 'automation-card--selected': isSelected }"
     variant="flat"
   >
     <!-- Top Row: Top Left (Last issue + date) & Top Right (Last run timestamp) -->
-    <div class="d-flex justify-space-between align-start w-100 mb-2">
+    <div class="d-flex justify-space-between align-start w-100 mb-1">
       <!-- Top Left: Last issue -->
       <div class="d-flex flex-column">
-        <span class="text-caption text-primary font-weight-medium">{{ $t('dashboard.last_issue') }}</span>
-        <span class="text-caption font-weight-bold font-mono text-black">
+        <span class="text-caption text-primary font-weight-medium line-height-tight">{{ $t('dashboard.last_issue') }}</span>
+        <span class="text-caption font-weight-bold font-mono text-black line-height-tight">
           {{ formatDateTime(displayLastIssueDate) }}
         </span>
       </div>
 
       <!-- Top Right: Last run timestamp -->
       <div class="d-flex flex-column align-end">
-        <span class="text-caption text-primary font-weight-medium">{{ $t('common.last_run') || 'Last run' }}</span>
-        <span class="text-caption font-weight-bold font-mono text-black">
+        <span class="text-caption text-primary font-weight-medium line-height-tight">{{ $t('common.last_run') || 'Last run' }}</span>
+        <span class="text-caption font-weight-bold font-mono text-black line-height-tight">
           {{ formatDateTime(displayLastRun) }}
         </span>
       </div>
     </div>
 
-    <!-- Center: Title Centered (Clickable to edit) -->
-    <div class="d-flex align-center justify-center flex-grow-1 my-4 text-center">
+    <!-- Center: Title Centered (Clickable to edit/select, truncates with ellipsis) -->
+    <div class="d-flex align-center justify-center flex-grow-1 my-1 text-center w-100 min-w-0 overflow-hidden">
       <span
-        class="automation-title text-truncate px-2 text-black title-link"
+        class="automation-title text-truncate px-1 text-black title-link"
         :title="displayTitle"
         @click="onTitleClick"
       >
@@ -34,9 +35,9 @@
     </div>
 
     <!-- Bottom Row: Bottom Left (Active value only, no label) -->
-    <div class="d-flex justify-space-between align-end w-100 mt-2">
+    <div class="d-flex justify-space-between align-end w-100 mt-1">
       <!-- Bottom Left -->
-      <span class="text-caption font-weight-bold text-black">
+      <span class="text-caption font-weight-bold text-black line-height-tight">
         {{ isActive ? ($t('common.active') || 'Active') : ($t('common.inactive') || 'Inactive') }}
       </span>
     </div>
@@ -45,7 +46,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useRouter } from 'vue-router';
 
 export interface AutomationCardData {
   id?: string | number;
@@ -64,6 +64,7 @@ interface Props {
   active?: number | boolean;
   lastRun?: string | Date | number | null;
   lastIssueDate?: string | Date | number | null;
+  isSelected?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -72,10 +73,13 @@ const props = withDefaults(defineProps<Props>(), {
   title: '',
   active: 1,
   lastRun: null,
-  lastIssueDate: null
+  lastIssueDate: null,
+  isSelected: false
 });
 
-const router = useRouter();
+const emit = defineEmits<{
+  (e: 'select', automation: AutomationCardData): void;
+}>();
 
 const displayTitle = computed(() => {
   return props.automation?.title || props.automation?.name || props.title || '—';
@@ -97,18 +101,15 @@ const displayLastIssueDate = computed(() => {
 });
 
 const onTitleClick = () => {
-  const targetId = props.automation?.id ?? props.id;
-  router.push({
-    path: '/automations',
-    state: {
-      action: 'edit',
-      openEdit: true,
-      id: targetId,
-      name: displayTitle.value,
-      title: displayTitle.value,
-      item: props.automation
-    }
-  });
+  const autoData: AutomationCardData = props.automation || {
+    id: props.id,
+    title: displayTitle.value,
+    name: displayTitle.value,
+    active: isActive.value,
+    lastRun: displayLastRun.value,
+    lastIssueDate: displayLastIssueDate.value
+  };
+  emit('select', autoData);
 };
 
 const formatDateTime = (val: string | Date | number | null | undefined): string => {
@@ -130,17 +131,24 @@ const formatDateTime = (val: string | Date | number | null | undefined): string 
 
 <style scoped>
 .automation-card {
-  min-width: 260px;
-  max-width: 380px;
+  min-width: 220px;
+  max-width: 320px;
+  min-height: 100px;
   background-color: rgb(var(--v-theme-surface));
   border: 2px solid rgb(var(--v-theme-primary)) !important;
   box-shadow: 0 2px 8px rgba(var(--v-theme-primary), 0.08);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: border-width 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
 }
 
 .automation-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(var(--v-theme-primary), 0.18);
+  border-width: 3px !important;
+  box-shadow: 0 4px 14px rgba(var(--v-theme-primary), 0.2) !important;
+}
+
+.automation-card--selected {
+  border-width: 3px !important;
+  box-shadow: 0 4px 16px rgba(var(--v-theme-primary), 0.28) !important;
+  background-color: rgba(var(--v-theme-primary), 0.04) !important;
 }
 
 .automation-card .text-black {
@@ -148,10 +156,19 @@ const formatDateTime = (val: string | Date | number | null | undefined): string 
 }
 
 .automation-title {
-  font-size: 1.75rem;
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1.15rem;
   font-weight: 700;
   line-height: 1.25;
   color: #000000;
+}
+
+.line-height-tight {
+  line-height: 1.2;
 }
 
 .title-link {

@@ -4,7 +4,16 @@
     "none": "None",
     "last_run": "Last run",
     "active": "Active",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "info": "Info",
+    "warning": "Warning",
+    "error": "Error",
+    "mark_read": "Mark as read",
+    "date": "Date",
+    "message": "Message",
+    "loading": "Loading events...",
+    "no_events": "No events found for this automation",
+    "items_per_page": "Items"
   },
   "pages": {
     "dashboard": "Dashboard",
@@ -405,6 +414,8 @@
     },
     "notification_channels": {
       "title": "Notification Channels",
+      "name": "Name",
+      "provider": "Provider",
       "type": "Type",
       "created_at": "Created At",
       "is_default": "Default",
@@ -412,6 +423,9 @@
       "set_default": "Set Default"
     },
     "account": {
+      "lang": "Language",
+      "email": "Email",
+      "role": "Role",
       "set_ident": "Set Identity"
     },
     "common": {
@@ -843,6 +857,9 @@
     "read": {
       "success": "Automations retrieved successfully"
     },
+    "update_failed": "Failed to update automation",
+    "create_failed": "Failed to create automation",
+    "delete_failed": "Failed to delete automation",
     "create": {
       "success": "Automation created successfully",
       "failed": "Failed to create automation"
@@ -866,6 +883,23 @@
       "not_found": "Referenced LLM Filter does not exist"
     },
     "last_issue": "Last issue"
+  },
+  "automations": {
+    "update_failed": "Failed to update automation",
+    "create_failed": "Failed to create automation",
+    "delete_failed": "Failed to delete automation",
+    "create": {
+      "success": "Automation created successfully",
+      "failed": "Failed to create automation"
+    },
+    "update": {
+      "success": "Automation updated successfully",
+      "failed": "Failed to update automation"
+    },
+    "delete": {
+      "success": "Automation deleted successfully",
+      "failed": "Failed to delete automation"
+    }
   },
   "app": {
     "report": {
@@ -968,7 +1002,16 @@
     "invalid_file": "Invalid backup file or unsupported version"
   },
   "dashboard": {
+    "greeting_morning": "Good morning, {name}!",
+    "greeting_morning_simple": "Good morning!",
+    "greeting_afternoon": "Good afternoon, {name}!",
+    "greeting_afternoon_simple": "Good afternoon!",
+    "greeting_evening": "Good evening, {name}!",
+    "greeting_evening_simple": "Good evening!",
+    "greeting_subtitle": "Here's what needs your attention today.",
     "last_issue": "Last issue",
-    "no_recent_automations": "No Recent Automations Run"
+    "no_recent_automations": "No Recent Automations Run",
+    "cron_on": "Cron On",
+    "cron_off": "Cron Off"
   }
 }

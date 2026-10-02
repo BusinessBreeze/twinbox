@@ -3,6 +3,11 @@
     "theme_show": true,
     "pages": [
         {
+            "name": "dashboard",
+            "icon": "mdi-view-dashboard-outline",
+            "path": "/dashboard"
+        },
+        {
             "name": "Flows",
             "icon": "mdi-clipboard-flow-outline",
             "children": [

@@ -96,34 +96,13 @@ Housekeeping:
 - [ ] Automations: run now button
 
 
-- [ ] Dashboard: incl context issues
   hamburger right
   mv speedial to left drawer , color at bottom.
   user at top w icon preface
-  good morning
-  
-  Top: month/week/day tasks run, emails ingested,  artifacts created, notifications sent, healthy, 
-  Middle: right: activity, left errors. both with clickable => task
-  Bottom: main timer/on/off, automations +: with frequency badges, run now, last status.
 
-  what model you are using, select from dropdown in settings/ai / URL => settings
-  
-  New tables: metrics
-  websocket for activity
-  add plusses in automation 
 
 - [ ] wizard  
 
-CREATE TABLE metrics (
-  id TEXT PRIMARY KEY,
-  automation_id TEXT,
-  model TEXT,
-  input_tokens INTEGER,
-  output_tokens INTEGER,
-  duration_ms INTEGER,
-  tok_per_sec REAL,
-  created_at TIMESTAMP
-);
 
 
 Automation library w templates for UI
