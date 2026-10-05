@@ -45,6 +45,11 @@ export const processAutomationItem = async (item: any) => {
 
     for (const email of emails) {
       try {
+        if (item.connection?.auth_type === 'staging' || email.isStaging) {
+          persistedEmails.push(email);
+          continue;
+        }
+
         const persisted = await emailService.create(email.source);
         if (persisted) {
           persistedEmails.push(persisted);

@@ -9,6 +9,11 @@
                     "name": "dashboard",
                     "icon": "mdi-view-dashboard-outline",
                     "path": "/dashboard"
+                },
+                {
+                    "name": "automation libraries",
+                    "icon": "mdi-bookshelf",
+                    "path": "/automation_libraries"
                 }
             ]
         },

@@ -172,7 +172,7 @@ export class ImapNotificationProvider {
                 await emitTelemetryEvent({
                     scope: EventScope.SYSTEM,
                     level: EventLevel.ERROR,
-                    label: 'IMAP',
+                    category: 'imap',
                     message: `Folder "${targetFolder}" does not exist on target IMAP server.`
                 });
                 throw createError({
@@ -197,7 +197,7 @@ export class ImapNotificationProvider {
                 await emitTelemetryEvent({
                     scope: EventScope.SYSTEM,
                     level: EventLevel.ERROR,
-                    label: 'IMAP',
+                    category: 'imap',
                     message: `Connection record "${recordId}" not found.`
                 });
                 throw createError({
@@ -221,7 +221,7 @@ export class ImapNotificationProvider {
                 await emitTelemetryEvent({
                     scope: EventScope.SYSTEM,
                     level: EventLevel.ERROR,
-                    label: 'IMAP',
+                    category: 'imap',
                     message: `Folder "${targetFolder}" does not exist on connection "${connRecord.name}".`
                 });
                 throw createError({

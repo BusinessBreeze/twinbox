@@ -21,10 +21,14 @@ export default async function (t: any) {
         const searches = Array.isArray(searchRes) ? searchRes : (searchRes?.data || [])
         const filters = Array.isArray(filterRes) ? filterRes : (filterRes?.data || [])
 
-        imapConnections = conns.map((item: any) => ({
-            title: item.name,
-            value: item.id
-        }))
+        const stagingLabel = t('table.automation.staging_connection') as string;
+        imapConnections = [
+            { title: stagingLabel || 'Staging', value: 'staging' },
+            ...conns.map((item: any) => ({
+                title: item.name,
+                value: item.id
+            }))
+        ]
         const noneLabel = t('table.common.none') as string;
         imapSearches = [
             { title: noneLabel, value: null as any },
@@ -58,8 +62,17 @@ export default async function (t: any) {
                 enum_values: async (header: any, formData: any) => {
                     const connId = formData?.imap_connection_id;
                     if (!connId) return [];
+                    if (connId === 'staging') {
+                        if (formData && formData.imap_folder !== 'INBOX') {
+                            formData.imap_folder = 'INBOX';
+                        }
+                        return [{ title: 'INBOX', value: 'INBOX' }];
+                    }
                     const conn = conns.find((c: any) => c.id === connId);
                     if (!conn || !conn.folders) return [];
+                    if (formData && formData.imap_folder && !conn.folders.includes(formData.imap_folder)) {
+                        formData.imap_folder = conn.folders[0] || null;
+                    }
                     return conn.folders.map((folder: string) => ({
                         title: folder,
                         value: folder

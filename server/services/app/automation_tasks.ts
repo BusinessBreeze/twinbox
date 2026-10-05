@@ -10,7 +10,7 @@ export const send_notification_items = async (taskRequest: any, text: string, co
         await emitTelemetryEvent({
             scope: EventScope.SYSTEM,
             level: EventLevel.DEBUG,
-            label: 'TASK',
+            category: 'automation',
             message: `Missing ownerId (${ownerId}) or destination (${destination}). Skipping send_notification_items.`
         });
         return;
@@ -117,7 +117,7 @@ export const send_notification_items = async (taskRequest: any, text: string, co
             await emitTelemetryEvent({
                 scope: EventScope.SYSTEM,
                 level: EventLevel.DEBUG,
-                label: 'TASK',
+                category: 'automation',
                 message: 'No items to send for notification task'
             });
             return;
@@ -128,14 +128,14 @@ export const send_notification_items = async (taskRequest: any, text: string, co
         await emitTelemetryEvent({
             scope: EventScope.SYSTEM,
             level: EventLevel.DEBUG,
-            label: 'TASK',
+            category: 'automation',
             message: `Sent ${items.length} item(s) to notification channel ${destination}`
         });
     } catch (error: any) {
         await emitTelemetryEvent({
             scope: EventScope.SYSTEM,
             level: EventLevel.ERROR,
-            label: 'TASK',
+            category: 'automation',
             message: `Failed to send items to channel ${destination}: ${error?.message || error}`
         });
     }
@@ -152,7 +152,7 @@ export const tts = async (taskRequest: any, text: string): Promise<string> => {
         await emitTelemetryEvent({
             scope: EventScope.SYSTEM,
             level: EventLevel.ERROR,
-            label: 'TTS',
+            category: 'automation',
             message: `TTS generation failed: ${error?.message || error}`
         });
         return '';

@@ -22,7 +22,7 @@ export const getDueAutomations = async () => {
         })
         .from(automations)
         .leftJoin(accounts, eq(automations.owner_id, accounts.id))
-        .innerJoin(connectionsIMAP, eq(automations.imap_connection_id, connectionsIMAP.id))
+        .leftJoin(connectionsIMAP, eq(automations.imap_connection_id, connectionsIMAP.id))
         .leftJoin(imapSearches, eq(automations.search_id, imapSearches.id))
         .leftJoin(llmFilters, eq(automations.llm_filter_id, llmFilters.id))
         .where(
@@ -52,12 +52,35 @@ export const getDueAutomations = async () => {
             .where(inArray(automations.id, ids));
     }
 
-    return activeResults.map(r => ({
-        ...r,
-        connection: r.connection ? {
-            ...r.connection,
-            config: decryptConfig(r.connection.config)
-        } : r.connection
-    }));
+    return activeResults
+        .map(r => {
+            let connection = r.connection ? {
+                ...r.connection,
+                config: decryptConfig(r.connection.config)
+            } : null;
+
+            if (!connection && r.automation.imap_connection_id === 'staging') {
+                connection = {
+                    id: 'staging',
+                    name: 'Staging',
+                    host: 'staging',
+                    port: 0,
+                    use_ssl: 0,
+                    auth_type: 'staging',
+                    username: 'staging',
+                    owner_id: r.automation.owner_id,
+                    folders: ['INBOX'],
+                    config: {},
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                } as any;
+            }
+
+            return {
+                ...r,
+                connection
+            };
+        })
+        .filter(r => r.connection !== null);
 };
 

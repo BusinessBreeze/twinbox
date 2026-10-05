@@ -35,7 +35,9 @@
     "Preferences": "Einstellungen",
     "notifications": "Benachrichtigungen",
     "account": "Konto",
-    "Basic": "Basis"
+    "Basic": "Basis",
+    "automation libraries": "Automatisierungs-Bibliothek",
+    "automation_libraries": "Automatisierungs-Bibliothek"
   },
   "rules": {
     "invalid_field": "Ungültiges Feld",
@@ -419,6 +421,7 @@
       "name": "Name",
       "active": "Aktiv",
       "imap_connection": "IMAP-Verbindung",
+      "staging_connection": "Staging",
       "imap_folder": "Ordner",
       "search": "IMAP-Suche",
       "llm_filter": "LLM-Filter",
@@ -886,6 +889,9 @@
       "success": "Automatisierung erfolgreich gelöscht",
       "failed": "Löschen der Automatisierung fehlgeschlagen"
     },
+    "already_exists": "Eine Automatisierung mit diesem Namen existiert bereits. Benennen Sie die vorhandene Automatisierung um und versuchen Sie es erneut.",
+    "name_already_exists": "Eine Automatisierung mit diesem Namen existiert bereits. Benennen Sie die vorhandene Automatisierung um und versuchen Sie es erneut.",
+    "template_added": "Automatisierungsvorlage erfolgreich hinzugefügt",
     "bad_payload": "Ungültige Automatisierungsdaten",
     "imap_connection_id": {
       "not_found": "Referenzierte IMAP-Verbindung existiert nicht"
@@ -902,6 +908,9 @@
     "update_failed": "Aktualisierung der Automatisierung fehlgeschlagen",
     "create_failed": "Erstellung der Automatisierung fehlgeschlagen",
     "delete_failed": "Löschen der Automatisierung fehlgeschlagen",
+    "already_exists": "Eine Automatisierung mit diesem Namen existiert bereits. Benennen Sie die vorhandene Automatisierung um und versuchen Sie es erneut.",
+    "name_already_exists": "Eine Automatisierung mit diesem Namen existiert bereits. Benennen Sie die vorhandene Automatisierung um und versuchen Sie es erneut.",
+    "template_added": "Automatisierungsvorlage erfolgreich hinzugefügt",
     "create": {
       "success": "Automatisierung erfolgreich erstellt",
       "failed": "Erstellung der Automatisierung fehlgeschlagen"
@@ -1027,5 +1036,27 @@
     "no_recent_automations": "Keine kürzlich ausgeführten Automatisierungen",
     "cron_on": "Cron Ein",
     "cron_off": "Cron Aus"
+  },
+  "automation_libraries": {
+    "title": "Automatisierungs-Bibliothek",
+    "subtitle": "Vorgefertigte Automatisierungen für Ihren Posteingang. Wählen Sie eine aus und passen Sie sie an Ihre Arbeitsweise an.",
+    "search_placeholder": "Suchen",
+    "all": "Alle",
+    "all_templates": "Alle Vorlagen",
+    "all_automations": "Alle Vorlagen",
+    "items_count": "{count} Elemente",
+    "templates_count": "{count} Elemente",
+    "go_to": "Gehe zu:",
+    "automations": "Automatisierungen",
+    "filters": "Filter",
+    "artifacts": "Artefakte",
+    "view_my_automations": "Automatisierungen",
+    "view_automations": "Automatisierungen",
+    "add": "Hinzufügen",
+    "added": "Hinzugefügt",
+    "already_added": "Bereits in Ihren Automatisierungen",
+    "add_success": "Automatisierung \"{name}\" erfolgreich hinzugefügt!",
+    "add_failed": "Fehler beim Hinzufügen der Automatisierung: {error}",
+    "no_results": "Keine Automatisierungen gefunden, die Ihren Kriterien entsprechen."
   }
 }

@@ -38,7 +38,7 @@ Instruction: Determine if the text matches the Filter Criteria. You must respond
         await emitTelemetryEvent({
             scope: EventScope.SYSTEM,
             level: EventLevel.ERROR,
-            label: 'LLM',
+            category: 'automation',
             message: `Filter evaluation failed: ${error?.message || error}`
         });
         return false;

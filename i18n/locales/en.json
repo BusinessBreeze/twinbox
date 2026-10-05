@@ -35,7 +35,9 @@
     "Preferences": "Preferences",
     "notifications": "Notifications",
     "account": "Account",
-    "Basic": "Basic"
+    "Basic": "Basic",
+    "automation libraries": "Automation Library",
+    "automation_libraries": "Automation Library"
   },
   "rules": {
     "invalid_field": "Invalid field",
@@ -419,6 +421,7 @@
       "name": "Name",
       "active": "Active",
       "imap_connection": "IMAP Connection",
+      "staging_connection": "Staging",
       "imap_folder": "Folder",
       "search": "IMAP Search",
       "llm_filter": "LLM Filter",
@@ -886,6 +889,9 @@
       "success": "Automation deleted successfully",
       "failed": "Failed to delete automation"
     },
+    "already_exists": "An automation with this name already exists. Rename the existing automation and try again.",
+    "name_already_exists": "An automation with this name already exists. Rename the existing automation and try again.",
+    "template_added": "Automation template added successfully",
     "bad_payload": "Invalid automation data",
     "imap_connection_id": {
       "not_found": "Referenced IMAP Connection does not exist"
@@ -902,6 +908,9 @@
     "update_failed": "Failed to update automation",
     "create_failed": "Failed to create automation",
     "delete_failed": "Failed to delete automation",
+    "already_exists": "An automation with this name already exists. Rename the existing automation and try again.",
+    "name_already_exists": "An automation with this name already exists. Rename the existing automation and try again.",
+    "template_added": "Automation template added successfully",
     "create": {
       "success": "Automation created successfully",
       "failed": "Failed to create automation"
@@ -1027,5 +1036,27 @@
     "no_recent_automations": "No Recent Automations Run",
     "cron_on": "Cron On",
     "cron_off": "Cron Off"
+  },
+  "automation_libraries": {
+    "title": "Automation Library",
+    "subtitle": "Ready-made automations for your inbox. Choose one and customize it to fit how you work.",
+    "search_placeholder": "Search",
+    "all": "All",
+    "all_templates": "All templates",
+    "all_automations": "All templates",
+    "items_count": "{count} items",
+    "templates_count": "{count} items",
+    "go_to": "Go to:",
+    "automations": "Automations",
+    "filters": "Filters",
+    "artifacts": "Artifacts",
+    "view_my_automations": "Automations",
+    "view_automations": "Automations",
+    "add": "Add",
+    "added": "Added",
+    "already_added": "Already in your automations",
+    "add_success": "Automation \"{name}\" added successfully!",
+    "add_failed": "Failed to add automation: {error}",
+    "no_results": "No automations found matching your criteria."
   }
 }

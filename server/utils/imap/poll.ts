@@ -1,6 +1,7 @@
 import { ImapFlow } from 'imapflow';
 import { simpleParser } from 'mailparser';
 import { resolveRelativeSearchDates } from './resolve_relative_search_dates';
+import { pollStaging } from './staging_poll';
 import { emitTelemetryEvent, EventScope, EventLevel } from '#bs/utils/telemetry/event';
 
 import appDefaults from '#server/metadata/app_defaults.json';
@@ -18,6 +19,10 @@ export const poll = async (
     maxEmails: number = appDefaults.limits?.automation?.max_emails_per_fetch || 50,
     maxBytes: number = appDefaults.limits?.automation?.max_input_text_length || 15000
 ) => {
+    if (record?.auth_type === 'staging' || record?.id === 'staging') {
+        return await pollStaging(record, searchCriteria, folder, markRead, maxEmails, maxBytes);
+    }
+
     const emails: any[] = [];
 
     if (!folder) {

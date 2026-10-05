@@ -14,6 +14,9 @@ class automationsService extends genericService {
             if (item && item.active === undefined) {
                 item.active = 1;
             }
+            if (item && item.imap_connection_id === 'staging') {
+                item.imap_folder = 'INBOX';
+            }
             return item;
         };
         if (Array.isArray(res)) {
@@ -25,7 +28,7 @@ class automationsService extends genericService {
     private async validateReferences(body: any) {
         const { imap_connection_id, search_id, llm_filter_id } = body;
 
-        if (imap_connection_id) {
+        if (imap_connection_id && imap_connection_id !== 'staging') {
             const query = this.user_id 
                 ? and(eq(connectionsIMAP.id, imap_connection_id), eq(connectionsIMAP.owner_id, this.user_id))
                 : eq(connectionsIMAP.id, imap_connection_id);
@@ -70,11 +73,17 @@ class automationsService extends genericService {
     }
 
     async create(body: any, hooks?: any) {
+        if (body?.imap_connection_id === 'staging') {
+            body.imap_folder = 'INBOX';
+        }
         await this.validateReferences(body);
         return this.normalize(await super.create(body, hooks));
     }
 
     async update(id: string, body: any, hooks?: any) {
+        if (body?.imap_connection_id === 'staging') {
+            body.imap_folder = 'INBOX';
+        }
         await this.validateReferences(body);
         return this.normalize(await super.update(id, body, hooks));
     }
@@ -89,6 +98,7 @@ class automationsService extends genericService {
                 exportKey: 'imap_connection_name',
                 fn: async (val: string) => {
                     if (!val) return null;
+                    if (val === 'staging') return 'staging';
                     const query = this.user_id
                         ? and(eq(connectionsIMAP.id, val), eq(connectionsIMAP.owner_id, this.user_id))
                         : eq(connectionsIMAP.id, val);
@@ -153,6 +163,7 @@ class automationsService extends genericService {
                 fn: async (val: string, record: any) => {
                     const lookupVal = val || record.imap_connection_id;
                     if (!lookupVal) return null;
+                    if (lookupVal === 'staging') return 'staging';
                     const query = this.user_id
                         ? and(eq(connectionsIMAP.tag, lookupVal), eq(connectionsIMAP.owner_id, this.user_id))
                         : eq(connectionsIMAP.tag, lookupVal);

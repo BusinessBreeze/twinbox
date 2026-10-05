@@ -96,22 +96,5 @@ Housekeeping:
 - [ ] Automations: run now button
 
 
-- [ ] per-item staging in "emails" repo  /requires table change.
-
-
-- [ ] wizard  
-
-
-
-Automation library w templates for UI
 
 - [ ] Imap action: mark as important
-
-make libraries page
-  will auto create automations with the first email/notification and no search
-  and give you link to advanced.
-
-
-For RPI:
-How to provide emails?
-How to get files?

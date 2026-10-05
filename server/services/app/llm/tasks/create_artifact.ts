@@ -24,7 +24,7 @@ export const llmCreateArtifact = async (artifactRecord: any, text: string): Prom
             await emitTelemetryEvent({
                 scope: EventScope.SYSTEM,
                 level: EventLevel.ERROR,
-                label: 'LLM',
+                category: 'automation',
                 message: 'Failed to fetch LLM artifact definition'
             });
         }
@@ -52,7 +52,7 @@ Format the response in .md (Markdown) only.`;
         await emitTelemetryEvent({
             scope: EventScope.SYSTEM,
             level: EventLevel.ERROR,
-            label: 'LLM',
+            category: 'automation',
             message: `Artifact generation failed: ${error?.message || error}`
         });
         return '';
