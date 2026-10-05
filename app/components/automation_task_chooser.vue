@@ -234,7 +234,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { apiGet } from '#ba/util/fetch/wrappers';
+import { apiGet } from '#ba/utils/fetch/wrappers';
 
 interface TaskSchema {
   name: string;

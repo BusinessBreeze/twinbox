@@ -1,6 +1,6 @@
 import { zod_rules } from '#shared/rules/app/connections_imap'
 import { getRules } from '#b/shared/rules/getRules'
-import hasPerm from '#ba/util/hasPerm'
+import hasPerm from '#ba/utils/hasPerm'
 import { z } from 'zod'
 
 const rules = getRules(zod_rules);

@@ -12,6 +12,7 @@ export const emails = sqliteTable('emails', {
     text: text('text'),
     html: text('html'),
     date: text('date'),
+    staging_item: integer('staging_item').default(0), // 0 or 1
     createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
     updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
 }, (table) => [

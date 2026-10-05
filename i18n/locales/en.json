@@ -13,7 +13,12 @@
     "message": "Message",
     "loading": "Loading events...",
     "no_events": "No events found for this automation",
-    "items_per_page": "Items"
+    "items_per_page": "Items",
+    "howto": "How To",
+    "toggle_theme": "Toggle Theme",
+    "logout": "Logout",
+    "pin": "Pin Drawer",
+    "unpin": "Unpin Drawer"
   },
   "pages": {
     "dashboard": "Dashboard",
@@ -24,7 +29,13 @@
     "llm_filter": "LLM Filters",
     "llm_create_artifact": "LLM Create Artifacts",
     "automations": "Automations",
-    "admin": "Admin"
+    "admin": "Admin",
+    "howto": "How To",
+    "Advanced": "Advanced",
+    "Preferences": "Preferences",
+    "notifications": "Notifications",
+    "account": "Account",
+    "Basic": "Basic"
   },
   "rules": {
     "invalid_field": "Invalid field",
@@ -312,7 +323,10 @@
       "to": "To",
       "subject": "Subject",
       "no_subject": "(No Subject)",
-      "text": "Content"
+      "text": "Content",
+      "staging": "Staging",
+      "set_staging": "Set as Staging Item",
+      "clear_staging": "Remove from Staging"
     },
     "report_item": {
       "title": "Generated Report Items",

@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { ref, watchEffect, onMounted } from 'vue'
-import hasPerm from '#ba/util/hasPerm'
+import hasPerm from '#ba/utils/hasPerm'
 import emailMetaFcn from '~/schemas/admin/email'
 import notificationChannelsMetaFcn from '~/schemas/admin/notification_channels'
 import connectionsImapMetaFcn from '~/schemas/admin/connections_imap'

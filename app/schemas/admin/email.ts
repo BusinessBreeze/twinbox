@@ -1,4 +1,4 @@
-import hasPerm from '#ba/util/hasPerm'
+import hasPerm from '#ba/utils/hasPerm'
 
 const getHeaders = (t: any) => [
     { title: 'table.common.owner', key: 'owner_id', get_type: "string", set_type: "string_line", rules: [(v: string) => !!v || 'rules.invalid_field'] },

@@ -1,4 +1,4 @@
-import hasPerm from '#ba/util/hasPerm'
+import hasPerm from '#ba/utils/hasPerm'
 import type { SchemaCallbacks } from '#ba/types/schema_callbacks'
 
 const getHeaders = (t: any) => [

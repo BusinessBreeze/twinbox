@@ -13,7 +13,12 @@
     "message": "Nachricht",
     "loading": "Ereignisse werden geladen...",
     "no_events": "Keine Ereignisse für diese Automatisierung gefunden",
-    "items_per_page": "Einträge"
+    "items_per_page": "Einträge",
+    "howto": "Anleitung",
+    "toggle_theme": "Design wechseln",
+    "logout": "Abmelden",
+    "pin": "Leiste anheften",
+    "unpin": "Leiste lösen"
   },
   "pages": {
     "dashboard": "Dashboard",
@@ -24,7 +29,13 @@
     "llm_filter": "LLM-Filter",
     "llm_create_artifact": "LLM Create-Artefakte",
     "automations": "Automatisierungen",
-    "admin": "Administration"
+    "admin": "Administration",
+    "howto": "Anleitung",
+    "Advanced": "Erweitert",
+    "Preferences": "Einstellungen",
+    "notifications": "Benachrichtigungen",
+    "account": "Konto",
+    "Basic": "Basis"
   },
   "rules": {
     "invalid_field": "Ungültiges Feld",
@@ -312,7 +323,10 @@
       "to": "An",
       "subject": "Betreff",
       "no_subject": "(Kein Betreff)",
-      "text": "Inhalt"
+      "text": "Inhalt",
+      "staging": "Staging",
+      "set_staging": "Als Staging-Element markieren",
+      "clear_staging": "Aus Staging entfernen"
     },
     "report_item": {
       "title": "Generierte Berichte",

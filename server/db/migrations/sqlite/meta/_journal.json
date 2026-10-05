@@ -71,6 +71,13 @@
       "when": 1790866798118,
       "tag": "0009_sharp_shiva",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1791199712254,
+      "tag": "0010_ancient_ma_gnuci",
+      "breakpoints": true
     }
   ]
 }

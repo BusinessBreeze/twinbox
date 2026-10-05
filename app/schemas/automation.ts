@@ -1,6 +1,6 @@
 import { zod_rules } from '#shared/rules/app/automation'
 import { getRules } from '#b/shared/rules/getRules'
-import { apiGet } from '#ba/util/fetch/wrappers'
+import { apiGet } from '#ba/utils/fetch/wrappers'
 
 const rules = getRules(zod_rules);
 

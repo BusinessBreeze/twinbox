@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import emailTableMetaFcn from '~/schemas/email'
-import { apiGet } from '#ba/util/fetch/wrappers'
+import { apiGet } from '#ba/utils/fetch/wrappers'
 
 const { t } = useI18n()
 const route = useRoute()

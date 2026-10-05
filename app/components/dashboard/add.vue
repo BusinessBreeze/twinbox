@@ -1,8 +1,9 @@
 <template>
   <v-card
     class="add-automation-card flex-grow-0 rounded-lg d-flex flex-column align-center justify-center pa-3 cursor-pointer"
+    :class="{ 'add-automation-card--active': isCreating }"
     variant="flat"
-    @click="onAddClick"
+    @click="$emit('add')"
   >
     <div class="circle-btn d-flex align-center justify-center">
       <v-icon size="24" color="white" icon="mdi-plus" />
@@ -11,19 +12,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
+defineProps<{
+  isCreating?: boolean;
+}>();
 
-const router = useRouter();
-
-const onAddClick = () => {
-  router.push({
-    path: '/automations',
-    state: {
-      action: 'create',
-      openCreate: true
-    }
-  });
-};
+defineEmits(['add']);
 </script>
 
 <style scoped>
@@ -38,7 +31,8 @@ const onAddClick = () => {
   transition: border-width 0.15s ease, box-shadow 0.15s ease, border-style 0.15s ease;
 }
 
-.add-automation-card:hover {
+.add-automation-card:hover,
+.add-automation-card--active {
   border-width: 3px !important;
   border-style: solid !important;
   box-shadow: 0 4px 14px rgba(var(--v-theme-primary), 0.2);
@@ -53,7 +47,8 @@ const onAddClick = () => {
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.add-automation-card:hover .circle-btn {
+.add-automation-card:hover .circle-btn,
+.add-automation-card--active .circle-btn {
   transform: scale(1.08);
   box-shadow: 0 4px 14px rgba(var(--v-theme-primary), 0.35);
 }

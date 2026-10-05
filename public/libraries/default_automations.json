@@ -1,0 +1,1289 @@
+[
+  {
+    "title": "Invoice Organizer",
+    "category": "Sort & Organize",
+    "tags": [
+      "Finance",
+      "Small Business"
+    ],
+    "description": "Identifies incoming invoices and keeps them together for structured processing and bookkeeping.",
+    "filter": {
+      "name": "Invoice Detector",
+      "description": "Detects emails containing invoices, billing notices, or payment receipts.",
+      "prompt": "Determine whether this email contains or references an incoming invoice, billing statement, or receipt for purchased goods or services. Answer with high certainty."
+    },
+    "generator": {
+      "name": "Invoice Metadata Extractor",
+      "description": "Extracts key invoice data into a clean structured summary.",
+      "prompt": "Extract all key invoice information from the source email:\n- Vendor / Company Name\n- Invoice Number\n- Invoice Date\n- Payment Due Date\n- Currency and Total Amount (Gross and Net if present)\n- Tax / VAT Amount\n- Line Items Summary (Item, Qty, Price)\n- Payment Instructions (IBAN/Wire/Link)\n\nFormat your output as clean, professional Markdown with a summary table."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "invoice_summary",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "invoice_summary"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  },
+  {
+    "title": "Supplier Quote Organizer",
+    "category": "Sort & Organize",
+    "tags": [
+      "Finance",
+      "Small Business"
+    ],
+    "description": "Collects incoming supplier quotations and keeps them organized for easy review and comparison.",
+    "filter": {
+      "name": "Supplier Quote Detector",
+      "description": "Identifies emails containing price quotes or estimates from vendors.",
+      "prompt": "Determine whether this email is an incoming price quote, cost estimate, or proposal from a vendor, contractor, or supplier."
+    },
+    "generator": {
+      "name": "Supplier Quote Extractor",
+      "description": "Extracts quote specifications, pricing, and terms into Markdown.",
+      "prompt": "Extract the supplier quote details from the email:\n- Supplier / Vendor Name\n- Quote / Reference Number\n- Quote Date and Validity Expiration Date\n- Itemized Products / Services and Unit Costs\n- Total Estimated Cost\n- Delivery Timeframe / Lead Times\n- Payment and Delivery Terms\n\nFormat the output in a structured Markdown table."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "quote_summary",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "quote_summary"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Application Organizer",
+    "category": "Sort & Organize",
+    "tags": [
+      "HR",
+      "Management"
+    ],
+    "description": "Identifies incoming job applications and keeps them organized by candidate and position.",
+    "filter": {
+      "name": "Job Application Detector",
+      "description": "Detects job applications, candidate resumes, and cover letters.",
+      "prompt": "Determine whether this email is an incoming job application, resume/CV submission, or recruitment candidacy inquiry."
+    },
+    "generator": {
+      "name": "Candidate Profile Extractor",
+      "description": "Extracts applicant background and contact details into a standardized brief.",
+      "prompt": "Analyze the candidate application in the email and extract:\n- Candidate Name\n- Position / Role Applied For\n- Contact Details (Email, Phone, Location, LinkedIn/Portfolio)\n- Years of Experience & Education Highlights\n- Core Skills & Technologies\n- Salary Expectations & Availability (if stated)\n- Executive Summary (3-4 sentences)\n\nPresent the profile in a clear Markdown format."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "candidate_brief",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "candidate_brief"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Bills & Payments",
+    "category": "Sort & Organize",
+    "tags": [
+      "Finance",
+      "Small Business",
+      "Personal"
+    ],
+    "description": "Identifies bills, payment notices and related emails and keeps them organized in one place.",
+    "filter": {
+      "name": "Bill & Payment Detector",
+      "description": "Identifies recurring utility bills, service charges, and payment reminders.",
+      "prompt": "Determine whether this email is a bill, utility charge, payment notice, or account billing reminder."
+    },
+    "generator": {
+      "name": "Bill Summary Extractor",
+      "description": "Extracts bill amount, due date, and account details.",
+      "prompt": "Extract bill particulars from the email:\n- Service / Utility Provider\n- Account / Customer ID\n- Billing Period\n- Amount Due and Currency\n- Due Date\n- Payment Method (Autopay, Bank Transfer, Online Link)\n\nFormat as a concise Markdown summary."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "bill_summary",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "bill_summary"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  },
+  {
+    "title": "Subscription Noise",
+    "category": "Sort & Organize",
+    "tags": [
+      "Small Business",
+      "Personal"
+    ],
+    "description": "Identifies recurring subscription and service emails and separates them from important inbox traffic.",
+    "filter": {
+      "name": "Subscription Email Detector",
+      "description": "Identifies recurring SaaS subscriptions, newsletter renewals, and automated service notices.",
+      "prompt": "Determine whether this email is an automated recurring subscription notice, receipt, plan renewal, or service upgrade notification."
+    },
+    "generator": {
+      "name": "Subscription Brief",
+      "description": "Summarizes the subscription renewal and cost.",
+      "prompt": "Summarize the subscription update:\n- Service / App Name\n- Plan or Tier\n- Amount Charged / Upcoming Charge\n- Renewal Frequency & Next Renewal Date\n- Action Needed (None / Account Update Needed)\n\nOutput as a brief bulleted list."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "subscription_brief",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "subscription_brief"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  },
+  {
+    "title": "FYI / No Action Needed",
+    "category": "Sort & Organize",
+    "tags": [
+      "Management",
+      "Personal"
+    ],
+    "description": "Identifies informational emails that do not require a response or action and keeps them out of the way.",
+    "filter": {
+      "name": "Informational Email Detector",
+      "description": "Detects purely informational broadcasts and system notifications requiring zero action.",
+      "prompt": "Determine whether this email is purely informational (broadcast announcement, system update notice, read receipt, automated log, or general FYI) that requires NO response or action from the recipient."
+    },
+    "generator": {
+      "name": "Informational Summary",
+      "description": "Provides a 1-sentence TL;DR of the informational email.",
+      "prompt": "Provide a 1-2 sentence executive summary of what this informational email covers. Confirm clearly that no action is required."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "fyi_summary",
+          "source": "email"
+        }
+      }
+    ]
+  },
+  {
+    "title": "Research & Newsletter Filter",
+    "category": "Sort & Organize",
+    "tags": [
+      "Academia",
+      "Personal"
+    ],
+    "description": "Identifies relevant research, newsletters and publications and separates them from general inbox noise.",
+    "filter": {
+      "name": "Research & Publication Detector",
+      "description": "Detects academic newsletters, market reports, and scientific updates.",
+      "prompt": "Determine whether this email is an industry newsletter, technical report, scientific publication, or academic digest."
+    },
+    "generator": {
+      "name": "Publication Digest",
+      "description": "Extracts key insights and executive summaries from research newsletters.",
+      "prompt": "Analyze the research or newsletter content and generate a digest:\n- Source / Publication Name\n- Primary Topics Covered\n- Top 3-5 Key Insights & Data Points\n- Relevant Links & Resources\n\nFormat clearly in Markdown with bold key takeaways."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "research_digest",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "research_digest"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  },
+  {
+    "title": "Smart Project Filing",
+    "category": "Sort & Organize",
+    "tags": [
+      "Management",
+      "Small Business"
+    ],
+    "description": "Identifies which project an email belongs to and automatically organizes it with the relevant project communication.",
+    "filter": {
+      "name": "Project Communication Detector",
+      "description": "Identifies emails containing project updates, task deliverables, or client milestones.",
+      "prompt": "Determine whether this email is related to an ongoing business project, client deliverable, milestone update, or technical work stream."
+    },
+    "generator": {
+      "name": "Project Log Entry",
+      "description": "Structures project updates with action items and owners.",
+      "prompt": "Extract and structure project communications:\n- Identified Project / Topic Name\n- Summary of Updates or Discussions\n- Decisions Made\n- Action Items Assigned (Task, Assignee, Due Date)\n- Open Questions Requiring Resolution\n\nFormat as structured Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "project_log",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "project_log"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "New Sales Inquiry",
+    "category": "Detect & Alert",
+    "tags": [
+      "Sales",
+      "Small Business"
+    ],
+    "description": "Detects new inbound sales inquiries and highlights key details so they can be handled quickly.",
+    "filter": {
+      "name": "Sales Inquiry Detector",
+      "description": "Detects incoming sales leads and product inquiries.",
+      "prompt": "Determine whether this email is a new incoming sales lead, prospect inquiry, request for pricing, or business proposal from a potential customer."
+    },
+    "generator": {
+      "name": "Sales Lead Alert Card",
+      "description": "Extracts prospect information and requirements for rapid follow-up.",
+      "prompt": "Generate an urgent Sales Lead Brief from the email:\n- Prospect Name & Company\n- Contact Information\n- Specific Product / Service of Interest\n- Budget / Scope / Quantities Indicated\n- Key Questions or Requirements\n- Urgency Level (High / Medium / Standard)\n\nFormat as a clean Markdown card."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "sales_lead_alert",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "sales_lead_alert"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "High Value Lead Alert",
+    "category": "Detect & Alert",
+    "tags": [
+      "Sales",
+      "Small Business"
+    ],
+    "description": "Identifies sales inquiries that appear particularly valuable and brings them to your attention immediately.",
+    "filter": {
+      "name": "High Value Lead Classifier",
+      "description": "Filters for enterprise-level or large budget leads.",
+      "prompt": "Determine whether this email represents an exceptionally high-value sales opportunity, enterprise account, large volume inquiry, or high-urgency contract."
+    },
+    "generator": {
+      "name": "VIP Lead Dossier",
+      "description": "Generates high-priority lead briefing with recommended action.",
+      "prompt": "Create an Executive High-Value Opportunity Alert:\n- Account / Prospect Name & Size\n- Estimated Deal Value / Scope\n- Executive Decision Makers Involved\n- Business Pain Points Stated\n- Immediate Recommended Next Step\n\nFormat with prominent Markdown callouts."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "vip_lead_dossier",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "vip_lead_dossier"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Needs My Reply",
+    "category": "Detect & Alert",
+    "tags": [
+      "Management",
+      "Personal"
+    ],
+    "description": "Finds emails where someone is waiting for your response or action.",
+    "filter": {
+      "name": "Direct Reply Detector",
+      "description": "Identifies emails containing unanswered direct questions or calls to action.",
+      "prompt": "Determine whether this email contains direct questions, requests for approval, or feedback waiting specifically for the recipient's personal reply."
+    },
+    "generator": {
+      "name": "Action Required Summary",
+      "description": "Highlights questions and decisions awaiting your response.",
+      "prompt": "Extract the action requirements from this email:\n- Sender Name & Urgency\n- Exact Questions / Decisions Awaiting Your Reply\n- Relevant Deadlines or Time Constraints\n- Suggested Brief Response Outline\n\nFormat as bulleted Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "reply_needed_summary",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "reply_needed_summary"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Customer Complaint Alert",
+    "category": "Detect & Alert",
+    "tags": [
+      "Customer Support",
+      "Small Business"
+    ],
+    "description": "Detects customer complaints and highlights issues that may require immediate attention.",
+    "filter": {
+      "name": "Customer Frustration & Complaint Detector",
+      "description": "Flags customer dissatisfaction, service problems, and negative sentiment.",
+      "prompt": "Determine whether this email expresses customer dissatisfaction, frustration, an unresolved problem, a refund request, or a formal complaint."
+    },
+    "generator": {
+      "name": "Complaint Incident Brief",
+      "description": "Summarizes the root problem and customer sentiment.",
+      "prompt": "Generate an Incident Support Brief:\n- Customer Name & Account Details\n- Severity Level (Critical / High / Medium)\n- Core Issue / Root Cause Summary\n- Customer Sentiment & Escalation Risk\n- Recommended Immediate Mitigation & Response Strategy\n\nFormat clearly in Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "complaint_brief",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "complaint_brief"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "VIP Customer Alert",
+    "category": "Detect & Alert",
+    "tags": [
+      "Sales",
+      "Customer Support"
+    ],
+    "description": "Alerts you when an email comes from an important or high-value customer.",
+    "filter": {
+      "name": "VIP Account Detector",
+      "description": "Identifies emails from key accounts, partners, or executive clients.",
+      "prompt": "Determine whether this email is sent by an executive, strategic client, key partner, or VIP customer requiring prompt attention."
+    },
+    "generator": {
+      "name": "VIP Message Summary",
+      "description": "Summarizes VIP customer correspondence for quick review.",
+      "prompt": "Summarize the VIP communication:\n- Client / VIP Sender Name\n- Organization\n- Subject Matter & Tone\n- Summary of Request / Conversation\n- Target Turnaround Time\n\nOutput in clean Markdown format."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "vip_alert",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "vip_alert"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Payment Request Detector",
+    "category": "Detect & Alert",
+    "tags": [
+      "Finance",
+      "Small Business"
+    ],
+    "description": "Identifies emails containing payment requests and brings them to your attention.",
+    "filter": {
+      "name": "Payment Request Classifier",
+      "description": "Detects explicit payment requests and wire instructions.",
+      "prompt": "Determine whether this email contains an explicit request for payment, wire transfer, overdue remittance, or direct transaction settlement."
+    },
+    "generator": {
+      "name": "Payment Request Summary",
+      "description": "Extracts amounts, bank details, and payment due dates.",
+      "prompt": "Extract payment request information:\n- Payee / Requester Name\n- Amount Requested and Currency\n- Due Date\n- Payment Method / Wire Details\n- Invoice / Reference Number\n- Is Overdue: (Yes/No)\n\nFormat as a concise Markdown summary."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "payment_request_alert",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "payment_request_alert"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Approval Required",
+    "category": "Detect & Alert",
+    "tags": [
+      "Management"
+    ],
+    "description": "Finds emails containing decisions, approvals or confirmations waiting for you.",
+    "filter": {
+      "name": "Manager Approval Detector",
+      "description": "Flags emails asking for formal authorization or management approval.",
+      "prompt": "Determine whether this email requires management approval, formal sign-off, purchase authorization, or executive confirmation."
+    },
+    "generator": {
+      "name": "Approval Request Brief",
+      "description": "Summarizes the request, cost impact, and decision options.",
+      "prompt": "Summarize the approval request:\n- Requester Name & Department\n- Item / Initiative Requiring Approval\n- Cost / Budget / Resource Impact\n- Business Justification\n- Deadline for Decision\n- Options: [Approve / Reject / Request More Info]\n\nFormat as structured Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "approval_brief",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "approval_brief"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Deadline Alert",
+    "category": "Detect & Alert",
+    "tags": [
+      "Management",
+      "Personal"
+    ],
+    "description": "Detects important deadlines hidden inside email conversations.",
+    "filter": {
+      "name": "Deadline & Milestone Detector",
+      "description": "Identifies dates, milestone deadlines, and submission cut-offs.",
+      "prompt": "Determine whether this email contains an important target deadline, submission cut-off date, expiring offer, or time-sensitive task."
+    },
+    "generator": {
+      "name": "Deadline Extraction Card",
+      "description": "Extracts exact dates, tasks, and consequences of the deadline.",
+      "prompt": "Extract all deadlines mentioned in the email:\n- Specific Task or Milestone\n- Exact Due Date & Time (with timezone)\n- Responsible Party\n- Stated Consequences / Next Steps\n\nFormat as a prominent Markdown table or list."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "deadline_alert",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "deadline_alert"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Supplier Problem Alert",
+    "category": "Detect & Alert",
+    "tags": [
+      "Small Business",
+      "Management"
+    ],
+    "description": "Identifies supplier emails indicating delays, shortages, quality issues or other problems.",
+    "filter": {
+      "name": "Supply Chain Issue Detector",
+      "description": "Flags supplier delays, shortages, shipment problems, and backorders.",
+      "prompt": "Determine whether this email from a vendor or supplier reports a shipping delay, backorder, defective product, price dispute, or fulfillment failure."
+    },
+    "generator": {
+      "name": "Supplier Issue Summary",
+      "description": "Summarizes the vendor issue and impacted orders.",
+      "prompt": "Generate a Supplier Problem Report:\n- Supplier / Vendor Name\n- Purchase Order (PO) / Tracking Reference\n- Nature of Issue (Delay / Stockout / Defect / Cost Change)\n- Revised Expected Date\n- Impact on Operations\n- Recommended Countermeasure\n\nFormat in structured Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "supplier_issue_brief",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "supplier_issue_brief"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Price Change Alert",
+    "category": "Detect & Alert",
+    "tags": [
+      "Finance",
+      "Small Business"
+    ],
+    "description": "Detects supplier or service price changes communicated by email.",
+    "filter": {
+      "name": "Price Change Detector",
+      "description": "Identifies price hikes, tariff increases, and modified fee structures.",
+      "prompt": "Determine whether this email communicates a price increase, rate adjustment, updated tariff, or new fee schedule."
+    },
+    "generator": {
+      "name": "Price Change Assessment",
+      "description": "Summarizes the old vs new pricing and financial impact.",
+      "prompt": "Summarize the price modification notice:\n- Vendor / Service Provider\n- Affected Products / Services\n- Previous vs. New Price (or % increase)\n- Effective Date\n- Justification Provided\n- Impact Analysis & Renegotiation Opportunity\n\nFormat as Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "price_change_alert",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "price_change_alert"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  },
+  {
+    "title": "Suspicious Email Detector",
+    "category": "Detect & Alert",
+    "tags": [
+      "Small Business",
+      "Personal"
+    ],
+    "description": "Flags emails that appear suspicious, unusual or potentially fraudulent.",
+    "filter": {
+      "name": "Phishing & Fraud Classifier",
+      "description": "Flags fraudulent emails, spoofing attempts, and phishing lures.",
+      "prompt": "Determine whether this email appears suspicious, contains signs of phishing, CEO fraud/impersonation, deceptive bank account changes, or suspicious urgency."
+    },
+    "generator": {
+      "name": "Security Threat Advisory",
+      "description": "Analyzes suspicious indicators and warns user.",
+      "prompt": "Analyze the security risk of this email:\n- Risk Assessment (High / Medium / Low)\n- Identified Red Flags (e.g. Sender Spoofing, Urgency, Unverified Bank Details, Malicious Links)\n- Safe Verification Instructions (e.g. Call sender via known phone number)\n\nFormat with bold security warning formatting."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "security_alert",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "security_alert"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  },
+  {
+    "title": "Meeting / Appointment Detector",
+    "category": "Detect & Alert",
+    "tags": [
+      "Management",
+      "Personal"
+    ],
+    "description": "Identifies emails containing meetings, appointments or scheduling requests.",
+    "filter": {
+      "name": "Scheduling & Meeting Classifier",
+      "description": "Detects meeting invitations, appointment requests, and proposed time slots.",
+      "prompt": "Determine whether this email is an invitation, scheduling request, proposed meeting timeslot, or appointment confirmation."
+    },
+    "generator": {
+      "name": "Meeting Invitation Summary",
+      "description": "Extracts agenda, attendees, proposed times, and meeting link.",
+      "prompt": "Extract scheduling details from the email:\n- Meeting Purpose / Title\n- Organizer and Key Attendees\n- Proposed Date(s) & Time(s) (with Timezone)\n- Meeting Link / Location (Zoom/Teams/Physical)\n- Agenda / Topics to Prepare\n\nOutput as structured Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "meeting_summary",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "meeting_summary"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Daily Sales Brief",
+    "category": "Analyze & Summarize",
+    "tags": [
+      "Sales",
+      "Management"
+    ],
+    "description": "Creates a structured summary of important sales emails, opportunities and customer activity.",
+    "filter": {
+      "name": "Sales Activity Filter",
+      "description": "Filters sales conversations, prospect inquiries, and deal progress.",
+      "prompt": "Determine whether this email relates to sales inquiries, deal negotiations, customer orders, or pipeline activity."
+    },
+    "generator": {
+      "name": "Sales Activity Summary",
+      "description": "Compiles sales progress and customer requests.",
+      "prompt": "Create a Sales Activity Summary:\n- Customer / Lead Name\n- Deal Stage / Inquired Product\n- Summary of Discussion\n- Potential Deal Value\n- Immediate Next Action\n\nFormat as clean Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "daily_sales_brief",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "daily_sales_brief"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  },
+  {
+    "title": "Long Email → Short Version",
+    "category": "Analyze & Summarize",
+    "tags": [
+      "Management",
+      "Personal"
+    ],
+    "description": "Turns long emails into concise summaries containing the information that matters.",
+    "filter": {
+      "name": "Long Email Filter",
+      "description": "Identifies detailed or lengthy email threads.",
+      "prompt": "Determine whether this email or email thread contains detailed discussion, lengthy text, or multiple discussion points."
+    },
+    "generator": {
+      "name": "Executive TL;DR Generator",
+      "description": "Generates a 3-bullet summary with action items.",
+      "prompt": "Summarize this long email concisely:\n- **TL;DR** (1-2 sentences capturing core message)\n- **Key Points** (3-5 bullet points)\n- **Decisions Made** (if any)\n- **Action Items & Owners** (Who needs to do what by when)\n\nKeep it brief and high impact."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "tldr_summary",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "tldr_summary"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Quote Comparison Assistant",
+    "category": "Analyze & Summarize",
+    "tags": [
+      "Finance",
+      "Small Business"
+    ],
+    "description": "Analyzes multiple quotations and summarizes the important differences for easier comparison.",
+    "filter": {
+      "name": "Quote Document Filter",
+      "description": "Detects vendor quotes and bids.",
+      "prompt": "Determine whether this email contains a vendor quotation, bid proposal, or itemized cost estimate."
+    },
+    "generator": {
+      "name": "Quote Comparison Matrix",
+      "description": "Structures quote components into a comparison breakdown.",
+      "prompt": "Analyze this vendor quote for side-by-side comparison:\n- Vendor Name & Reference ID\n- Total Cost (Gross & Net)\n- Key Line Item Pricing\n- Delivery Timeline\n- Payment Terms & Discounts\n- Strengths & Potential Risks\n\nFormat as Markdown table."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "quote_matrix",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "quote_matrix"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  },
+  {
+    "title": "Recruiting Brief",
+    "category": "Analyze & Summarize",
+    "tags": [
+      "HR",
+      "Management"
+    ],
+    "description": "Summarizes applications and candidate information into a quick overview.",
+    "filter": {
+      "name": "Candidate Application Filter",
+      "description": "Detects applicant submissions.",
+      "prompt": "Determine whether this email is an incoming candidate application, resume, or interview follow-up."
+    },
+    "generator": {
+      "name": "Applicant Assessment Card",
+      "description": "Evaluates candidate match and qualifications.",
+      "prompt": "Generate an Applicant Assessment Card:\n- Candidate Name & Target Role\n- Summary of Qualifications & Relevant Work Experience\n- Core Skills Match\n- Notable Strengths & Potential Concerns\n- Recommended Next Step (Interview / Decline / Hold)\n\nFormat in structured Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "candidate_assessment",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "candidate_assessment"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  },
+  {
+    "title": "Research Digest",
+    "category": "Analyze & Summarize",
+    "tags": [
+      "Academia"
+    ],
+    "description": "Creates concise summaries of relevant research, newsletters and publications.",
+    "filter": {
+      "name": "Academic & Tech Paper Filter",
+      "description": "Detects research articles and academic publications.",
+      "prompt": "Determine whether this email contains research publications, technical whitepapers, or academic updates."
+    },
+    "generator": {
+      "name": "Research Synthesis",
+      "description": "Synthesizes research methodology and conclusions.",
+      "prompt": "Synthesize this research content:\n- Topic / Paper Title\n- Authors / Institution\n- Core Problem Addressed\n- Key Methodology & Findings\n- Practical Implications & Takeaways\n\nFormat clearly in Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "research_synthesis",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "research_synthesis"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  },
+  {
+    "title": "Meeting Prep Brief",
+    "category": "Analyze & Summarize",
+    "tags": [
+      "Management",
+      "Personal"
+    ],
+    "description": "Pulls together relevant email history, recent developments, open questions and outstanding actions before a meeting.",
+    "filter": {
+      "name": "Meeting Context Filter",
+      "description": "Identifies emails containing pre-meeting briefing material and discussion threads.",
+      "prompt": "Determine whether this email contains briefing documents, agenda discussions, or background context for an upcoming meeting."
+    },
+    "generator": {
+      "name": "Meeting Prep Dossier",
+      "description": "Generates a comprehensive meeting preparation dossier.",
+      "prompt": "Create a Meeting Preparation Dossier:\n- Meeting Subject & Context\n- Key Stakeholders & Their Positions\n- Main Issues to be Resolved\n- Recent History & Agreements\n- Suggested Questions to Ask\n- Goals for a Successful Outcome\n\nFormat in clean Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "meeting_prep_dossier",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "meeting_prep_dossier"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Quote Request Assistant",
+    "category": "Assist & Act",
+    "tags": [
+      "Sales",
+      "Small Business"
+    ],
+    "description": "Identifies quote requests, extracts the relevant information and helps prepare the next step or response.",
+    "filter": {
+      "name": "Quote Request Classifier",
+      "description": "Detects customer RFPs and quote inquiries.",
+      "prompt": "Determine whether this email is a customer asking for pricing, estimates, or a custom quote."
+    },
+    "generator": {
+      "name": "Draft Quote Response",
+      "description": "Drafts a polished, tailored sales reply ready for review and sending.",
+      "prompt": "Draft a polite and professional sales reply to this quote inquiry:\n- Warm personalized greeting\n- Acknowledgment of their specific requirements\n- Itemized price/estimate breakdown based on the details in their email\n- Clear next steps to finalize the order\n- Professional closing and contact info\n\nOutput the email text in Markdown format."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "quote_reply_draft",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "quote_reply_draft"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Complaint Response Assistant",
+    "category": "Assist & Act",
+    "tags": [
+      "Customer Support",
+      "Small Business"
+    ],
+    "description": "Helps prepare an appropriate response to customer complaints based on the email and available context.",
+    "filter": {
+      "name": "Complaint Classifier",
+      "description": "Detects complaints requiring empathetic support response.",
+      "prompt": "Determine whether this email is a customer expressing dissatisfaction, a technical bug, or a service issue requiring a support reply."
+    },
+    "generator": {
+      "name": "Draft Support Resolution",
+      "description": "Drafts an empathetic, solution-oriented customer reply.",
+      "prompt": "Draft a supportive and empathetic customer resolution email:\n- Express understanding and apologize for the inconvenience\n- Address the specific problem mentioned directly\n- Provide the resolution or immediate troubleshooting steps\n- Offer next steps and reassurance\n\nFormat as ready-to-send Markdown email text."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "support_reply_draft",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "support_reply_draft"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Invoice to Accounting",
+    "category": "Assist & Act",
+    "tags": [
+      "Finance",
+      "Small Business"
+    ],
+    "description": "Identifies incoming invoices and formats them into an accounting workflow dispatch.",
+    "filter": {
+      "name": "Accounting Invoice Detector",
+      "description": "Detects incoming vendor invoices for bookkeeping.",
+      "prompt": "Determine whether this email contains an invoice or bill that needs to be booked in accounting."
+    },
+    "generator": {
+      "name": "Accounting Dispatch Note",
+      "description": "Creates an accounting summary note with GL categorization.",
+      "prompt": "Create an Accounting Processing Note:\n- Vendor Name\n- Invoice Number\n- Invoice Date & Due Date\n- Net Amount, Tax Amount, Gross Amount, Currency\n- Suggested Expense Category / Cost Center\n- Summary of Billed Items\n\nFormat cleanly in Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "accounting_note",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "accounting_note"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  },
+  {
+    "title": "Meeting to Calendar",
+    "category": "Assist & Act",
+    "tags": [
+      "Management",
+      "Personal"
+    ],
+    "description": "Turns relevant meeting and appointment information from emails into structured calendar events.",
+    "filter": {
+      "name": "Confirmed Appointment Detector",
+      "description": "Identifies confirmed meetings with dates and times.",
+      "prompt": "Determine whether this email confirms a scheduled meeting, event, webinar, or appointment with specified date and time."
+    },
+    "generator": {
+      "name": "Calendar Event Card",
+      "description": "Formats event title, start/end time, location, and description.",
+      "prompt": "Extract the calendar event details:\n- **Event Title**\n- **Start Time** (ISO format and human readable)\n- **End Time** (ISO format and human readable)\n- **Timezone**\n- **Location / Video Link**\n- **Description / Agenda**\n- **Attendees**\n\nFormat clearly in Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "calendar_card",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "calendar_card"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Attachment Router",
+    "category": "Assist & Act",
+    "tags": [
+      "Management",
+      "Small Business"
+    ],
+    "description": "Identifies email attachments, summarizes their contents, and logs them for routing.",
+    "filter": {
+      "name": "Attachment & Document Filter",
+      "description": "Detects emails with significant attachments, reports, or contracts.",
+      "prompt": "Determine whether this email contains or refers to attached documents, contracts, reports, or spreadsheets."
+    },
+    "generator": {
+      "name": "Attachment Manifest & Summary",
+      "description": "Summarizes attached files and suggests filing categories.",
+      "prompt": "Analyze the attached documents described in the email:\n- Document Title & Purpose\n- Document Type (Contract, Report, Invoice, Spec)\n- Executive Summary of Document Content\n- Suggested Destination Folder / Category\n\nFormat in structured Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "attachment_manifest",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "attachment_manifest"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  },
+  {
+    "title": "Spending from Email",
+    "category": "Use & Transform Data",
+    "tags": [
+      "Finance",
+      "Personal",
+      "Small Business"
+    ],
+    "description": "Extracts purchase and payment information from emails to build a structured overview of spending.",
+    "filter": {
+      "name": "Purchase & Expense Detector",
+      "description": "Detects receipts, e-commerce purchases, and expense confirmations.",
+      "prompt": "Determine whether this email is an order confirmation, purchase receipt, ticket booking, or expense transaction."
+    },
+    "generator": {
+      "name": "Expense Ledger Entry",
+      "description": "Extracts structured ledger rows for expenses.",
+      "prompt": "Extract the purchase details for an expense ledger:\n- Merchant / Vendor\n- Transaction Date\n- Category (Software, Travel, Hardware, Office, Personal)\n- Currency\n- Total Amount\n- Payment Method (Credit Card, PayPal, Invoice)\n- Order / Transaction ID\n\nFormat as Markdown table row."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "expense_entry",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "expense_entry"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  },
+  {
+    "title": "Subscription Cost Tracker",
+    "category": "Use & Transform Data",
+    "tags": [
+      "Finance",
+      "Personal",
+      "Small Business"
+    ],
+    "description": "Identifies recurring subscriptions and uses email data to track their costs over time.",
+    "filter": {
+      "name": "Subscription Billing Filter",
+      "description": "Detects recurring membership and subscription charges.",
+      "prompt": "Determine whether this email is a recurring subscription renewal, software membership charge, or cloud service bill."
+    },
+    "generator": {
+      "name": "Subscription Cost Log",
+      "description": "Logs subscription service, recurring cost, and cadence.",
+      "prompt": "Extract subscription cost tracking information:\n- Subscription / App Name\n- Plan Tier\n- Billing Frequency (Monthly / Annual / Usage)\n- Recurring Cost & Currency\n- Renewal Date\n- Account Owner / Department\n\nFormat as structured Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "subscription_log",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "subscription_log"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  },
+  {
+    "title": "Project Tracker",
+    "category": "Use & Transform Data",
+    "tags": [
+      "Management",
+      "Small Business"
+    ],
+    "description": "Uses email activity to track the decisions, deadlines, open questions and progress associated with an individual project.",
+    "filter": {
+      "name": "Project Progress Filter",
+      "description": "Identifies project status updates and milestone discussions.",
+      "prompt": "Determine whether this email contains project milestone updates, status reports, blocker reports, or design decisions."
+    },
+    "generator": {
+      "name": "Project Milestone Tracker",
+      "description": "Extracts decisions, blockers, and milestone progress.",
+      "prompt": "Extract project milestone tracking data:\n- Project Name & Stream\n- Current Status (On Track / At Risk / Delayed)\n- Decisions Made & Agreements\n- Active Blockers / Dependencies\n- Upcoming Deliverables & Target Dates\n\nFormat as a structured Markdown status card."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "project_milestone_card",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "project_milestone_card"
+          ],
+          "keep_threadid": true
+        }
+      }
+    ]
+  },
+  {
+    "title": "Recurring Problem Finder",
+    "category": "Use & Transform Data",
+    "tags": [
+      "Management",
+      "Customer Support"
+    ],
+    "description": "Analyzes email history to identify problems and issues that repeatedly occur across conversations.",
+    "filter": {
+      "name": "Issue & Defect Filter",
+      "description": "Detects problem reports, system errors, and process failures.",
+      "prompt": "Determine whether this email describes an error, product bug, operational friction, delivery defect, or customer pain point."
+    },
+    "generator": {
+      "name": "Problem Pattern Log",
+      "description": "Categorizes problem patterns for root cause analysis.",
+      "prompt": "Log this issue for recurring pattern analysis:\n- Issue Title / Category\n- Severity (High / Medium / Low)\n- System / Product / Process Affected\n- Symptoms Described\n- User / Customer Type Affected\n- Suggested Permanent Fix\n\nFormat as Markdown."
+    },
+    "tasks": [
+      {
+        "name": "create_artifact",
+        "arguments": {
+          "name": "problem_log",
+          "source": "email"
+        }
+      },
+      {
+        "name": "send_items",
+        "arguments": {
+          "source": [
+            "problem_log"
+          ],
+          "keep_threadid": false
+        }
+      }
+    ]
+  }
+]

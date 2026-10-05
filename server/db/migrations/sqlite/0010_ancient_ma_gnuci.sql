@@ -1,0 +1,1 @@
+ALTER TABLE `emails` ADD `staging_item` integer DEFAULT 0;

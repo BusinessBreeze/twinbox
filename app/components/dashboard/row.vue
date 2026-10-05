@@ -2,7 +2,7 @@
   <div class="dashboard-tier tier-middle d-flex ga-3 align-stretch w-100 py-2 overflow-hidden">
     <!-- Section 1 (Left): Stays same width -->
     <div class="section-left flex-shrink-0 flex-grow-0 d-flex align-stretch pa-1">
-      <DashboardAdd />
+      <DashboardAdd :is-creating="isCreating" @add="onToggleCreate" />
     </div>
 
     <!-- Section 2 (Right): Rest of the horizontal space -->
@@ -10,7 +10,7 @@
       <!-- Sub-section A: Automation Cards Container (Wraps if too many) -->
       <div
         class="cards-container d-flex flex-wrap ga-3 align-content-start overflow-y-auto min-w-0 pa-1"
-        :class="{ 'cards-container--split': !!selectedAutomation }"
+        :class="{ 'cards-container--split': !!selectedAutomation || isCreating }"
       >
         <template v-if="recentAutomations.length > 0">
           <DashboardCard
@@ -37,8 +37,31 @@
       </div>
 
       <!-- Sub-section B: Split Panel (Takes half of the remaining space when active) -->
+      <v-card
+        v-if="isCreating"
+        class="detail-panel my-1 pa-4 overflow-y-auto d-flex flex-column"
+        variant="flat"
+      >
+        <div class="d-flex align-center justify-space-between mb-3 pb-2 border-b">
+          <span class="text-subtitle-1 font-weight-bold text-primary">
+            {{ translateTitle(automationMeta?.title) || $t('automations') || 'Create Automation' }}
+          </span>
+          <v-btn icon size="small" variant="text" @click="isCreating = false">
+            <v-icon size="18">mdi-close</v-icon>
+          </v-btn>
+        </div>
+        <FormCreate
+          ref="formCreateRef"
+          v-if="automationMeta"
+          :meta="automationMeta"
+          :no-card="true"
+          @created="onCreatedAutomation"
+          @cancel="isCreating = false"
+        />
+      </v-card>
+
       <DashboardEvents
-        v-if="selectedAutomation"
+        v-else-if="selectedAutomation"
         class="detail-panel my-1"
         :automation="selectedAutomation"
         @close="closeDetail"
@@ -48,10 +71,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { useI18n } from 'vue-i18n';
 import DashboardAdd from '~/components/dashboard/add.vue';
 import DashboardCard from '~/components/dashboard/card.vue';
 import DashboardEvents from '~/components/dashboard/events.vue';
+import FormCreate from '#ba/components/form/form_create.vue';
+import automationMetaFcn from '~/schemas/automation';
+import automationTaskChooser from '~/components/automation_task_chooser.vue';
 
 export interface RecentAutomation {
   id?: string | number;
@@ -62,15 +89,46 @@ export interface RecentAutomation {
   lastIssueLevel: 'warn' | 'error' | null;
 }
 
+const { t, te } = useI18n();
+
 const recentAutomations = ref<RecentAutomation[]>([]);
 const selectedAutomation = ref<RecentAutomation | null>(null);
+const isCreating = ref(false);
+const automationMeta = ref<any>(null);
+const formCreateRef = ref<any>(null);
+
+const translateTitle = (val?: string | [string, ...any[]]) => {
+  if (!val) return '';
+  if (Array.isArray(val)) {
+    const [key, ...args] = val;
+    return te(key) ? t(key, ...args) : key;
+  }
+  return typeof val === 'string' && te(val) ? t(val) : val;
+};
+
+watch(() => formCreateRef.value, (formCreate) => {
+  if (formCreate) {
+    formCreate.register('automation_task_chooser', automationTaskChooser);
+  }
+});
+
+const onToggleCreate = () => {
+  selectedAutomation.value = null;
+  isCreating.value = !isCreating.value;
+};
 
 const onSelectAutomation = (auto: RecentAutomation) => {
+  isCreating.value = false;
   selectedAutomation.value = auto;
 };
 
 const closeDetail = () => {
   selectedAutomation.value = null;
+};
+
+const onCreatedAutomation = () => {
+  isCreating.value = false;
+  fetchRecentAutomations();
 };
 
 const fetchRecentAutomations = async () => {
@@ -141,7 +199,8 @@ const fetchRecentAutomations = async () => {
 
 let pollTimer: any = null;
 
-onMounted(() => {
+onMounted(async () => {
+  automationMeta.value = await automationMetaFcn(t);
   fetchRecentAutomations();
   pollTimer = setInterval(fetchRecentAutomations, 10000);
 });

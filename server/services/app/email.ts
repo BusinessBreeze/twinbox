@@ -3,7 +3,7 @@ import { emails } from "#server/db/schema";
 import { zod_rules } from "#shared/rules/app/email";
 import { genericService } from "#layers/nuxt-base-app/server/services/generic";
 import { simpleParser } from 'mailparser';
-import { lt, and, eq } from 'drizzle-orm';
+import { lt, and, eq, inArray } from 'drizzle-orm';
 import { emitTelemetryEvent, EventScope, EventLevel } from '#bs/utils/telemetry/event';
 import { userMetrics } from '#server/utils/telemetry/user';
 
@@ -121,6 +121,21 @@ class emailService extends genericService {
             });
             throw err;
         }
+    }
+
+    async setStaging(idOrIds: string | string[], stagingValue: number = 1) {
+        const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
+        if (ids.length === 0) return [];
+
+        let conditions: any = inArray(this.table.id, ids);
+        if (this.user_id) {
+            conditions = and(conditions, eq(this.table.owner_id, this.user_id));
+        }
+
+        return await this.db.update(this.table)
+            .set({ staging_item: stagingValue, updatedAt: new Date() })
+            .where(conditions)
+            .returning();
     }
 
     async export(id?: string, stripFields: string[] = ['id', 'owner_id', 'createdAt', 'updatedAt'], transformFields: string[] = []) {
