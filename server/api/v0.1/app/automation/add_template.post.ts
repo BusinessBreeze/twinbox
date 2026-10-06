@@ -4,6 +4,8 @@ import { getService as getLlmCreateArtifactService } from '#server/services/app/
 import { getService as getConnectionsImapService } from '#server/services/app/connections_imap';
 import { getService as getNotificationService } from '#bs/services/core/notification';
 
+import { getUniqueName } from '#server/utils/unique_name';
+
 defineRouteMeta({
   openAPI: {
     tags: ['App Automation'],
@@ -26,57 +28,45 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Check if an automation with this name already exists for the user
+  // 1. Resolve unique name for automation
   const autoService = await getAutomationService(event);
   const existingAutomations = await autoService.read();
   const autoList = Array.isArray(existingAutomations) ? existingAutomations : (existingAutomations ? [existingAutomations] : []);
-  const nameExists = autoList.some((a: any) => a && a.name?.trim().toLowerCase() === title.trim().toLowerCase());
+  const existingAutoNames = autoList.map((a: any) => a?.name);
+  const uniqueTitle = getUniqueName(title, existingAutoNames);
 
-  if (nameExists) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'error automation.already_exists'
-    });
-  }
-
-  // 1. Resolve or create LLM Filter if specified
+  // 2. Resolve or create LLM Filter if specified with unique name
   let filterId: string | null = null;
   if (filter && filter.name && filter.prompt) {
     const filterService = await getLlmFilterService(event);
     const existingFilters = await filterService.read();
-    const existing = (Array.isArray(existingFilters) ? existingFilters : (existingFilters ? [existingFilters] : [])).find(
-      (f: any) => f && f.name === filter.name
-    );
-    if (existing) {
-      filterId = existing.id;
-    } else {
-      const created = await filterService.create({
-        name: filter.name,
-        prompt: filter.prompt,
-        description: filter.description || filter.name
-      });
-      filterId = created?.id || null;
-    }
+    const filterList = Array.isArray(existingFilters) ? existingFilters : (existingFilters ? [existingFilters] : []);
+    const existingFilterNames = filterList.map((f: any) => f?.name);
+    const uniqueFilterName = getUniqueName(filter.name, existingFilterNames);
+
+    const created = await filterService.create({
+      name: uniqueFilterName,
+      prompt: filter.prompt,
+      description: filter.description || uniqueFilterName
+    });
+    filterId = created?.id || null;
   }
 
-  // 2. Resolve or create LLM Create Artifact if specified
+  // 3. Resolve or create LLM Create Artifact if specified with unique name
   let artifactId: string | null = null;
   if (generator && generator.name && generator.prompt) {
     const artService = await getLlmCreateArtifactService(event);
     const existingArts = await artService.read();
-    const existing = (Array.isArray(existingArts) ? existingArts : (existingArts ? [existingArts] : [])).find(
-      (a: any) => a && a.name === generator.name
-    );
-    if (existing) {
-      artifactId = existing.id;
-    } else {
-      const created = await artService.create({
-        name: generator.name,
-        prompt: generator.prompt,
-        description: generator.description || generator.name
-      });
-      artifactId = created?.id || null;
-    }
+    const artList = Array.isArray(existingArts) ? existingArts : (existingArts ? [existingArts] : []);
+    const existingArtNames = artList.map((a: any) => a?.name);
+    const uniqueArtName = getUniqueName(generator.name, existingArtNames);
+
+    const created = await artService.create({
+      name: uniqueArtName,
+      prompt: generator.prompt,
+      description: generator.description || uniqueArtName
+    });
+    artifactId = created?.id || null;
   }
 
   // 3. Resolve local disk notification channel for sending tasks
@@ -129,7 +119,7 @@ export default defineEventHandler(async (event) => {
 
   // 5. Create automation
   const createdAuto = await autoService.create({
-    name: title,
+    name: uniqueTitle,
     active: 1,
     imap_connection_id: connectionId,
     imap_folder: 'INBOX',

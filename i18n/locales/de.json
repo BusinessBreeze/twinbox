@@ -1058,5 +1058,12 @@
     "add_success": "Automatisierung \"{name}\" erfolgreich hinzugefügt!",
     "add_failed": "Fehler beim Hinzufügen der Automatisierung: {error}",
     "no_results": "Keine Automatisierungen gefunden, die Ihren Kriterien entsprechen."
+  },
+  "imap_reminder": {
+    "title": "Keine IMAP-Verbindung konfiguriert",
+    "message_prefix": "Sie haben noch keine IMAP-Verbindung eingerichtet. Gehen Sie zu ",
+    "sources_link": "Quellen",
+    "message_suffix": ", um eine Verbindung einzurichten und Ihr E-Mail-Konto zu verknüpfen.",
+    "ok": "OK"
   }
 }

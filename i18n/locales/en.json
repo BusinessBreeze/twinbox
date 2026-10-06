@@ -1058,5 +1058,12 @@
     "add_success": "Automation \"{name}\" added successfully!",
     "add_failed": "Failed to add automation: {error}",
     "no_results": "No automations found matching your criteria."
+  },
+  "imap_reminder": {
+    "title": "No IMAP Connection Configured",
+    "message_prefix": "You do not have an IMAP connection configured yet. Go to ",
+    "sources_link": "Sources",
+    "message_suffix": " to set one up and connect your email account.",
+    "ok": "OK"
   }
 }

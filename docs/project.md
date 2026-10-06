@@ -36,12 +36,10 @@ API contract: http://localhost:3000/_swagger or http://localhost:3000/_scalar
 
 ### Bugs
 - [ ] Chatterbox docker bloat
-- [ ] ADMIN: red top label is wrong if reloaded.
 
 ## Current
 
 UX:
-- [ ] wizard w predefined templates: freeze sus emails, overview, create drafts for specific ppl, put thematic emails (newsletters) in folders
 - [ ] LLM Wizard:  Create documentation for whole process and data structures and have llm create whole pipeline.
 - [ ] TASK: make a literal artifact : ex:  "attached are all the items."
 - [ ] TASK: make merge texts artifact.
@@ -70,15 +68,12 @@ Housekeeping:
 - [ ] remove extraneous console.log messages
 - [ ] Create every vitest imaginable to stress and break everything.
 - [ ] full code review: middleware, route permissions
-- [ ] remediate all browser console warnings.
 - [ ] perf tests of other models
 - [ ] review where i18n messages were placed in de/en
 
 
 ## LARGER: consider other input sources and compartmentializing IMAP.  
 ## Make sources plug-in-able == different containers, web components
-
-
 
 
 - [ ] build and deploy via docker, 
@@ -96,5 +91,6 @@ Housekeeping:
 - [ ] Automations: run now button
 
 
-
 - [ ] Imap action: mark as important
+
+- Add Badges to pages not yet explored.  When Explored, show explanitory modal.
