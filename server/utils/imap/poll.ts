@@ -17,10 +17,11 @@ export const poll = async (
     folder?: string, 
     markRead: boolean = false,
     maxEmails: number = appDefaults.limits?.automation?.max_emails_per_fetch || 50,
-    maxBytes: number = appDefaults.limits?.automation?.max_input_text_length || 15000
+    maxBytes: number = appDefaults.limits?.automation?.max_input_text_length || 15000,
+    lastUid: number = 0
 ) => {
     if (record?.auth_type === 'staging' || record?.id === 'staging') {
-        return await pollStaging(record, searchCriteria, folder, markRead, maxEmails, maxBytes);
+        return await pollStaging(record, searchCriteria, folder, markRead, maxEmails, maxBytes, lastUid);
     }
 
     const emails: any[] = [];
@@ -40,7 +41,7 @@ export const poll = async (
         level: EventLevel.DEBUG,
         category: 'imap',
         message: `Connecting: ${record.tag || record.host}`,
-        metadata: { host: record.host, user: record.username, markRead, maxEmails, maxBytes }
+        metadata: { host: record.host, user: record.username, markRead, maxEmails, maxBytes, lastUid }
     });
 
     const client = new ImapFlow({
@@ -81,12 +82,13 @@ export const poll = async (
                 scope: EventScope.SYSTEM,
                 level: EventLevel.DEBUG,
                 category: 'imap',
-                message: `Connected (${folder}): ${count} emails`
+                message: `Connected (${folder}): ${count} emails, last_uid: ${lastUid}`
             });
 
             if (count > 0) {
                 let fetchRange: any = '1:*';
                 let shouldFetch = true;
+                let useUid = false;
 
                 if (searchCriteria) {
                     let parsedSearch = searchCriteria;
@@ -104,16 +106,26 @@ export const poll = async (
                         }
                     }
                     parsedSearch = resolveRelativeSearchDates(parsedSearch);
+                    if (lastUid > 0) {
+                        parsedSearch = { ...parsedSearch, uid: `${lastUid + 1}:*` };
+                    }
                     await emitTelemetryEvent({
                         scope: EventScope.SYSTEM,
                         level: EventLevel.DEBUG,
                         category: 'imap',
                         message: `Searching criteria`,
-                        metadata: { criteria: parsedSearch }
+                        metadata: { criteria: parsedSearch, lastUid }
                     });
-                    const searchResults = await client.search(parsedSearch);
-                    if (searchResults.length > 0) {
-                        fetchRange = searchResults;
+                    const searchResults = await client.search(parsedSearch, { uid: true });
+                    if (searchResults && searchResults.length > 0) {
+                        useUid = true;
+                        const sorted = [...searchResults].sort((a, b) => a - b);
+                        const filtered = lastUid > 0 ? sorted.filter(uid => uid > lastUid) : sorted;
+                        if (filtered.length > 0) {
+                            fetchRange = filtered.slice(0, maxEmails);
+                        } else {
+                            shouldFetch = false;
+                        }
                     } else {
                         shouldFetch = false;
                         await emitTelemetryEvent({
@@ -123,11 +135,22 @@ export const poll = async (
                             message: `No search match`
                         });
                     }
+                } else if (lastUid > 0) {
+                    useUid = true;
+                    fetchRange = `${lastUid + 1}:*`;
+                } else {
+                    // Initial sync with no search criteria: start from sequence 1 forward (oldest to newest)
+                    fetchRange = '1:*';
                 }
 
                 if (shouldFetch) {
                     let fetchedCount = 0;
-                    for await (const message of client.fetch(fetchRange, { source: { maxLength: maxBytes }, envelope: true }, { markSeen: markRead })) {
+                    const fetchedUids: number[] = [];
+
+                    for await (const message of client.fetch(fetchRange, { source: { maxLength: maxBytes }, envelope: true, uid: true }, { uid: useUid })) {
+                        if (lastUid > 0 && message.uid && message.uid <= lastUid) {
+                            continue;
+                        }
                         if (fetchedCount >= maxEmails) {
                             await emitTelemetryEvent({
                                 scope: EventScope.SYSTEM,
@@ -136,6 +159,10 @@ export const poll = async (
                                 message: `Reached max_emails_per_fetch limit (${maxEmails}). Stopping poll.`
                             });
                             break;
+                        }
+
+                        if (message.uid) {
+                            fetchedUids.push(message.uid);
                         }
 
                         try {
@@ -154,9 +181,10 @@ export const poll = async (
                                 scope: EventScope.SYSTEM,
                                 level: EventLevel.DEBUG,
                                 category: 'imap',
-                                message: `Fetched: ${subject}`
+                                message: `Fetched: ${subject} (UID ${message.uid})`
                             });
                             emails.push({
+                                uid: message.uid,
                                 messageId,
                                 from,
                                 to,
@@ -181,14 +209,14 @@ export const poll = async (
                         }
                     }
 
-                    if (markRead && fetchRange) {
+                    if (markRead && fetchedUids.length > 0) {
                         try {
-                            await client.messageFlagsAdd(fetchRange, ['\\Seen']);
+                            await client.messageFlagsAdd(fetchedUids, ['\\Seen'], { uid: true });
                             await emitTelemetryEvent({
                                 scope: EventScope.SYSTEM,
                                 level: EventLevel.DEBUG,
                                 category: 'imap',
-                                message: `Marked read (\\Seen)`
+                                message: `Marked ${fetchedUids.length} email(s) read (\\Seen)`
                             });
                         } catch (flagErr) {
                             await emitTelemetryEvent({

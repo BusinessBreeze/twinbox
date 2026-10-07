@@ -17,6 +17,9 @@ class automationsService extends genericService {
             if (item && item.imap_connection_id === 'staging') {
                 item.imap_folder = 'INBOX';
             }
+            if (item && item.last_uid === undefined) {
+                item.last_uid = 0;
+            }
             return item;
         };
         if (Array.isArray(res)) {
@@ -90,7 +93,7 @@ class automationsService extends genericService {
 
     async export(
         id?: string,
-        stripFields: string[] = ['id', 'owner_id', 'createdAt', 'updatedAt'],
+        stripFields: string[] = ['id', 'owner_id', 'createdAt', 'updatedAt', 'last_poll', 'last_uid'],
         transformFields: string[] = ['imap_connection_id', 'search_id', 'llm_filter_id', 'tasks']
     ) {
         const transformMap: Record<string, { exportKey?: string; fn: (val: any, record: any) => Promise<any> | any }> = {

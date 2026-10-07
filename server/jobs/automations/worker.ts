@@ -3,6 +3,9 @@ import { llmFilter } from '#server/services/app/llm/tests/llm_filter';
 import { getService as getEmailService } from '#server/services/app/email';
 import { runTasks } from '#server/utils/tasks/runner';
 import { emitTelemetryEvent, EventScope, EventLevel } from '#bs/utils/telemetry/event';
+import { db } from "hub:db";
+import { automations } from "#server/db/schema";
+import { eq } from "drizzle-orm";
 
 export const processAutomationItem = async (item: any) => {
   const startTime = Date.now();
@@ -38,7 +41,27 @@ export const processAutomationItem = async (item: any) => {
     const imapMarkRead = !!(tasksObj?.imap_mark_read || (Array.isArray(tasksObj?.tasks) && tasksObj.tasks.some((t: any) => t.name === 'imap_mark_read')));
     const onlyNew = !!tasksObj?.only_new;
 
-    const emails = await poll(item.connection, item.search?.search, item.automation.imap_folder, imapMarkRead);
+    const lastUid = item.automation?.last_uid || 0;
+    const emails = await poll(item.connection, item.search?.search, item.automation.imap_folder, imapMarkRead, undefined, undefined, lastUid);
+
+    const maxUid = emails.reduce((max: number, e: any) => (e.uid && e.uid > max ? e.uid : max), lastUid);
+    if (maxUid > lastUid && item.automation?.id) {
+      try {
+        await db
+          .update(automations)
+          .set({ last_uid: maxUid })
+          .where(eq(automations.id, item.automation.id));
+
+        await emitTelemetryEvent({
+          scope: EventScope.SYSTEM,
+          level: EventLevel.DEBUG,
+          category: 'automation',
+          message: `Updated automation "${name}" last_uid to ${maxUid}`
+        });
+      } catch (uidErr) {
+        console.error('Failed to update automation last_uid:', uidErr);
+      }
+    }
 
     const emailService = await getEmailService(ownerId);
     const persistedEmails = [];

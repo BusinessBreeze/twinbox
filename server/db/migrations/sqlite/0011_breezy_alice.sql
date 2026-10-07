@@ -1,0 +1,1 @@
+ALTER TABLE `automations` ADD `last_uid` integer DEFAULT 0;

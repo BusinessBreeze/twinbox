@@ -36,9 +36,9 @@ const sv_llm_create_artifact = {
 }
 
 const sv_automation = {
-    insert: createInsertSchema(automations).omit({ createdAt: true, updatedAt: true, last_poll: true }),
+    insert: createInsertSchema(automations).omit({ createdAt: true, updatedAt: true, last_poll: true, last_uid: true }),
     select: createSelectSchema(automations),
-    update: createUpdateSchema(automations).omit({ createdAt: true, updatedAt: true, last_poll: true }),
+    update: createUpdateSchema(automations).omit({ createdAt: true, updatedAt: true, last_poll: true, last_uid: true }),
     prep: { json: ['tasks'] }
 }
 

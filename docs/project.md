@@ -70,6 +70,7 @@ Housekeeping:
 - [ ] full code review: middleware, route permissions
 - [ ] perf tests of other models
 - [ ] review where i18n messages were placed in de/en
+- [ ] Verify all ts types are correct and exhaustive.
 
 
 ## LARGER: consider other input sources and compartmentializing IMAP.  
@@ -83,14 +84,18 @@ Housekeeping:
 - [ ] Chat History
 - [ ] oauth app/imap login
 - [ ] Ephemeral / one-time tasks
+- [ ] Automation: start at latest UID instead of newest
+
 
 - [ ] AI IMAP filter suggestions
 - [ ] AI: add restate my request to prompts
 
 - [ ] add "test" to imap/search form
 - [ ] Automations: run now button
-
-
 - [ ] Imap action: mark as important
+
+- [ ] Automation: set imap uid to latest
+- [ ] Use websockets instead of poll
+- [ ] only new exists in imap search, not needed in automations.
 
 - Add Badges to pages not yet explored.  When Explored, show explanitory modal.

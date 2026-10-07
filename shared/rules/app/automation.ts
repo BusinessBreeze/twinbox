@@ -53,5 +53,7 @@ export const zod_rules = {
   ]).transform((val) => Number(val))
     .pipe(
       z.number().int().min(10, "rules.automation.poll_seconds.min")
-    ).default(3600)
+    ).default(3600),
+
+  last_uid: z.number().int().optional().nullable().default(0)
 };

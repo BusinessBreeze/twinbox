@@ -14,7 +14,8 @@ export const pollStaging = async (
     folder: string = 'INBOX',
     markRead: boolean = false,
     maxEmails: number = appDefaults.limits?.automation?.max_emails_per_fetch || 50,
-    maxBytes: number = appDefaults.limits?.automation?.max_input_text_length || 15000
+    maxBytes: number = appDefaults.limits?.automation?.max_input_text_length || 15000,
+    lastUid: number = 0
 ) => {
     const ownerId = record?.owner_id;
     if (!ownerId) {

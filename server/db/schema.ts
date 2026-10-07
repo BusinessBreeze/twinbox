@@ -96,6 +96,7 @@ export const automations = sqliteTable('automations', {
         .default({ multiple: false, tasks: [] }),
     poll_seconds: integer('poll_seconds').default(60 * 60), // default 1 hour
     last_poll: integer('last_poll', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
+    last_uid: integer('last_uid').default(0),
     createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
     updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date()),
 }, (table) => [
