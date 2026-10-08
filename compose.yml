@@ -10,7 +10,27 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./testing/.data:/app/.data
+      - ./Testing/.data:/app/.data
+      - ./Artifacts:/app/Artifacts
+
+  # One-shot schema migration. NOT started by `docker compose up` (see profiles) -- run it
+  # explicitly, and run it before the first `up` on a fresh deploy:
+  #   docker compose run --rm migrate
+  # Uses the `builder` stage because the runtime image has neither the nuxt CLI nor any
+  # migration code; NuxtHub applies migrations only during build and dev. Idempotent:
+  # applied migrations are tracked in the _hub_migrations table, so re-running is a no-op.
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    env_file:
+      - ./.env
+    volumes:
+      - ./Testing/.data:/app/.data
+    command: npx nuxt db migrate
+    profiles:
+      - tools
   # apprise:
   #   image: caronc/apprise:latest
   #   container_name: apprise

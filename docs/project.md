@@ -97,5 +97,6 @@ Housekeeping:
 - [ ] Automation: set imap uid to latest
 - [ ] Use websockets instead of poll
 - [ ] only new exists in imap search, not needed in automations.
+- [ ] don't delete Ex: filter if used in automation.
 
 - Add Badges to pages not yet explored.  When Explored, show explanitory modal.

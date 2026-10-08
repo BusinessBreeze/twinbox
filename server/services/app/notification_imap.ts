@@ -7,7 +7,7 @@ import { getExtensionFromMime } from '#bs/utils/get_extensions_from_mime_type';
 import { getFolderList } from '#server/utils/imap/getFolderList';
 import { marked } from 'marked';
 import { markdownToTxt } from 'markdown-to-txt';
-import MailComposer from 'nodemailer/lib/mail-composer';
+import MailComposer from 'nodemailer/lib/mail-composer/index.js';
 import { decryptConfig } from '#server/services/app/connections_imap';
 import { emitTelemetryEvent, EventScope, EventLevel } from '#bs/utils/telemetry/event';
 
