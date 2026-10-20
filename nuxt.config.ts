@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   // extends: ['../nuxt-base-app'],
   extends: [
-    'github:mwolf-pi3g/nuxt-base-app',
+    ['github:mwolf-pi3g/nuxt-base-app#v0.0.1', { install: true }],
     // '/home/mwolf/Desktop/test/nuxt-base-app'
     // '/home/mwolf/Desktop/Git/GITHUB/nuxt-base-app'
   ],
