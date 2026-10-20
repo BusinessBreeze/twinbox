@@ -93,6 +93,8 @@ Housekeeping:
 - [ ] Use websockets instead of poll
 - [ ] only new exists in imap search, not needed in automations.
 - [ ] don't delete Ex: filter if used in automation.
+- [ ] implement remove account. (account currently has delete on it.)
+- [ ] remove oauth
 
 - Add Badges to pages not yet explored.  When Explored, show explanitory modal.
 - consider combining llm filter/task, imap connection, search
@@ -100,4 +102,16 @@ Housekeeping:
 - [ ] add "test" to imap/search form
 - [ ] Automations: run now button
 - [ ] Imap action: mark as important
-- [ ] image creation on github
+- [ ] test image creation on github
+- [ ] way for tamara to give templates.
+- [ ] implement versioning for base layer/use in nuxt
+
+
+Releasing a twinbox image (VS Code):
+
+Commit everything
+npm version <level> - (patch for fixes · minor for features · major for breaking changes)
+git push --follow-tags
+
+Check: GitHub → Actions tab → wait for the build to finish (green check).
+Image: ghcr.io/businessbreeze/twinbox:<version>

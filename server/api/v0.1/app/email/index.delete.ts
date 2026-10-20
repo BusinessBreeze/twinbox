@@ -20,7 +20,7 @@ defineRouteMeta({
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event).catch(() => ({}));
-  const ids: string[] = Array.isArray(body?.ids) ? body.ids : (Array.isArray(body?.files) ? body.files : []);
+  const ids: string[] = Array.isArray(body?.ids) ? body.ids : [];
 
   if (!ids || ids.length === 0) {
     throw createError({
