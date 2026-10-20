@@ -3,7 +3,7 @@
 # which Nitro's static dependency trace cannot evaluate. On alpine it bundled the glibc
 # binding and died with "Cannot find module '@libsql/linux-x64-musl'". A glibc base matches
 # what the trace bundles on x64. See the COPY in the runner stage for the arm64 half.
-FROM node:22-slim AS builder
+FROM node:24-slim AS builder
 
 WORKDIR /app
 
@@ -18,7 +18,7 @@ COPY . .
 RUN npm run build
 
 # --- Production Runner ---
-FROM node:22-slim AS runner
+FROM node:24-slim AS runner
 
 WORKDIR /app
 ENV NODE_ENV=production
