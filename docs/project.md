@@ -119,3 +119,5 @@ Image: ghcr.io/businessbreeze/twinbox:<version>
 Split tasks: today it holds automation settings (multiple, imap_mark_read, source_links, only_new) plus the actual tasks list. Better: automations.options (JSON) and automations.tasks (array).
 
 Give steps fixed IDs: send_items currently finds its sources by display name, which is where the silent fallback to the raw email (.txt) came from. With a stable id per step and references by ID, a reference can’t break by accident.
+
+SERVER_SECRET is still unset. This is the one I’d prioritise. sendValidationEmail calls createHmac("sha256", process.env.SERVER_SECRET) with undefined, and create() throws after inserting the row — so every account creation writes the user then errors the request. It’s invisible on your laptop only because the admin predates it.

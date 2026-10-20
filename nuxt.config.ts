@@ -26,7 +26,10 @@ export default defineNuxtConfig({
   },
   nitro: {
     externals: {
-      external: ['drizzle-orm', 'better-sqlite3']
+      external: ['drizzle-orm', 'better-sqlite3'],
+      // Bundle NuxtHub's generated DB package: 'hub:db:schema' resolves to @nuxthub/db/schema (bundled),
+      // while db.mjs imports './schema.mjs' (externalized) -> RollupError in production builds.
+      inline: ['@nuxthub/db']
     },
     // storage: {
     //   hub: {
