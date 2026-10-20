@@ -20,6 +20,11 @@ export default defineNuxtConfig({
   hub: {
     db: 'sqlite'
   },
+  runtimeConfig: {
+    // Declared so NUXT_SESSION_COOKIE_SECURE=false can override it at runtime: h3 defaults the
+    // session cookie to Secure, which browsers drop over plain HTTP (non-localhost) -> 403 after login.
+    session: { cookie: { secure: true } }
+  },
   nitro: {
     externals: {
       external: ['drizzle-orm', 'better-sqlite3']

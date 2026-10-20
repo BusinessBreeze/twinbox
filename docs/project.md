@@ -77,8 +77,6 @@ Housekeeping:
 ## Make sources plug-in-able == different containers, web components
 
 
-- [ ] build and deploy via docker, 
-- [ ] image creation on github
 
 ### Near Term
 - [ ] Chat History
@@ -90,9 +88,6 @@ Housekeeping:
 - [ ] AI IMAP filter suggestions
 - [ ] AI: add restate my request to prompts
 
-- [ ] add "test" to imap/search form
-- [ ] Automations: run now button
-- [ ] Imap action: mark as important
 
 - [ ] Automation: set imap uid to latest
 - [ ] Use websockets instead of poll
@@ -100,3 +95,9 @@ Housekeeping:
 - [ ] don't delete Ex: filter if used in automation.
 
 - Add Badges to pages not yet explored.  When Explored, show explanitory modal.
+- consider combining llm filter/task, imap connection, search
+
+- [ ] add "test" to imap/search form
+- [ ] Automations: run now button
+- [ ] Imap action: mark as important
+- [ ] image creation on github

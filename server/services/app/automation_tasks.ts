@@ -71,8 +71,11 @@ export const send_notification_items = async (taskRequest: any, text: string, co
                         let contentStr = typeof itemObj === 'object' && 'content' in itemObj ? itemObj.content : String(itemObj);
                         let mimeTypeStr = (typeof itemObj === 'object' && itemObj.mime_type) || srcMime || 'text/plain';
 
+                        const isTextMime = mimeTypeStr.toLowerCase().startsWith('text/') ||
+                            mimeTypeStr.toLowerCase().includes('json') ||
+                            mimeTypeStr.toLowerCase().includes('xml');
                         const footer = itemObj?.metadata?.imap?.footer;
-                        if (footer && footer.length > 0) {
+                        if (isTextMime && footer && footer.length > 0) {
                             contentStr += '\n\n' + footer;
                         }
 
@@ -97,8 +100,12 @@ export const send_notification_items = async (taskRequest: any, text: string, co
                         for (const itemObj of artifactList) {
                             if (itemObj && typeof itemObj === 'object' && 'content' in itemObj) {
                                 let contentStr = itemObj.content;
+                                const mime = itemObj.mime_type || 'text/plain';
+                                const isTextMime = mime.toLowerCase().startsWith('text/') ||
+                                    mime.toLowerCase().includes('json') ||
+                                    mime.toLowerCase().includes('xml');
                                 const footer = itemObj?.metadata?.imap?.footer;
-                                if (footer && footer.length > 0) {
+                                if (isTextMime && footer && footer.length > 0) {
                                     contentStr += '\n\n' + footer;
                                 }
                                 items.push({

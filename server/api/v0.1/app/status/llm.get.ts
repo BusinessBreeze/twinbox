@@ -1,4 +1,4 @@
-import { systemMetrics, updateSystemMetrics, parseMetricsType } from '#server/utils/telemetry/system';
+import { systemMetrics, updateSystemMetrics } from '#server/utils/telemetry/system';
 import { db } from "hub:db";
 import { accounts } from "hub:db:schema";
 import { eq } from "drizzle-orm";
@@ -50,18 +50,17 @@ export default defineEventHandler(async (event) => {
     }
   } catch (e) {}
 
-  // If metrics haven't been loaded yet or are 0, trigger an immediate poll
-  if (systemMetrics.activeHardwareVram === 0) {
-    await updateSystemMetrics().catch(() => {});
-  }
+  // Trigger metrics update check (polls /v1/models if 30s elapsed)
+  await updateSystemMetrics().catch(() => {});
+
+  const metrics = systemMetrics.getMetrics();
 
   return {
-    ...systemMetrics.getMetrics(),
+    ...metrics,
     cron_active: cronActive,
     llm_url: process.env.LLM_BASE_URL || '',
-    tts_url: process.env.TTS_BASE_URL || '',
-    apprise_url: process.env.APPRISE_URL || '',
     llm_model: process.env.LLM_MODEL || '',
-    metrics_type: parseMetricsType(process.env.LLM_METRICS_TYPE)
+    tts_url: process.env.TTS_BASE_URL || '',
+    apprise_url: process.env.APPRISE_URL || ''
   };
 });

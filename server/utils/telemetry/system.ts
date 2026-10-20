@@ -1,9 +1,17 @@
+export interface LLMRequestRecord {
+  timestamp: number;
+  success: boolean;
+  isError: boolean;
+  isTimeout: boolean;
+  tokPerSec: number;
+  isTruncated: boolean;
+}
+
 export class SystemMetrics {
   private static instance: SystemMetrics;
 
   public healthy: boolean = false;
-  public kvCacheAllocation: number = 0;
-  public activeHardwareVram: number = 0;
+  private requestHistory: LLMRequestRecord[] = [];
   public recentTokPerSec: number[] = [];
   public tasksQty: number = 0;
   private tasksQtyProvider?: () => number;
@@ -23,14 +31,6 @@ export class SystemMetrics {
     this.healthy = Boolean(val);
   }
 
-  public setKvCacheAllocation(val: number): void {
-    this.kvCacheAllocation = typeof val === 'number' && !isNaN(val) ? val : 0;
-  }
-
-  public setActiveHardwareVram(val: number): void {
-    this.activeHardwareVram = typeof val === 'number' && !isNaN(val) ? val : 0;
-  }
-
   public setTasksQty(val: number): void {
     this.tasksQty = typeof val === 'number' && !isNaN(val) ? Math.max(0, val) : 0;
   }
@@ -39,9 +39,27 @@ export class SystemMetrics {
     this.tasksQtyProvider = provider;
   }
 
+  public recordRequest(entry: Omit<LLMRequestRecord, 'timestamp'>): void {
+    const record: LLMRequestRecord = {
+      timestamp: Date.now(),
+      ...entry
+    };
+    this.requestHistory.push(record);
+    if (this.requestHistory.length > 50) {
+      this.requestHistory.shift();
+    }
+
+    if (entry.success && entry.tokPerSec > 0) {
+      this.recentTokPerSec.push(Number(entry.tokPerSec.toFixed(1)));
+      if (this.recentTokPerSec.length > 10) {
+        this.recentTokPerSec.shift();
+      }
+    }
+  }
+
   public addTokPerSec(val: number): void {
     if (typeof val !== 'number' || isNaN(val) || val <= 0) return;
-    this.recentTokPerSec.push(Number(val.toFixed(2)));
+    this.recentTokPerSec.push(Number(val.toFixed(1)));
     if (this.recentTokPerSec.length > 10) {
       this.recentTokPerSec.shift();
     }
@@ -60,11 +78,29 @@ export class SystemMetrics {
       }
     }
 
+    const total = this.requestHistory.length;
+    const errorCount = this.requestHistory.filter(r => r.isError).length;
+    const timeoutCount = this.requestHistory.filter(r => r.isTimeout).length;
+    const truncatedCount = this.requestHistory.filter(r => r.isTruncated).length;
+    const successful = this.requestHistory.filter(r => r.success && r.tokPerSec > 0);
+
+    const errorRate = total > 0 ? Number((errorCount / total).toFixed(4)) : 0;
+    const timeoutRate = total > 0 ? Number((timeoutCount / total).toFixed(4)) : 0;
+    const failedRate = total > 0 ? Number(((errorCount + timeoutCount) / total).toFixed(4)) : 0;
+    const truncationRate = total > 0 ? Number((truncatedCount / total).toFixed(4)) : 0;
+    const genSpeed = successful.length > 0
+      ? Number((successful.reduce((acc, r) => acc + r.tokPerSec, 0) / successful.length).toFixed(1))
+      : (this.recentTokPerSec.length > 0 ? this.recentTokPerSec[this.recentTokPerSec.length - 1] : 0);
+
     return {
       healthy: this.healthy,
-      kv_cache_allocation: this.kvCacheAllocation,
-      active_hardware_vram: this.activeHardwareVram,
+      error_rate: errorRate,
+      timeout_rate: timeoutRate,
+      failed_rate: failedRate,
+      generation_speed: genSpeed,
+      truncation_rate: truncationRate,
       recent_tok_per_sec: [...this.recentTokPerSec],
+      total_requests: total,
       tasks_qty: tasksQty
     };
   }
@@ -72,92 +108,45 @@ export class SystemMetrics {
 
 export const systemMetrics = SystemMetrics.getInstance();
 
+let lastPollTime = 0;
+let pollTimer: any = null;
+
 /**
- * Parses LLM_METRICS_TYPE safely, stripping quotes and inline comments.
+ * Polls GET {LLM_BASE_URL}/v1/models every 30 s.
+ * healthy = HTTP 200 AND LLM_MODEL is in data[].id.
  */
-export function parseMetricsType(raw?: string): 'ollama' | 'vllm' | 'none' {
-  if (!raw) return 'none';
-  const clean = raw.split('#')[0].replace(/['"]/g, '').toLowerCase().trim();
-  if (clean.includes('ollama')) return 'ollama';
-  if (clean.includes('vllm')) return 'vllm';
-  return 'none';
+export async function updateSystemMetrics(force: boolean = false): Promise<void> {
+  const now = Date.now();
+  if (!force && lastPollTime > 0 && now - lastPollTime < 30000) {
+    return;
+  }
+  lastPollTime = now;
+
+  const baseUrl = (process.env.LLM_BASE_URL || 'http://localhost:11434').replace(/\/+$/, '');
+  const targetModel = (process.env.LLM_MODEL || 'qwen3.8-27b').trim();
+
+  try {
+    const res = await fetch(`${baseUrl}/v1/models`, {
+      signal: AbortSignal.timeout(5000)
+    });
+
+    if (res.ok) {
+      const data: any = await res.json();
+      const models = Array.isArray(data?.data) ? data.data : [];
+      const isAvailable = models.some((m: any) => m.id === targetModel);
+      systemMetrics.setHealthy(isAvailable);
+    } else {
+      systemMetrics.setHealthy(false);
+    }
+  } catch {
+    systemMetrics.setHealthy(false);
+  }
 }
 
-/**
- * Polls LLM endpoint for KV Cache and VRAM metrics based on LLM_METRICS_TYPE.
- */
-export async function updateSystemMetrics(): Promise<void> {
-  const metricsType = parseMetricsType(process.env.LLM_METRICS_TYPE);
-  const baseUrl = (process.env.LLM_BASE_URL || 'http://localhost:11434').replace(/\/+$/, '');
-
-  if (metricsType === 'ollama') {
-    try {
-      const res = await fetch(`${baseUrl}/api/ps`, {
-        signal: AbortSignal.timeout(5000)
-      });
-
-      systemMetrics.setHealthy(res.ok);
-
-      if (res.ok) {
-        const data: any = await res.json();
-        const models = Array.isArray(data?.models) ? data.models : [];
-        let totalVramBytes = 0;
-        for (const m of models) {
-          // If size_vram is non-zero, use it; otherwise fallback to model weight size in memory
-          const vram = Number(m.size_vram) > 0 ? Number(m.size_vram) : Number(m.size || 0);
-          totalVramBytes += vram;
-        }
-        systemMetrics.setActiveHardwareVram(totalVramBytes);
-        // Ollama manages KV cache internally within process VRAM; no standalone dynamic metric
-        systemMetrics.setKvCacheAllocation(0);
-      } else {
-        systemMetrics.setActiveHardwareVram(0);
-        systemMetrics.setKvCacheAllocation(0);
-      }
-    } catch (err: any) {
-      console.error('[System Metrics] Failed to fetch Ollama metrics:', err?.message || err);
-      systemMetrics.setHealthy(false);
-      systemMetrics.setActiveHardwareVram(0);
-      systemMetrics.setKvCacheAllocation(0);
-    }
-  } else if (metricsType === 'vllm') {
-    try {
-      const res = await fetch(`${baseUrl}/metrics`, {
-        signal: AbortSignal.timeout(5000)
-      });
-
-      systemMetrics.setHealthy(res.ok);
-
-      if (res.ok) {
-        const text = await res.text();
-
-        // Parse vllm:gpu_cache_usage_factor (0.0 to 1.0)
-        const kvMatch = text.match(/vllm:gpu_cache_usage_factor(?:\s*\{[^}]*\})?\s+([0-9.eE+-]+)/);
-        if (kvMatch && kvMatch[1]) {
-          systemMetrics.setKvCacheAllocation(parseFloat(kvMatch[1]));
-        } else {
-          systemMetrics.setKvCacheAllocation(0);
-        }
-
-        // Parse any exported memory / VRAM usage gauge
-        const vramMatch = text.match(/vllm:(?:gpu_memory_usage_bytes|model_weights_bytes|gpu_memory_allocated_bytes)(?:\s*\{[^}]*\})?\s+([0-9.eE+-]+)/);
-        if (vramMatch && vramMatch[1]) {
-          systemMetrics.setActiveHardwareVram(parseFloat(vramMatch[1]));
-        } else {
-          systemMetrics.setActiveHardwareVram(0);
-        }
-      } else {
-        systemMetrics.setActiveHardwareVram(0);
-        systemMetrics.setKvCacheAllocation(0);
-      }
-    } catch {
-      systemMetrics.setHealthy(false);
-      systemMetrics.setActiveHardwareVram(0);
-      systemMetrics.setKvCacheAllocation(0);
-    }
-  } else {
-    systemMetrics.setHealthy(false);
-    systemMetrics.setActiveHardwareVram(0);
-    systemMetrics.setKvCacheAllocation(0);
-  }
+// Start periodic polling every 30 seconds
+if (!pollTimer) {
+  updateSystemMetrics(true).catch(() => {});
+  pollTimer = setInterval(() => {
+    updateSystemMetrics(true).catch(() => {});
+  }, 30000);
 }

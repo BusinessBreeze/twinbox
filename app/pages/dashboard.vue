@@ -126,36 +126,47 @@
               />
             </div>
 
-            <!-- 2. VRAM / KV -->
+            <!-- 2. Availability -->
             <div class="kpi-wrapper">
               <KpiText
-                title="VRAM / KV"
-                :value="metrics.active_hardware_vram"
-                :format="() => `${formatVram(metrics.active_hardware_vram)} / ${formatKv(metrics.kv_cache_allocation)}`"
-                color="#1976D2"
-                icon="mdi-memory"
-              />
-            </div>
-
-            <!-- 3. Tok/s (Sparkline) -->
-            <div class="kpi-wrapper">
-              <KpiTextSparkline
-                title="Tok/s"
-                :value="metrics.recent_tok_per_sec || []"
-                :format="(v: any) => v || 0"
-                color="#8E24AA"
-                icon="mdi-chart-bar"
-              />
-            </div>
-
-            <!-- 4. Health -->
-            <div class="kpi-wrapper">
-              <KpiText
-                title="Health"
+                title="Availability"
                 :value="metrics.healthy"
                 :format="(v: any) => v ? 'ONLINE' : 'OFFLINE'"
                 :color="metrics.healthy ? '#43A047' : '#E53935'"
                 :icon="metrics.healthy ? 'mdi-heart-pulse' : 'mdi-alert-circle-outline'"
+              />
+            </div>
+
+            <!-- 3. Tok/s (Generation Speed) -->
+            <div class="kpi-wrapper">
+              <KpiTextSparkline
+                title="Tok/s"
+                :value="metrics.recent_tok_per_sec || []"
+                :format="(v: any) => metrics.generation_speed || v || 0"
+                color="#8E24AA"
+                icon="mdi-speedometer"
+              />
+            </div>
+
+            <!-- 4. Error / Timeout Rate -->
+            <div class="kpi-wrapper">
+              <KpiText
+                title="Error / Timeout"
+                :value="metrics.failed_rate"
+                :format="() => formatErrorTimeout(metrics.error_rate, metrics.timeout_rate)"
+                :color="(metrics.failed_rate || 0) > 0 ? '#E53935' : '#43A047'"
+                :icon="(metrics.failed_rate || 0) > 0 ? 'mdi-alert-circle' : 'mdi-shield-check'"
+              />
+            </div>
+
+            <!-- 5. Truncation Rate -->
+            <div class="kpi-wrapper">
+              <KpiText
+                title="Truncation"
+                :value="metrics.truncation_rate"
+                :format="(v: any) => `${((v || 0) * 100).toFixed(0)}%`"
+                :color="(metrics.truncation_rate || 0) > 0 ? '#FB8C00' : '#1976D2'"
+                icon="mdi-content-cut"
               />
             </div>
           </div>
@@ -223,58 +234,45 @@ const toggleCron = async () => {
 interface StatusMetrics {
   healthy: boolean;
   cron_active: number;
-  active_hardware_vram: number;
-  kv_cache_allocation: number;
+  generation_speed: number;
   recent_tok_per_sec: number[];
+  error_rate: number;
+  timeout_rate: number;
+  failed_rate: number;
+  truncation_rate: number;
+  total_requests: number;
   tasks_qty: number;
   llm_model: string;
   llm_url: string;
   tts_url: string;
   apprise_url: string;
-  metrics_type: string;
 }
 
 const metrics = ref<StatusMetrics>({
   healthy: false,
   cron_active: 1,
-  active_hardware_vram: 0,
-  kv_cache_allocation: 0,
+  generation_speed: 0,
   recent_tok_per_sec: [],
+  error_rate: 0,
+  timeout_rate: 0,
+  failed_rate: 0,
+  truncation_rate: 0,
+  total_requests: 0,
   tasks_qty: 0,
   llm_model: '',
   llm_url: '',
   tts_url: '',
-  apprise_url: '',
-  metrics_type: ''
-});
-
-const isOllama = computed(() => {
-  return (metrics.value?.metrics_type || '').toLowerCase().trim() === 'ollama';
+  apprise_url: ''
 });
 
 const modelDisplay = computed(() => {
-  const type = metrics.value?.metrics_type?.trim();
-  const model = metrics.value?.llm_model?.trim();
-  if (type && model) {
-    return `${type} - ${model}`;
-  }
-  return type || model || '—';
+  return metrics.value?.llm_model?.trim() || '—';
 });
 
-const formatVram = (bytes: number): string => {
-  if (!bytes || bytes <= 0) return '0 GB';
-  const gb = bytes / (1024 * 1024 * 1024);
-  if (gb >= 1) {
-    return `${gb.toFixed(1)} GB`;
-  }
-  const mb = bytes / (1024 * 1024);
-  return `${mb.toFixed(0)} MB`;
-};
-
-const formatKv = (val: number): string => {
-  if (isOllama.value) return 'N/A';
-  if (!val || val <= 0) return '0%';
-  return `${(val * 100).toFixed(0)}%`;
+const formatErrorTimeout = (errRate?: number, toRate?: number): string => {
+  const errPct = ((errRate || 0) * 100).toFixed(0);
+  const toPct = ((toRate || 0) * 100).toFixed(0);
+  return `${errPct}% / ${toPct}%`;
 };
 
 interface UserStatusMetrics {

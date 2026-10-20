@@ -1,10 +1,8 @@
 # syntax=docker/dockerfile:1
-# glibc, not alpine: libsql resolves its native binding at runtime, so Nitro's static
-# dependency trace can't see which variant is needed and always bundles
-# @libsql/linux-x64-gnu. On musl that fails with
-#   Cannot find module '@libsql/linux-x64-musl'
-# On a glibc base the bundled binding is the correct one. Multi-arch safe: the trace
-# follows process.arch, so an arm64 build bundles @libsql/linux-arm64-gnu.
+# glibc, not alpine: libsql selects its native binding at runtime from platform/arch/libc,
+# which Nitro's static dependency trace cannot evaluate. On alpine it bundled the glibc
+# binding and died with "Cannot find module '@libsql/linux-x64-musl'". A glibc base matches
+# what the trace bundles on x64. See the COPY in the runner stage for the arm64 half.
 FROM node:22-slim AS builder
 
 WORKDIR /app
@@ -31,6 +29,16 @@ RUN mkdir -p /app/Artifacts
 
 # Copy compiled standalone output
 COPY --from=builder /app/.output ./.output
+
+# Nitro's trace cannot resolve libsql's runtime-selected native binding, and what it bundles
+# depends on the build arch: on x64 it happens to include @libsql/linux-x64-gnu, on arm64 it
+# includes no binding at all, so the app dies with
+#   Cannot find module '@libsql/linux-arm64-gnu'
+# Overlay the bindings npm actually installed for this platform. Arch-agnostic by
+# construction -- npm only installs the current platform's variants -- so this is correct
+# unchanged on x86_64 and on aarch64 (DGX Spark, Pi 5). Do not "simplify" this away: the
+# traced output looks complete on x64 and is silently empty on arm64.
+COPY --from=builder /app/node_modules/@libsql ./.output/server/node_modules/@libsql
 
 # NOTE: this image deliberately cannot migrate. NuxtHub only applies migrations during
 # build and dev (applyMigrationsDuringBuild / applyMigrationsDuringDev) -- the build-time
