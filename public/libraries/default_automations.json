@@ -224,7 +224,7 @@
     "filter": {
       "name": "Research & Publication Detector",
       "description": "Detects academic newsletters, market reports, and scientific updates.",
-      "prompt": "Determine whether this email is an industry newsletter, technical report, scientific publication, or academic digest."
+      "prompt": "Determine whether this email is an industry newsletter, technical report, scientific publication, or academic digest. Newsletters and marketing emails from technology companies sent to their subscribers (product news, webinar or event announcements) count as industry newsletters."
     },
     "generator": {
       "name": "Publication Digest",

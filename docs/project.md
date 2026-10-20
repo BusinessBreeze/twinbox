@@ -35,7 +35,7 @@ API contract: http://localhost:3000/_swagger or http://localhost:3000/_scalar
 - [ ] Websock for "events" to avoid polling
 
 ### Bugs
-- [ ] Chatterbox docker bloat
+- [ ] Chatterbox docker bloat - only in turbo?
 
 ## Current
 
@@ -48,8 +48,6 @@ UI:
 - [ ] TASK: set order chips/mime_types manually
 
 Infrastructure:
-- [ ] docker container
-- [ ]   yaml/env overrides
 - [ ] CONF_OPTS: registration on/off, task length max, email tbl length max, 
 - [ ] implement or remove auth/verify
 
@@ -58,7 +56,6 @@ Housekeeping:
 - [ ] rename llm_create_artifact => table name: tasks
 - [ ] rename "NOTIFICATIONS_channels" => dest?
 - [ ] user documentation
-- [ ] Tamara: redress word: task.multiple, maybe just move to icons with hovers?
 - [ ] upstream user schema changes to admin
 - [ ] FORMS: add opts:{} for get/set specific keys
 
@@ -95,17 +92,19 @@ Housekeeping:
 - [ ] don't delete Ex: filter if used in automation.
 - [ ] implement remove account. (account currently has delete on it.)
 - [ ] remove oauth
+- [ ] duplicate automation button
 
 - Add Badges to pages not yet explored.  When Explored, show explanitory modal.
 - consider combining llm filter/task, imap connection, search
 
-- [ ] add "test" to imap/search form
-- [ ] Automations: run now button
+- [ ] add "test" to notifications form 
+- [ ] Automations: run now button with what passed and the results.
 - [ ] Imap action: mark as important
 - [ ] test image creation on github
 - [ ] way for tamara to give templates.
-- [ ] implement versioning for base layer/use in nuxt
+    combine connections/searches, and automations, filters and actions.
 
+- [ ] change task names to numbered lines.
 
 Releasing a twinbox image (VS Code):
 
@@ -115,3 +114,8 @@ git push --follow-tags
 
 Check: GitHub → Actions tab → wait for the build to finish (green check).
 Image: ghcr.io/businessbreeze/twinbox:<version>
+
+
+Split tasks: today it holds automation settings (multiple, imap_mark_read, source_links, only_new) plus the actual tasks list. Better: automations.options (JSON) and automations.tasks (array).
+
+Give steps fixed IDs: send_items currently finds its sources by display name, which is where the silent fallback to the raw email (.txt) came from. With a stable id per step and references by ID, a reference can’t break by accident.

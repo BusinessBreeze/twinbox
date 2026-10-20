@@ -130,7 +130,7 @@ export const send_notification_items = async (taskRequest: any, text: string, co
             return;
         }
 
-        const title = context?.automationName || 'Email Reporter';
+        const title = context?.automationName || 'TwinBox';
         await notificationService.sendItems(destination, title, items, { keep_threadid: keepThreadId });
         await emitTelemetryEvent({
             scope: EventScope.SYSTEM,

@@ -17,7 +17,7 @@
 
 ## Overview
 
-**TwinBox** (also referred to as the Email Reporter) is an intelligent assistant designed to summarize incoming emails and push high-fidelity, actionable reports to your preferred notification channels. 
+**TwinBox** is an intelligent assistant designed to summarize incoming emails and push high-fidelity, actionable reports to your preferred notification channels. 
 
 ## Key Capabilities
 

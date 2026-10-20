@@ -1,6 +1,7 @@
 import { zod_rules } from '#shared/rules/app/connections_imap'
 import { getRules } from '#b/shared/rules/getRules'
 import { z } from 'zod'
+import { apiPost } from '#ba/utils/fetch/wrappers'
 
 const rules = getRules(zod_rules);
 
@@ -65,6 +66,13 @@ export default function (t: any) {
     return {
         title: 'table.connections_imap.title',
         headers: getHeaders(t),
+        formActions: [
+            {
+                label: t('table.connections_imap.test'),
+                icon: 'mdi-connection',
+                run: (data: any) => apiPost('/api/v0.1/app/connections_imap/test', data)
+            }
+        ],
         ...meta
     }
 }

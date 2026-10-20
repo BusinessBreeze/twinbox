@@ -3,9 +3,8 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  // extends: ['../nuxt-base-app'],
-  extends: [
-    ['github:mwolf-pi3g/nuxt-base-app#v0.0.1', { install: true }],
+  extends: [ // Managed by Tools/release.mjs  DO NOT EDIT MANUALLY
+    ['github:mwolf-pi3g/nuxt-base-app#v0.0.3', { install: true }],
     // '/home/mwolf/Desktop/test/nuxt-base-app'
     // '/home/mwolf/Desktop/Git/GITHUB/nuxt-base-app'
   ],

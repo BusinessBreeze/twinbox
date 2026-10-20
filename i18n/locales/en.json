@@ -353,6 +353,7 @@
       "credential": "Password/Credential",
       "oauth_refresh_token": "OAuth Refresh Token",
       "oauth_token_expiry": "Token Expiry (Epoch)",
+      "test": "Test connection",
       "read": {
         "success": "IMAP connections retrieved successfully"
       },
@@ -997,7 +998,9 @@
       "info_automation_start": "Automation '{name}' started",
       "info_automation_end": "Automation '{name}' completed",
       "warn_automation_already_active": "Already in queue: {name}",
-      "error_queue_full": "Queue max depth reached ({maxDepth}). Task was rejected"
+      "error_queue_full": "Queue max depth reached ({maxDepth}). Task was rejected",
+      "info_imap_test_success": "IMAP test '{name}': {message}",
+      "error_imap_test_fail": "IMAP test '{name}' failed: {message}"
     }
   },
   "user_events": {

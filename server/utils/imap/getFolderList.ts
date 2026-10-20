@@ -7,12 +7,12 @@ import { ImapFlow } from 'imapflow';
 export const getFolderList = async (record: any) => {
     const client = new ImapFlow({
         host: record.host,
-        port: record.port,
-        secure: record.use_ssl === 1,
+        port: Number(record.port) || record.port,
+        secure: record.use_ssl === 1 || record.use_ssl === true,
         auth: {
             user: record.username,
             pass: record.auth_type === 'login' ? record.config?.credential : undefined,
-            accessToken: record.auth_type === 'oauth' ? record.config?.credential : undefined,
+            accessToken: record.auth_type === 'oauth' ? (record.config?.credential || record.config?.oauth_refresh_token) : undefined,
         },
         connectionTimeout: 10000,
         greetingTimeout: 20000,
@@ -29,6 +29,12 @@ export const getFolderList = async (record: any) => {
     } catch (err: any) {
         console.error(`[IMAP getFolderList] Failed to get folders for connection ${record.id}:`, err?.message || err);
         throw err;
+    } finally {
+        try {
+            client.close();
+        } catch {
+            // ignore error on close
+        }
     }
 };
 

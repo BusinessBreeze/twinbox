@@ -353,6 +353,7 @@
       "credential": "Passwort/Zugangsdaten",
       "oauth_refresh_token": "OAuth-Refresh-Token",
       "oauth_token_expiry": "Token-Ablaufzeit (Epoch)",
+      "test": "Verbindung testen",
       "read": {
         "success": "IMAP-Verbindungen erfolgreich geladen"
       },
@@ -997,7 +998,9 @@
       "info_automation_start": "Automatisierung '{name}' gestartet",
       "info_automation_end": "Automatisierung '{name}' abgeschlossen",
       "warn_automation_already_active": "Bereits in Warteschlange: {name}",
-      "error_queue_full": "Maximale Warteschlangentiefe erreicht ({maxDepth}). Aufgabe wurde abgelehnt"
+      "error_queue_full": "Maximale Warteschlangentiefe erreicht ({maxDepth}). Aufgabe wurde abgelehnt",
+      "info_imap_test_success": "IMAP-Test '{name}': {message}",
+      "error_imap_test_fail": "IMAP-Test '{name}' fehlgeschlagen: {message}"
     }
   },
   "user_events": {
