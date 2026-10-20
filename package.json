@@ -50,7 +50,7 @@
     "vuetify": "^4.0.5",
     "vuetify-nuxt-module": "^0.19.5"
   },
-  "version": "0.3.1",
+  "version": "0.3.2",
   "engines": {
     "node": "24.x"
   }
