@@ -1,0 +1,68 @@
+[
+    {
+        "name": "email",
+        "children": [
+            {
+                "name": "crud",
+                "children": [
+                    {
+                        "name": "create"
+                    },
+                    {
+                        "name": "read"
+                    },
+                    {
+                        "name": "update"
+                    },
+                    {
+                        "name": "delete"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "sources",
+        "children": [
+            {
+                "name": "crud",
+                "children": [
+                    {
+                        "name": "create"
+                    },
+                    {
+                        "name": "read"
+                    },
+                    {
+                        "name": "update"
+                    },
+                    {
+                        "name": "delete"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "automation",
+        "children": [
+            {
+                "name": "crud",
+                "children": [
+                    {
+                        "name": "create"
+                    },
+                    {
+                        "name": "read"
+                    },
+                    {
+                        "name": "update"
+                    },
+                    {
+                        "name": "delete"
+                    }
+                ]
+            }
+        ]
+    }
+]

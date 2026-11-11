@@ -1,0 +1,1 @@
+ALTER TABLE `accounts` ADD `tokens` text DEFAULT '[]' NOT NULL;

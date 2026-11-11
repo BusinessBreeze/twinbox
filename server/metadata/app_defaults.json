@@ -1,0 +1,70 @@
+{
+    "roles": {
+        "admin": [
+            "*"
+        ],
+        "user": []
+    },
+    "admin_role": [
+        "admin"
+    ],
+    "default_roles": [
+        "user"
+    ],
+    "api_token_prefix": "tbx_",
+    "limits": {
+        "jobs_queue": {
+            "max_depth": 100,
+            "concurrent_workers": 2
+        },
+        "automation": {
+            "max_emails_per_fetch": 50
+        },
+        "llm": {
+            "max_prompt_chars": 4000,
+            "max_input_chars": 15000,
+            "timeout_ms": 30000,
+            "max_retries": 1,
+            "max_concurrency": 1
+        },
+        "tts": {
+            "max_chars": 1500,
+            "timeout_ms": 300000
+        },
+        "notifications": {
+            "apprise_timeout_ms": 60000,
+            "retry_delays_ms": [2000, 8000, 20000]
+        },
+        "imap": {
+            "connection_timeout_ms": 10000,
+            "greeting_timeout_ms": 20000,
+            "max_email_mb": 10
+        },
+        "attachments": {
+            "enabled": false,
+            "max_mb": 10,
+            "max_per_email": 20,
+            "types": [
+                "application/pdf", "image/png", "image/jpeg", "image/gif", "image/webp", "text/csv",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            ]
+        },
+        "files": {
+            "max_user_mb": 1024
+        },
+        "sources": {
+            "default_poll_seconds": 3600,
+            "min_poll_seconds": 60,
+            "max_poll_seconds": 604800,
+            "prune_every_hours": 24,
+            "new_search_since_days": 7
+        },
+        "user_events": {
+            "retention_days": 30
+        },
+        "accounts": {
+            "max_api_tokens": 20
+        }
+    }
+}
