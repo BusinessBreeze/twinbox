@@ -1,0 +1,102 @@
+[
+  {
+    "messageId": "<ai-act-110@news.example.com>",
+    "from": "newsletter@aiact.example.com",
+    "subject": "The AI Act Newsletter #110: Powers in Practice",
+    "date": "2026-09-08T05:43:39.000Z",
+    "staging_item": 1,
+    "text": "This week: the Commission used its new enforcement powers under the AI Act and requested information from model providers. Standards bodies published drafts for high-risk systems.",
+    "html": "",
+    "to": "inbox@example.com"
+  },
+  {
+    "messageId": "<ki-verordnung-12@news.example.de>",
+    "from": "redaktion@ki-news.example.de",
+    "subject": "KI-Verordnung kompakt #12",
+    "date": "2026-09-10T07:00:00.000Z",
+    "staging_item": 1,
+    "text": "Die KI-Verordnung (AI Act) gilt seit August schrittweise. Diese Woche: Pflichten für Anbieter von Allzweckmodellen und die Rolle der nationalen Marktaufsicht.",
+    "html": "",
+    "to": "inbox@example.com"
+  },
+  {
+    "messageId": "<cybersec-76@stats.example.com>",
+    "from": "hello@cybersec.example.com",
+    "subject": "CyberSecStats #76 - Post breach vibes",
+    "date": "2026-09-15T20:40:09.000Z",
+    "staging_item": 1,
+    "text": "Breach costs rose 9% year over year. Agentic tools changed headcount plans in security teams. Board alignment remains the top CISO concern.",
+    "html": "",
+    "to": "inbox@example.com"
+  },
+  {
+    "messageId": "<invoice-2026-0815@billing.example.com>",
+    "from": "billing@hosting.example.com",
+    "subject": "Invoice 2026-0815",
+    "date": "2026-09-01T09:00:00.000Z",
+    "staging_item": 0,
+    "text": "Your invoice 2026-0815 over 49.00 EUR is attached as PDF. Payment is due within 14 days.",
+    "html": "",
+    "to": "inbox@example.com"
+  },
+  {
+    "messageId": "<html-only-1@shop.example.com>",
+    "from": "deals@shop.example.com",
+    "subject": "Autumn deals",
+    "date": "2026-09-20T12:00:00.000Z",
+    "staging_item": 1,
+    "text": "",
+    "html": "<html><body><h1>Autumn deals</h1><p>Up to <b>30%</b> off all garden tools this week.</p></body></html>",
+    "to": "inbox@example.com"
+  },
+  {
+    "messageId": "<long-report-q3@corp.example.com>",
+    "from": "reports@corp.example.com",
+    "subject": "Q3 report (long)",
+    "date": "2026-10-01T08:00:00.000Z",
+    "staging_item": 1,
+    "text": "Paragraph 1: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 2: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 3: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 4: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 5: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 6: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 7: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 8: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 9: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 10: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 11: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 12: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 13: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 14: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 15: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 16: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 17: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 18: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 19: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 20: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 21: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 22: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 23: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 24: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 25: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 26: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 27: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 28: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 29: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.\n\nParagraph 30: The quarterly report covers revenue, hiring and the roadmap for the next release in detail.",
+    "html": "",
+    "to": "inbox@example.com"
+  },
+  {
+    "messageId": "<no-subject-1@friend.example.com>",
+    "from": "friend@friend.example.com",
+    "subject": "",
+    "date": "2026-10-02T18:30:00.000Z",
+    "staging_item": 1,
+    "text": "Are we still on for Saturday?",
+    "html": "",
+    "to": "inbox@example.com"
+  },
+  {
+    "messageId": "<thread-1@team.example.com>",
+    "from": "anna@team.example.com",
+    "subject": "Release planning",
+    "date": "2026-10-05T10:00:00.000Z",
+    "staging_item": 1,
+    "text": "Can we move the release to the 20th? QA needs two more days.",
+    "html": "",
+    "to": "inbox@example.com"
+  },
+  {
+    "messageId": "<thread-2@team.example.com>",
+    "from": "ben@team.example.com",
+    "subject": "Re: Release planning",
+    "date": "2026-10-05T11:15:00.000Z",
+    "staging_item": 1,
+    "text": "Fine with me. I will update the release notes.\n\n> Can we move the release to the 20th? QA needs two more days.",
+    "html": "",
+    "to": "inbox@example.com"
+  },
+  {
+    "messageId": "<prize-999@winner.example.net>",
+    "from": "claims@winner.example.net",
+    "subject": "You have WON a prize!!!",
+    "date": "2026-10-06T03:12:00.000Z",
+    "staging_item": 0,
+    "text": "Congratulations! Click here to claim your prize. Offer expires in 24 hours.",
+    "html": "",
+    "to": "inbox@example.com"
+  }
+]

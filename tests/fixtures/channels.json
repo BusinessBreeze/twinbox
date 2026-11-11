@@ -1,0 +1,33 @@
+[
+  {
+    "name": "test notification",
+    "provider": "apprise",
+    "type": "ntfy",
+    "config": {
+      "template": "{schema}://{host}:{port}/{targets}",
+      "host": "192.168.0.138",
+      "targets": "<TEST_NTFY_TOPIC>",
+      "schema": "ntfy",
+      "port": "8094"
+    }
+  },
+  {
+    "name": "Imap Test",
+    "provider": "imap",
+    "type": "preset",
+    "config": {
+      "template": "imap_connection://{record_id}/{folder}",
+      "record_id": "<id of the IMAP source>",
+      "folder": "Junk"
+    }
+  },
+  {
+    "name": "Persist Local",
+    "provider": "local",
+    "type": "disk",
+    "config": {
+      "template": "file://",
+      "schema": "imap_login"
+    }
+  }
+]

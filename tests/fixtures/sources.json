@@ -1,0 +1,24 @@
+[
+  {
+    "name": "Work mailbox",
+    "type": "imap",
+    "poll_seconds": 3600,
+    "max_items_per_fetch": 20,
+    "config": {
+      "host": "mail.pi3g.com",
+      "port": 993,
+      "use_ssl": true,
+      "username": "michael@businessbreeze.de"
+    },
+    "settings": {
+      "searches": [
+        {
+          "name": "Last 7 days",
+          "search": {
+            "_since_days": 7
+          }
+        }
+      ]
+    }
+  }
+]
