@@ -17,6 +17,11 @@ COPY . .
 # Build Nuxt/Nitro standalone server
 RUN npm run build
 
+# The migrate image (this stage) runs tools/db_migrate.mjs, which reads .nuxt/hub/db/config.json for the migration
+# folders of the app and its layers. `nuxt build` doesn't leave that file behind (with the base layer from GitHub),
+# `nuxt prepare` writes it. Without it the migration stops with ENOENT on that path.
+RUN npx nuxt prepare
+
 # --- Production Runner ---
 FROM node:24-slim AS runner
 
