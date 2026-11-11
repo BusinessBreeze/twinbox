@@ -30,9 +30,10 @@ export default defineEventHandler(async (event) => {
   // 1. The title is the automation's name; a taken name is refused by the service (the browser picks a free one)
   const autoService = await getAutomationService(event);
 
-  // 2. Resolve local disk notification channel for sending tasks
+  // 2. A template's notification tasks save to the user's local channel (created on first use). Only looked up when
+  //    a task needs it; a failure is reported as it is, not hidden behind the task's missing destination ("Required").
   let localChannelId: string | null = null;
-  try {
+  if ((tasks || []).some((t: any) => t?.name === 'send_items')) {
     const notifService = await getNotificationService(event);
     const channels = await notifService.read();
     const channelList = Array.isArray(channels) ? channels : (channels ? [channels] : []);
@@ -44,12 +45,10 @@ export default defineEventHandler(async (event) => {
         name: 'Persist Local',
         provider: 'local',
         type: 'disk',
-        config: {}
+        config: { template: 'file://' },   // the local provider's only template (notification_local.ts)
       });
     }
     localChannelId = localChannel?.id || null;
-  } catch (notifErr) {
-    console.error('Failed to resolve local notification channel:', notifErr);
   }
 
   // 3. Convert the template's tasks (old format: referenced by output name) to task instances with ids

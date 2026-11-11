@@ -94,6 +94,24 @@ describe('automations', () => {
         expect((await client.patch(`/api/v0.1/app/automation/${first.id}`, { name: 'Taken' })).status).toBe(200);
     });
 
+    it('adds a library template with a notification task for a user without a local channel', async () => {
+        // A fresh account has no channels: "Add" must create the local one itself (it once failed with "Required")
+        const channels = await client.ok<any[]>('GET', '/api/user/notification');
+        for (const c of channels.filter((c) => c.provider === 'local' || /local/i.test(c.name))) {
+            await client.ok('DELETE', `/api/user/notification/${c.id}`);
+        }
+        const created = await client.ok('POST', '/api/v0.1/app/automation/add_template', {
+            title: 'Template with notification', filter: { prompt: 'Only research' },
+            tasks: [{ name: 'send_items', arguments: { source: 'email' } }],
+        });
+        const destination = created.tasks[0].args.destination;
+        expect(created.tasks[0].type).toBe('notification');
+        expect(destination).toBeTruthy();
+        const channel = await client.ok('GET', `/api/user/notification/${destination}`);
+        expect(channel).toMatchObject({ provider: 'local', type: 'disk' });
+        await client.ok('DELETE', `/api/v0.1/app/automation/${created.id}`);
+    });
+
     it('rejects a task that reads from an unknown input', async () => {
         const res = await client.post('/api/v0.1/app/automation', {
             name: 'Bad input', source_key: staging.id,
