@@ -1,0 +1,13 @@
+node_modules
+.output
+.nuxt
+.data
+.git
+.env
+.DS_Store
+*.log
+**/.env
+tests/.tmp
+
+# Abandoned prototypes, not part of the app
+Plugins/deprecated

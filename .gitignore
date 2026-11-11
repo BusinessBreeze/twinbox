@@ -1,0 +1,32 @@
+# Nuxt dev/build outputs
+.output
+.data*
+.nuxt
+.nitro
+.cache
+dist
+.vscode
+Artifacts/
+Testing/
+# Test runs (throwaway databases, artifacts)
+tests/.tmp/
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# Local session cookies (curl testing)
+cookie.txt
