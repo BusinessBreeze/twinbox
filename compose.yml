@@ -1,0 +1,59 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: twinbox-app
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Testing/.data:/app/.data
+      - ./Artifacts:/app/Artifacts
+
+  # One-shot schema migration. NOT started by `docker compose up` (see profiles) -- run it
+  # explicitly, and run it before the first `up` on a fresh deploy:
+  #   docker compose run --rm migrate
+  # Uses the `builder` stage because the runtime image has no migration code. Idempotent:
+  # applied migrations are tracked in the _hub_migrations table, so re-running is a no-op.
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    env_file:
+      - ./.env
+    volumes:
+      - ./Testing/.data:/app/.data
+    command: node tools/db_migrate.mjs
+    profiles:
+      - tools
+  # apprise:
+  #   image: caronc/apprise:latest
+  #   container_name: apprise
+  #   restart: unless-stopped
+  #   user: "1000:1000"
+  #   ports:
+  #     - "8100:8000"
+  #   volumes:
+  #     - apprise-config:/config
+  #     - apprise-attach:/attach
+  #   environment:
+  #     - APPRISE_STATEFUL_MODE=disabled
+  #     - APPRISE_WORKER_COUNT=1
+  #     - API_ONLY=YES
+  #     - TZ=Europe/Berlin
+  #   # hardening
+  #   security_opt:
+  #     - no-new-privileges:true
+  #   read_only: true
+  #   tmpfs:
+  #     - /tmp
+  #   cap_drop:
+  #     - ALL
+
+  # volumes:
+  #   apprise-config:
+  #   apprise-attach:

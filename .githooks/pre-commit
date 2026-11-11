@@ -1,0 +1,3 @@
+#!/bin/sh
+# Fast tests before every commit (seconds, no server). Skip once with: git commit --no-verify
+npm run -s test:fast
