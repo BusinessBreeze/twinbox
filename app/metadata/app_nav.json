@@ -1,0 +1,79 @@
+{
+    "locales_show": true,
+    "theme_show": true,
+    "pages": [
+        {
+            "name": "Basic",
+            "children": [
+                {
+                    "name": "dashboard",
+                    "icon": "mdi-view-dashboard-outline",
+                    "path": "/dashboard"
+                },
+                {
+                    "name": "automation libraries",
+                    "icon": "mdi-bookshelf",
+                    "path": "/automation_libraries"
+                }
+            ]
+        },
+        {
+            "name": "Advanced",
+            "children": [
+                {
+                    "name": "sources",
+                    "icon": "mdi-card-account-details-outline",
+                    "path": "/sources"
+                },
+                {
+                    "name": "notifications",
+                    "icon": "mdi-message-outline",
+                    "path": "/notifications"
+                },
+                {
+                    "name": "automations",
+                    "icon": "mdi-robot-happy-outline",
+                    "path": "/automations"
+                }
+            ]
+        },
+        {
+            "name": "Repositories",
+            "children": [
+                {
+                    "name": "email",
+                    "icon": "mdi-email-outline",
+                    "path": "/repositories"
+                },
+                {
+                    "name": "artifacts",
+                    "icon": "mdi-file-multiple-outline",
+                    "path": "/artifacts"
+                }
+            ]
+        },
+        {
+            "name": "Preferences",
+            "children": [
+                {
+                    "name": "account",
+                    "icon": "mdi-account-cog-outline",
+                    "path": "/account"
+                },
+                {
+                    "name": "storage",
+                    "icon": "mdi-harddisk",
+                    "path": "/storage"
+                }
+            ]
+        },
+        {
+            "name": "admin",
+            "icon": "mdi-application-cog-outline",
+            "path": "/admin",
+            "permissions": [
+                "ui.admin"
+            ]
+        }
+    ]
+}

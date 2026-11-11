@@ -1,0 +1,1153 @@
+{
+  "test": "test",
+  "common": {
+    "none": "None",
+    "last_run": "Last run",
+    "active": "Active",
+    "inactive": "Inactive",
+    "info": "Info",
+    "warning": "Warning",
+    "error": "Error",
+    "date": "Date",
+    "message": "Message",
+    "loading": "Loading events...",
+    "no_events": "No events found for this automation",
+    "items_per_page": "Items",
+    "howto": "How To",
+    "toggle_theme": "Toggle Theme",
+    "logout": "Logout",
+    "pin": "Pin Drawer",
+    "unpin": "Unpin Drawer"
+  },
+  "pages": {
+    "dashboard": "Dashboard",
+    "preferences": "Preferences",
+    "email": "E-Mail",
+    "sources": "Sources",
+    "repositories": "Repositories",
+    "automations": "Automations",
+    "admin": "Admin",
+    "howto": "How To",
+    "Advanced": "Advanced",
+    "Preferences": "Preferences",
+    "notifications": "Notifications",
+    "account": "Account",
+    "Basic": "Basic",
+    "automation libraries": "Automation Library",
+    "automation_libraries": "Automation Library",
+    "artifacts": "Artifacts",
+    "storage": "Storage"
+  },
+  "rules": {
+    "invalid_field": "Invalid field",
+    "password": {
+      "type": "Password must be a string",
+      "required": "Password is required",
+      "too_short": "Password must be at least 12 characters long",
+      "too_long": "Password is too long",
+      "missing_lower": "Password must contain a lowercase letter",
+      "missing_upper": "Password must contain an uppercase letter",
+      "missing_number": "Password must contain a number",
+      "missing_special": "Password must contain a special character",
+      "mismatch": "Passwords do not match"
+    },
+    "report_spec": {
+      "name": {
+        "type": "Name must be a string",
+        "min": "Name too short",
+        "max": "Name too long"
+      },
+      "dow": {
+        "invalid": "Schedule is invalid"
+      },
+      "desc": {
+        "min": "Description too short (min 20)",
+        "max": "Description too long (max 300)"
+      }
+    },
+    "report_item": {
+      "email_id": {
+        "type": "Email ID must be a string",
+        "required": "Email ID is required"
+      },
+      "spec_id": {
+        "type": "Specification ID must be a string",
+        "required": "Specification ID is required"
+      },
+      "text": {
+        "type": "Overview text must be a string",
+        "required": "Overview text is required",
+        "too_long": "Overview text is too long"
+      },
+      "sent": {
+        "type": "Sent flag must be a boolean"
+      }
+    },
+    "report": {
+      "name": {
+        "required": "Report name is required"
+      },
+      "dow": {
+        "invalid": "Invalid days of week selected"
+      },
+      "desc": {
+        "too_long": "Description is too long"
+      },
+      "lang": {
+        "invalid": "Invalid language selected"
+      }
+    },
+    "required": "This field is required",
+    "unique_name": "Name must be unique for this task type",
+    "update": {
+      "empty": "Update data is empty"
+    }
+  },
+  "form": {
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "actions": {
+      "update": "Update",
+      "delete": "Delete",
+      "setPassword": "Set Password"
+    }
+  },
+  "table": {
+    "report_spec": {
+      "title": "Report Specifications",
+      "name": "Name",
+      "desc": "Description",
+      "lang": "Language",
+      "dow": "Schedule (DOW)",
+      "enum_labels": {
+        "dow_short": [
+          "Su",
+          "Mo",
+          "Tu",
+          "We",
+          "Th",
+          "Fr",
+          "Sa"
+        ]
+      }
+    },
+    "email": {
+      "title": "Emails",
+      "messageId": "Message ID",
+      "date": "Date",
+      "from": "From",
+      "to": "To",
+      "subject": "Subject",
+      "no_subject": "(No Subject)",
+      "text": "Content",
+      "staging": "Staging",
+      "set_staging": "Set as Staging Item",
+      "clear_staging": "Remove from Staging",
+      "rules": {
+        "from": {
+          "type": "Sender must be text",
+          "required": "Sender is required",
+          "invalid": "Sender must be an email address"
+        },
+        "to": {
+          "type": "Recipient must be text",
+          "required": "Recipient is required",
+          "invalid": "Recipient must be an email address"
+        },
+        "subject": {
+          "type": "Subject must be text",
+          "too_long": "Subject is too long (max. 255 characters)"
+        },
+        "text": {
+          "type": "Content must be text",
+          "required": "Content is required"
+        },
+        "html": {
+          "type": "HTML content must be text"
+        },
+        "date": {
+          "type": "Date must be text",
+          "required": "Date is required"
+        },
+        "staging_item": {
+          "type": "Staged must be 0 or 1"
+        }
+      },
+      "attachments": "Attachments"
+    },
+    "report_item": {
+      "title": "Generated Report Items",
+      "date": "Date",
+      "email_id": "Email ID",
+      "email_subject": "Email Subject",
+      "report_spec_name": "Report Spec",
+      "text": "Overview"
+    },
+    "automation": {
+      "title": "Automations",
+      "name": "Name",
+      "active": "Active",
+      "tasks": "Tasks",
+      "last_issue": "Last issue",
+      "options": {
+        "title": "Source options",
+        "mark_read": "Mark processed emails as read",
+        "mark_important": "Mark processed emails as important",
+        "add_source_links": "Add source links",
+        "artifact_keep_days": "Keep artifacts for (days, 0 = always)",
+        "artifact_keep_last": "Keep only the newest artifacts (0 = all)"
+      },
+      "source": "Source",
+      "filter_prompt": {
+        "title": "Filter Prompt",
+        "placeholder": "Describe which items to keep, e.g. \"Only newsletters about AI regulation.\" Empty: keep all."
+      },
+      "rules": {
+        "name": {
+          "control": "Remove control characters (e.g. line breaks)",
+          "invalid": "Name must be text",
+          "min": "Name is required",
+          "max": "Name is too long (max. 100 characters)",
+          "duplicate": "An automation with this name already exists"
+        },
+        "active": {
+          "type": "Must be on or off"
+        },
+        "source_key": {
+          "invalid": "Source is invalid",
+          "required": "Choose a source",
+          "deleted": "This source, folder or search no longer exists. Choose another one."
+        },
+        "options": {
+          "invalid": "Options are invalid",
+          "filter_prompt": {
+            "too_long": "Filter prompt is too long"
+          },
+          "artifact_keep_days": "Days must be a whole number from 0",
+          "artifact_keep_last": "The number must be a whole number from 0"
+        },
+        "tasks": {
+          "invalid": "Tasks are invalid",
+          "prompt": {
+            "required": "Prompt is required",
+            "too_long": "Prompt is too long"
+          },
+          "destination": {
+            "required": "Channel is required"
+          },
+          "id": {
+            "duplicate": "Two tasks have the same id"
+          },
+          "type": {
+            "unknown": "Unknown task type"
+          },
+          "inputs": {
+            "too_few": "Choose at least one input",
+            "too_many": "Too many inputs for this task",
+            "not_found": "An input is not available here (moved or deleted?)",
+            "no_output": "An input produces no output",
+            "wrong_type": "An input produces a kind of item this task cannot read"
+          },
+          "label": {
+            "required": "Every task needs a label",
+            "duplicate": "Two tasks have the same label"
+          }
+        }
+      }
+    },
+    "notification_channels": {
+      "title": "Notification Channels",
+      "name": "Name",
+      "provider": "Provider",
+      "type": "Type",
+      "created_at": "Created At",
+      "is_default": "Default",
+      "set_default": "Set Default"
+    },
+    "account": {
+      "lang": "Language",
+      "email": "Email",
+      "role": "Role",
+      "set_ident": "Set Identity",
+      "user": "Username"
+    },
+    "common": {
+      "owner": "Owner",
+      "actions": "Actions",
+      "none": "None",
+      "view": "View",
+      "close": "Close",
+      "last_run": "Last run",
+      "inactive": "Inactive"
+    },
+    "sources": {
+      "title": "Sources",
+      "name": "Name",
+      "type": "Type",
+      "config": "Connection",
+      "poll_seconds": "Poll (sec)",
+      "max_items_per_fetch": "Per fetch",
+      "test": "Test connection",
+      "connected": "Connected",
+      "run_now": "Run now",
+      "settings": "Settings",
+      "retention_days": "Keep (days)",
+      "max_items": "Max items",
+      "max_size_mb": "Max MB",
+      "limits_note": "Storage limits: 0 = no limit",
+      "rules": {
+        "name": {
+          "control": "Remove control characters (e.g. line breaks)",
+          "invalid": "Name must be text",
+          "min": "Name is required",
+          "max": "Name is too long (max. 100 characters)"
+        },
+        "type": {
+          "invalid": "Type is invalid",
+          "required": "Type is required"
+        },
+        "poll_seconds": {
+          "invalid": "Poll interval must be a whole number of seconds",
+          "min": "Poll interval is shorter than this server allows",
+          "max": "Poll interval is longer than this server allows"
+        },
+        "max_items_per_fetch": {
+          "invalid": "Must be a whole number",
+          "min": "Must be at least 1",
+          "max": "More items per fetch than this server allows"
+        },
+        "limits": {
+          "invalid": "Enter a whole number, 0 or more"
+        },
+        "settings": {
+          "invalid": "Settings are invalid"
+        },
+        "config": {
+          "host": {
+            "required": "Host is required",
+            "invalid": "Host must be a host name or IP address"
+          },
+          "port": {
+            "invalid": "Port must be a whole number from 1 to 65535"
+          },
+          "use_ssl": {
+            "invalid": "SSL must be on or off"
+          },
+          "username": {
+            "required": "Username is required"
+          },
+          "auth_type": {
+            "invalid": "Unknown sign-in method"
+          },
+          "credential": {
+            "required": "Password is required"
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "title": "Artifacts",
+      "id": "File",
+      "extension": "Type",
+      "size": "Size (Bytes)",
+      "updatedAt": "Created",
+      "view": "View File",
+      "download": "Download File"
+    }
+  },
+  "$vuetify": {
+    "badge": "Badge",
+    "open": "Open",
+    "close": "Close",
+    "dismiss": "X",
+    "datePicker": {
+      "itemsSelected": "{0} selected",
+      "ariaLabel": {
+        "nextMonth": "Next month",
+        "nextYear": "Next year",
+        "prevMonth": "Previous month",
+        "prevYear": "Previous year"
+      },
+      "header": "Select date",
+      "title": "Select date"
+    },
+    "datepicker": {
+      "itemsSelected": "{0} selected",
+      "ariaLabel": {
+        "nextMonth": "Next month",
+        "nextYear": "Next year",
+        "prevMonth": "Previous month",
+        "prevYear": "Previous year"
+      },
+      "header": "Select date",
+      "title": "Select date"
+    },
+    "dataFooter": {
+      "itemsPerPageText": "Items per page:",
+      "itemsPerPageAll": "All",
+      "pageText": "{0}-{1} of {2}",
+      "firstPage": "First page",
+      "prevPage": "Previous page",
+      "nextPage": "Next page",
+      "lastPage": "Last page"
+    },
+    "pagination": {
+      "ariaLabel": {
+        "root": "Pagination Navigation"
+      }
+    },
+    "noDataText": "No data available"
+  },
+  "frontend": {
+    "nav": {
+      "title": "Navigation",
+      "subtitle": "Demo App",
+      "dashboard": "Dashboard",
+      "settings": "Settings",
+      "notifications": "Notifications",
+      "howto": "How does this work?"
+    },
+    "app": {
+      "title": "Email Platform"
+    },
+    "dashboard": {
+      "welcome": "Welcome to the Dashboard",
+      "subtitle": "Built with Nuxt and Vuetify",
+      "description": "This is a basic template setup with Nuxt 4 and Vuetify 3. You can start building your email platform here.",
+      "action1": "Action 1",
+      "action2": "Action 2",
+      "last_issue": "Last issue",
+      "no_recent_automations": "No Recent Automations Run"
+    },
+    "table": {
+      "name": "Name",
+      "status": "Status"
+    },
+    "stats": {
+      "title": "Statistics",
+      "emails_sent": "Emails Sent"
+    },
+    "message": {
+      "title": "Quick Message",
+      "to": "To",
+      "label": "Message",
+      "send": "Send Now"
+    },
+    "footer": {
+      "legal": "Legal"
+    },
+    "auth": {
+      "login_title": "Sign In",
+      "login_instructions": "Enter your credentials to access your account.",
+      "password": "Password",
+      "login_button": "Log In",
+      "no_account": "No account? Create one here.",
+      "signup_title": "Create Account",
+      "signup_instructions": [
+        "Enter your details to register."
+      ],
+      "confirm_password": "Confirm Password",
+      "have_account": "Already have an account? Log in.",
+      "username": "Username",
+      "initial_password_banner": "You are signing in with the start password (ADMIN_PASSWORD). Please set your own password.",
+      "change_password": "Change password"
+    },
+    "landing": {
+      "hero": {
+        "title": "Master Your Inbox with FOMO-Mail",
+        "subtitle": "Never miss a critical update again. Our AI-driven platform categorizes, summarizes, and prioritizes your emails so you can focus on what matters.",
+        "cta_start": "Get Started for Free",
+        "cta_login": "Sign In"
+      },
+      "features": {
+        "title": "Why FOMO-Mail?",
+        "ai": {
+          "title": "AI-Powered Summaries",
+          "desc": "Get the gist of long email threads in seconds with our advanced LLM integration."
+        },
+        "smart": {
+          "title": "Smart Categorization",
+          "desc": "Automatically organize your emails into intuitive reports based on your preferences."
+        },
+        "privacy": {
+          "title": "Privacy First",
+          "desc": "Your data is yours. We use state-of-the-art security and never share your information."
+        }
+      },
+      "how_it_works": {
+        "title": "Simple Integration",
+        "desc": "Simply forward your important emails to your unique FOMO-Mail address, and let our engine generate perfect reports for you."
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "success": "Login successful",
+      "invalid_credentials": "Invalid username or password"
+    },
+    "logout": {
+      "success": "Logged out successfully"
+    }
+  },
+  "account": {
+    "read": {
+      "success": "Account loaded successfully"
+    },
+    "create": {
+      "success": "Account created successfully",
+      "failed": "Failed to create account"
+    },
+    "update": {
+      "success": "Account updated successfully",
+      "failed": "Failed to update account"
+    },
+    "delete": {
+      "success": "Account deleted successfully",
+      "failed": "Failed to delete account"
+    },
+    "bad_payload": "Invalid account data",
+    "create_failed": "System error: Account creation failed"
+  },
+  "email": {
+    "read": {
+      "success": "Emails retrieved successfully"
+    },
+    "create": {
+      "success": "Email processed successfully",
+      "failed": "Failed to process email",
+      "owner_not_found": "Internal Error: Recipient account not resolved"
+    },
+    "update": {
+      "success": "Email updated successfully",
+      "failed": "Failed to update email"
+    },
+    "delete": {
+      "success": "Email deleted successfully",
+      "failed": "Failed to delete email"
+    },
+    "bad_payload": "Invalid email data",
+    "format": {
+      "invalid": "Unknown format (json or eml)"
+    },
+    "not_found": "Email not found",
+    "remove_attachments": {
+      "success": "Attachments removed"
+    }
+  },
+  "permissions": {
+    "read": {
+      "success": "Permissions loaded successfully"
+    }
+  },
+  "role": {
+    "read": {
+      "success": "Roles loaded successfully"
+    },
+    "create": {
+      "success": "Role created successfully",
+      "failed": "Failed to create role"
+    },
+    "update": {
+      "success": "Role updated successfully",
+      "failed": "Failed to update role"
+    },
+    "delete": {
+      "success": "Role deleted successfully",
+      "failed": "Failed to delete role"
+    },
+    "bad_payload": "Invalid role data"
+  },
+  "report_spec": {
+    "read": {
+      "success": "Report specifications loaded"
+    },
+    "create": {
+      "success": "Report specification created",
+      "failed": "Failed to create report specification"
+    },
+    "update": {
+      "success": "Report specification updated",
+      "failed": "Failed to update report specification"
+    },
+    "delete": {
+      "success": "Report specification deleted",
+      "failed": "Failed to delete report specification"
+    },
+    "bad_payload": "Invalid report specification data"
+  },
+  "report_item": {
+    "read": {
+      "success": "Report items retrieved"
+    },
+    "create": {
+      "success": "Report item recorded",
+      "failed": "Failed to record report item"
+    },
+    "update": {
+      "success": "Report item updated",
+      "failed": "Failed to update report item"
+    },
+    "delete": {
+      "success": "Report item deleted",
+      "failed": "Failed to delete report item"
+    },
+    "bad_payload": "Invalid report item data"
+  },
+  "notification_channel": {
+    "read": {
+      "success": "Notification channels retrieved successfully"
+    },
+    "create": {
+      "success": "Notification channel created successfully",
+      "failed": "Failed to create notification channel"
+    },
+    "update": {
+      "success": "Notification channel updated successfully",
+      "failed": "Failed to update notification channel"
+    },
+    "delete": {
+      "success": "Notification channel deleted successfully",
+      "failed": "Failed to delete notification channel"
+    },
+    "bad_payload": "Invalid notification channel data"
+  },
+  "notification_channels": {
+    "bad_payload": "Invalid notification channel data",
+    "insert": {
+      "bad_payload": "Invalid notification channel data"
+    }
+  },
+  "imap_search": {
+    "builder": {
+      "and": "AND",
+      "or": "OR",
+      "and_group": "AND",
+      "or_group": "OR",
+      "add_rule": "Rule",
+      "add_and": "AND",
+      "add_or": "OR",
+      "gui_builder": "GUI Builder",
+      "json_view": "JSON View",
+      "delete_group": "Delete Group",
+      "remove_rule": "Remove Rule",
+      "matches": "Matches (=)",
+      "not_matches": "Does NOT match (NOT)",
+      "placeholder_search_value": "Search value...",
+      "placeholder_bytes": "Bytes...",
+      "placeholder_header_name": "Header Name (e.g. X-Spam)",
+      "placeholder_header_value": "Value",
+      "yes": "YES",
+      "no": "NO",
+      "select_date": "Select Date",
+      "empty_group": "Empty group. Add a rule or nested group to filter.",
+      "fields": {
+        "from": "From (Sender)",
+        "to": "To (Recipient)",
+        "cc": "CC",
+        "bcc": "BCC",
+        "subject": "Subject",
+        "body": "Body Text",
+        "text": "Any Text (Header/Body)",
+        "seq": "Sequence Range (e.g. 1:*)",
+        "uid": "UID Range (e.g. 100:*)",
+        "seen": "Read (Seen)",
+        "flagged": "Flagged (Starred)",
+        "answered": "Answered",
+        "deleted": "Deleted",
+        "draft": "Draft",
+        "recent": "Recent",
+        "since": "Since Date",
+        "_since_days": "Since (Days ago)",
+        "before": "Before Date",
+        "_before_days": "Before (Days ago)",
+        "on": "On Date",
+        "_on_days": "On (Days ago)",
+        "sentSince": "Sent Since Date",
+        "_sentSince_days": "Sent Since (Days ago)",
+        "sentBefore": "Sent Before Date",
+        "_sentBefore_days": "Sent Before (Days ago)",
+        "sentOn": "Sent On Date",
+        "_sentOn_days": "Sent On (Days ago)",
+        "larger": "Size Larger Than (Bytes)",
+        "smaller": "Size Smaller Than (Bytes)",
+        "header": "Custom Header"
+      }
+    }
+  },
+  "automation": {
+    "component": {
+      "task_chooser": {
+        "title": "Tasks",
+        "add": "Add task",
+        "empty": "No tasks yet. Click \"+\" to add one.",
+        "label": "Label",
+        "inputs": "Inputs",
+        "source": "Fetched emails",
+        "aggregate": "Combine all inputs",
+        "aggregate_hint": "Off: run once per item. On: run once with all items together.",
+        "move_up": "Move up",
+        "move_down": "Move down",
+        "delete": "Delete",
+        "expand_prompt": "Open large editor",
+        "close": "Close",
+        "no_channels": "No notification channels yet",
+        "required": "Required",
+        "unknown_type": "Unknown task type",
+        "inputs_missing": "Choose at least one input",
+        "input_invalid": "An input is not available here (moved or deleted?)",
+        "args_missing": "A required field is empty",
+        "args_too_long": "A text is longer than its limit",
+        "has_problems": "Fix the tasks marked in red before saving"
+      }
+    },
+    "read": {
+      "success": "Automations retrieved successfully"
+    },
+    "update_failed": "Failed to update automation",
+    "create_failed": "Failed to create automation",
+    "delete_failed": "Failed to delete automation",
+    "create": {
+      "success": "Automation created successfully",
+      "failed": "Failed to create automation"
+    },
+    "update": {
+      "success": "Automation updated successfully",
+      "failed": "Failed to update automation"
+    },
+    "delete": {
+      "success": "Automation deleted successfully",
+      "failed": "Failed to delete automation"
+    },
+    "already_exists": "An automation with this name already exists. Rename the existing automation and try again.",
+    "name_already_exists": "An automation with this name already exists. Rename the existing automation and try again.",
+    "template_added": "Automation template added successfully",
+    "bad_payload": "Invalid automation data",
+    "last_issue": "Last issue",
+    "tasks": {
+      "create_artifact": {
+        "title": "Create artifact (LLM)",
+        "args": {
+          "prompt": "Prompt"
+        }
+      },
+      "notification": {
+        "title": "Notification",
+        "args": {
+          "destination": "Channel",
+          "keep_threadid": "Reply in the original thread"
+        }
+      },
+      "chatterbox": {
+        "title": "Chatterbox"
+      }
+    }
+  },
+  "automations": {
+    "draft": {
+      "no_staged": "No staged emails: stage a few examples first",
+      "failed": "The model gave no usable draft, please try again",
+      "channel": "Choose one of your notification channels",
+      "no_staging_source": "The staging source is missing",
+      "created": "Draft saved (inactive)"
+    },
+    "not_found": "Automation not found",
+    "update_failed": "Failed to update automation",
+    "create_failed": "Failed to create automation",
+    "delete_failed": "Failed to delete automation",
+    "already_exists": "An automation with this name already exists. Rename the existing automation and try again.",
+    "name_already_exists": "An automation with this name already exists. Rename the existing automation and try again.",
+    "template_added": "Automation template added successfully",
+    "create": {
+      "success": "Automation created successfully",
+      "failed": "Failed to create automation"
+    },
+    "update": {
+      "success": "Automation updated successfully",
+      "failed": "Failed to update automation"
+    },
+    "delete": {
+      "success": "Automation deleted successfully",
+      "failed": "Failed to delete automation"
+    },
+    "tasks": {
+      "invalid": "Some tasks are invalid: check inputs and required fields",
+      "channel_not_found": "Choose one of your notification channels for this task"
+    },
+    "source_key": {
+      "source_not_found": "The selected source does not exist",
+      "invalid": "The selected source entry is invalid",
+      "search_deleted": "The selected search no longer exists"
+    },
+    "options": {
+      "invalid": "The source options are invalid"
+    }
+  },
+  "app": {
+    "report": {
+      "read": {
+        "success": "Report generated successfully"
+      },
+      "missing_id": "Error: Missing report ID"
+    }
+  },
+  "core": {
+    "account": {
+      "create_failed": "Core Service: Account creation failed"
+    }
+  },
+  "accounts": {
+    "bad_payload": "Invalid account data",
+    "insert": {
+      "bad_payload": "Invalid account data"
+    }
+  },
+  "emails": {
+    "bad_payload": "Invalid email data",
+    "insert": {
+      "bad_payload": "Invalid email data"
+    }
+  },
+  "roles": {
+    "bad_payload": "Invalid role data",
+    "insert": {
+      "bad_payload": "Invalid role data"
+    },
+    "permissions": {
+      "invalid_type": "Permissions must be an array of strings",
+      "invalid_permission": "One or more permissions are invalid"
+    }
+  },
+  "report_specs": {
+    "bad_payload": "Invalid specification data",
+    "insert": {
+      "bad_payload": "Invalid specification data"
+    }
+  },
+  "report_items": {
+    "bad_payload": "Invalid report item data",
+    "insert": {
+      "bad_payload": "Invalid report item data"
+    }
+  },
+  "howto": {
+    "title": "How it Works",
+    "subtitle": "Setting up GMail forwards",
+    "step1": {
+      "title": "1. Authorize the Forwarding Address",
+      "p1": "Gmail requires the receiving email to \"accept\" the connection first.",
+      "p2": "Go to Settings (gear icon) > See all settings.",
+      "p3": "Select the Forwarding and POP/IMAP tab.",
+      "p4": "Click Add a forwarding address and enter the destination email.",
+      "p5": "Important: Log into that destination account, open the confirmation email from Google, and click the link to verify."
+    },
+    "step2": {
+      "title": "2. Create the Word-Based Filter",
+      "p1": "Click the Show search options icon (the sliders) in the Gmail search bar.",
+      "p2": "In the Has the words field, type the word you want to filter (e.g., {word}).",
+      "p3": "Click Create filter.",
+      "p4": "Check the box Forward it to: and select the verified email from the dropdown menu.",
+      "p5": "Click Create filter again to finish."
+    },
+    "image_alt": "Gmail Forwarding Settings Example"
+  },
+  "events": {
+    "summary": {
+      "automation": "Automations with new problems: {count}"
+    },
+    "user": {
+      "info_automation_start": "Automation '{name}' started",
+      "info_automation_end": "Automation '{name}' completed",
+      "warn_automation_already_active": "Already in queue: {name}",
+      "error_queue_full": "Queue max depth reached ({maxDepth}). Task was rejected",
+      "warn_automation_delivery_failed": "Automation '{name}': notification could not be delivered",
+      "warn_automation_failed": "Automation '{name}': {count} item(s) failed: {reason}",
+      "warn_llm_answer_cut": "Automation '{name}': the answer of task '{task}' was cut off (the input and the answer were longer than the model can handle)",
+      "warn_source_fetch_failed": "Source '{source}' could not be read: {reason}",
+      "warn_source_renumbered": "Source '{source}': folder '{folder}' was renumbered by the server; the last 10 matching emails were fetched again",
+      "warn_source_email_too_large": "Source '{source}': the email '{subject}' from {from} in '{folder}' was skipped: it is {size_mb} MB, the limit is {limit_mb} MB",
+      "warn_source_store_failed": "Source '{source}': an email could not be stored: {reason}",
+      "warn_source_deleted_automation": "Automation '{name}' has no source anymore: source '{source}' was deleted",
+      "warn_source_deleted_channel": "Notification channel '{channel}' used the deleted source '{source}'",
+      "info_source_test_ok": "Source '{source}': connection OK",
+      "error_source_test_failed": "Source '{source}': connection failed: {reason}",
+      "warn_source_key_broken_automation": "Automation '{name}' can't run any more: its search in source '{source}' was deleted",
+      "warn_source_folder_missing": "Source '{source}': folder '{folder}' does not exist (renamed or deleted on the server?). Automations using it are skipped.",
+      "warn_source_after_filter_failed": "Source '{source}': acting on the filtered items failed (e.g. marking emails): {reason}",
+      "warn_files_quota_reached": "Storage full ({limit_mb} MB): attachments of new emails were not stored. The emails were.",
+      "info_admin_read": "An administrator ({admin_user}) opened your {type}",
+      "info_admin_changed": "An administrator ({admin_user}) changed your {type}",
+      "info_admin_deleted": "An administrator ({admin_user}) deleted your {type}"
+    }
+  },
+  "user_events": {
+    "read": {
+      "success": "User events loaded successfully",
+      "not_logged_in": "Not authorized to read user events"
+    },
+    "delete": {
+      "success": "Events deleted",
+      "not_logged_in": "Not authorized to delete user events"
+    },
+    "id": {
+      "required": "Event ID is required"
+    }
+  },
+  "userinfo_import_export": {
+    "title": "User Information Backup & Restore",
+    "description": "Export all your connections, searches, filters, artifacts, and automations into a single JSON file or restore them from a backup file.",
+    "export_button": "Export User Data",
+    "import_button": "Import User Data",
+    "export_success": "User data exported successfully",
+    "export_failed": "Failed to export user data",
+    "import_success": "User data imported successfully",
+    "import_failed": "Failed to import user data",
+    "invalid_file": "Invalid backup file or unsupported version"
+  },
+  "dashboard": {
+    "greeting_morning": "Good morning, {name}!",
+    "greeting_morning_simple": "Good morning!",
+    "greeting_afternoon": "Good afternoon, {name}!",
+    "greeting_afternoon_simple": "Good afternoon!",
+    "greeting_evening": "Good evening, {name}!",
+    "greeting_evening_simple": "Good evening!",
+    "greeting_subtitle": "Here's what needs your attention today.",
+    "last_issue": "Last issue",
+    "no_recent_automations": "No Recent Automations Run",
+    "recent_automations": "Recent automations",
+    "new_automation": "New automation",
+    "no_automations": "No automations yet",
+    "create_first_automation": "Create your first automation",
+    "card": {
+      "last": "last",
+      "source_stale": "Not read since {time}: see the events (bell)",
+      "source_problems": "Problems with this source: see the events (bell)",
+      "source": "source",
+      "checked": "checked",
+      "next": "next",
+      "manual": "manual",
+      "paused": "paused",
+      "due": "due"
+    },
+    "cron_on": "Cron On",
+    "cron_off": "Cron Off"
+  },
+  "automation_libraries": {
+    "title": "Automation Library",
+    "subtitle": "Ready-made automations for your inbox. Choose one and customize it to fit how you work.",
+    "search_placeholder": "Search",
+    "all": "All",
+    "all_templates": "All templates",
+    "all_automations": "All templates",
+    "items_count": "{count} items",
+    "templates_count": "{count} items",
+    "go_to": "Go to:",
+    "automations": "Automations",
+    "view_my_automations": "Automations",
+    "view_automations": "Automations",
+    "add": "Add",
+    "added": "Added",
+    "already_added": "Already in your automations",
+    "add_success": "Automation \"{name}\" added successfully!",
+    "add_failed": "Failed to add automation: {error}",
+    "no_results": "No automations found matching your criteria."
+  },
+  "imap_reminder": {
+    "title": "No mailbox connected",
+    "message_prefix": "You have not connected a mailbox yet. Go to ",
+    "sources_link": "Sources",
+    "message_suffix": " to add an IMAP source.",
+    "ok": "OK"
+  },
+  "sources": {
+    "read": {
+      "success": "Sources retrieved successfully"
+    },
+    "create": {
+      "success": "Source created successfully"
+    },
+    "update": {
+      "success": "Source updated successfully"
+    },
+    "delete": {
+      "success": "Source deleted successfully"
+    },
+    "delete_many": {
+      "success": "Sources deleted successfully"
+    },
+    "export": {
+      "success": "Sources exported successfully"
+    },
+    "import": {
+      "success": "Sources imported successfully"
+    },
+    "not_found": "Source not found",
+    "missing_ids": "No sources selected",
+    "type": {
+      "unknown": "Unknown source type",
+      "builtin": "This source is built in and can't be created"
+    },
+    "config": {
+      "invalid": "The connection settings are invalid"
+    },
+    "run": {
+      "started": "Source run started"
+    },
+    "types": {
+      "imap": {
+        "title": "IMAP mailbox",
+        "config": {
+          "host": "Host",
+          "port": "Port",
+          "use_ssl": "Use SSL",
+          "username": "Username",
+          "credential": "Password"
+        },
+        "settings": {
+          "searches": "Saved searches",
+          "searches_note": "New sources get the search \"Default\", and every new search starts with \"received since\" a date {days} days back, so the first run doesn't load the whole mailbox. Remove the date before the first run to fetch older mail.",
+          "download_attachments": "Download attachments",
+          "download_attachments_hint": "Stores the attachments of new emails. Which types and sizes are allowed is set on the server.",
+          "attachments_disabled": "Attachments are switched off on this server."
+        }
+      },
+      "staging": {
+        "title": "Staging"
+      }
+    },
+    "searches": {
+      "hint": "Automations choose a folder and optionally one of these searches.",
+      "add": "Add search",
+      "empty": "No saved searches. Automations can still use whole folders.",
+      "unnamed": "(unnamed)",
+      "delete": "Delete search",
+      "name": "Search name",
+      "default_name": "Search",
+      "name_required": "Each search needs a name",
+      "name_duplicate": "A search with this name already exists"
+    },
+    "settings": {
+      "invalid": "The settings are invalid"
+    },
+    "max_items_per_fetch": {
+      "too_high": "Max. items per fetch is above the system limit"
+    },
+    "retention_days": {
+      "too_high": "Keep (days) is above the system limit"
+    },
+    "max_items": {
+      "too_high": "Max. stored items is above the system limit"
+    },
+    "max_size_mb": {
+      "too_high": "Max. stored size is above the system limit"
+    }
+  },
+  "repositories": {
+    "message_pruned": "This message has been pruned. It is no longer stored."
+  },
+  "automation_draft": {
+    "rules": {
+      "intent": {
+        "type": "The request must be text",
+        "too_long": "The request is too long"
+      },
+      "current": {
+        "type": "The text must be text",
+        "too_long": "The text is too long"
+      },
+      "channel_id": {
+        "required": "Choose where to deliver"
+      },
+      "match": {
+        "invalid": "Choose a theme filter or no AI filter"
+      },
+      "invalid": "Invalid request"
+    },
+    "title": "New automation from the staged emails",
+    "based_on": "Based on your {count} staged emails (at most 10 are used as examples).",
+    "match": "Match by",
+    "match_theme": "Theme: what the emails are about",
+    "match_none": "No AI filter: every email of the source",
+    "match_note": "Want exact terms? Use a source search instead!",
+    "none_staged": "No staged emails yet: stage a few examples first.",
+    "intent": "What should happen with emails like these?",
+    "intent_hint": "e.g. Summarize them in 3 bullet points and send them to my phone",
+    "channel": "Notification",
+    "create": "Create draft",
+    "name": "Name",
+    "filter_prompt": "Filter",
+    "tasks": "Tasks",
+    "saved_inactive": "Saved as an inactive automation on the staging source: edit it under Automations, switch it to your mailbox when it works.",
+    "test": "Test on staged emails",
+    "test_again": "Test again",
+    "result": "{passed} of {total} staged emails passed the filter.",
+    "aborted": "The run stopped: {reason}",
+    "no_files": "No files: nothing passed, or the automation has no delivery.",
+    "activate": "Activate",
+    "open": "Open in Automations",
+    "delete": "Delete draft",
+    "share": "Copy as JSON",
+    "copied": "copied",
+    "suggest_filter": "Suggest from the staged emails",
+    "suggest_task_prompt": "Suggest from the staged emails"
+  },
+  "media_viewer": {
+    "download": "Download",
+    "unsupported": "This content ({type}) can't be shown here. Download it instead.",
+    "email": {
+      "from": "From",
+      "to": "To",
+      "cc": "Cc",
+      "reply_to": "Reply to",
+      "subject": "Subject",
+      "date": "Date",
+      "message_id": "Message ID",
+      "no_body": "This email has no text.",
+      "automation_text": "Automation text",
+      "cut": "Automations read up to here",
+      "forwarded": "Forwarded",
+      "bounced": "Returned",
+      "no_preview": "No preview for this type",
+      "load_failed": "The file could not be loaded",
+      "embedded_skipped": "{count} more nested message(s) not shown",
+      "status": {
+        "skipped_disabled": "Not downloaded (attachments are off)",
+        "skipped_type": "Not downloaded (type not allowed)",
+        "skipped_mismatch": "Not downloaded (content does not match its type)",
+        "skipped_count": "Not downloaded (too many attachments)",
+        "skipped_quota": "Not downloaded (storage full)",
+        "too_large": "Not downloaded (too large)",
+        "removed": "Removed",
+        "failed": "Download failed"
+      },
+      "remove_attachments": "Remove attachments",
+      "remove_confirm": "Remove {count} stored attachment(s)? The email stays. This can't be undone.",
+      "remove": "Remove"
+    }
+  },
+  "artifacts": {
+    "read": {
+      "success": "Artifacts loaded"
+    },
+    "delete": {
+      "success": "Artifact deleted"
+    },
+    "not_found": "Artifact not found",
+    "missing_ids": "No artifacts given"
+  },
+  "files": {
+    "not_found": "File not found"
+  },
+  "storage": {
+    "title": "Storage",
+    "files": "Stored files",
+    "of_quota": "{used} of {limit}",
+    "emails": "Emails",
+    "attachments": "Attachments",
+    "artifacts": "Artifacts",
+    "count": "{count} items",
+    "note": "The quota applies to stored files (attachments and artifacts). Space is freed by each source's pruning, each automation's artifact retention, and deleting emails or artifacts.",
+    "read": {
+      "success": "Storage usage loaded"
+    }
+  }
+}

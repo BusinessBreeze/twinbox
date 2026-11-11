@@ -1,0 +1,46 @@
+{
+    "locales_show": true,
+    "theme_show": true,
+    "pages": [
+        {
+            "name": "dashboard",
+            "icon": "mdi-view-dashboard-outline",
+            "path": "/dashboard"
+        },
+        {
+            "name": "Flows",
+            "icon": "mdi-clipboard-flow-outline",
+            "children": [
+                {
+                    "name": "sources",
+                    "icon": "mdi-card-account-details-outline",
+                    "path": "/sources"
+                },
+                {
+                    "name": "automations",
+                    "icon": "mdi-robot-happy-outline",
+                    "path": "/automations"
+                }
+            ]
+        },
+        {
+            "name": "Repositories",
+            "icon": "mdi-source-repository-multiple",
+            "children": [
+                {
+                    "name": "email",
+                    "icon": "mdi-email-outline",
+                    "path": "/repositories"
+                }
+            ]
+        },
+        {
+            "name": "admin",
+            "icon": "mdi-application-cog-outline",
+            "path": "/admin",
+            "permissions": [
+                "ui.admin"
+            ]
+        }
+    ]
+}

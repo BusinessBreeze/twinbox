@@ -1,0 +1,1153 @@
+{
+  "test": "test",
+  "common": {
+    "none": "Keine",
+    "last_run": "Zuletzt ausgeführt",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "info": "Info",
+    "warning": "Warnung",
+    "error": "Fehler",
+    "date": "Datum",
+    "message": "Nachricht",
+    "loading": "Ereignisse werden geladen...",
+    "no_events": "Keine Ereignisse für diese Automatisierung gefunden",
+    "items_per_page": "Einträge",
+    "howto": "Anleitung",
+    "toggle_theme": "Design wechseln",
+    "logout": "Abmelden",
+    "pin": "Leiste anheften",
+    "unpin": "Leiste lösen"
+  },
+  "pages": {
+    "dashboard": "Dashboard",
+    "preferences": "Einstellungen",
+    "email": "E-Mail",
+    "sources": "Quellen",
+    "repositories": "Repositories",
+    "automations": "Automatisierungen",
+    "admin": "Administration",
+    "howto": "Anleitung",
+    "Advanced": "Erweitert",
+    "Preferences": "Einstellungen",
+    "notifications": "Benachrichtigungen",
+    "account": "Konto",
+    "Basic": "Basis",
+    "automation libraries": "Automatisierungs-Bibliothek",
+    "automation_libraries": "Automatisierungs-Bibliothek",
+    "artifacts": "Artefakte",
+    "storage": "Speicher"
+  },
+  "rules": {
+    "invalid_field": "Ungültiges Feld",
+    "password": {
+      "type": "Passwort muss eine Zeichenfolge sein",
+      "required": "Passwort ist erforderlich",
+      "too_short": "Passwort muss mindestens 12 Zeichen lang sein",
+      "too_long": "Passwort ist zu lang",
+      "missing_lower": "Passwort muss einen Kleinbuchstaben enthalten",
+      "missing_upper": "Passwort muss einen Großbuchstaben enthalten",
+      "missing_number": "Passwort muss eine Zahl enthalten",
+      "missing_special": "Passwort muss ein Sonderzeichen enthalten",
+      "mismatch": "Passwörter stimmen nicht überein"
+    },
+    "report_spec": {
+      "name": {
+        "type": "Name muss eine Zeichenfolge sein",
+        "min": "Name zu kurz",
+        "max": "Name zu lang"
+      },
+      "dow": {
+        "invalid": "Zeitplan ist ungültig"
+      },
+      "desc": {
+        "min": "Beschreibung zu kurz (min. 20)",
+        "max": "Beschreibung zu lang (max. 300)"
+      }
+    },
+    "report_item": {
+      "email_id": {
+        "type": "E-Mail-ID muss eine Zeichenfolge sein",
+        "required": "E-Mail-ID ist erforderlich"
+      },
+      "spec_id": {
+        "type": "Spezifikations-ID muss eine Zeichenfolge sein",
+        "required": "Spezifikations-ID ist erforderlich"
+      },
+      "text": {
+        "type": "Übersichtstext muss eine Zeichenfolge sein",
+        "required": "Übersichtstext ist erforderlich",
+        "too_long": "Übersichtstext ist zu lang"
+      },
+      "sent": {
+        "type": "Gesendet-Flag muss ein Boolean sein"
+      }
+    },
+    "report": {
+      "name": {
+        "required": "Berichtsname ist erforderlich"
+      },
+      "dow": {
+        "invalid": "Ungültige Wochentage ausgewählt"
+      },
+      "desc": {
+        "too_long": "Beschreibung ist zu lang"
+      },
+      "lang": {
+        "invalid": "Ungültige Sprache ausgewählt"
+      }
+    },
+    "required": "Dieses Feld ist erforderlich",
+    "unique_name": "Der Name muss für diesen Task-Typ eindeutig sein",
+    "update": {
+      "empty": "Keine Daten für Update bereitgestellt"
+    }
+  },
+  "form": {
+    "submit": "Absenden",
+    "cancel": "Abbrechen",
+    "actions": {
+      "update": "Aktualisieren",
+      "delete": "Löschen",
+      "setPassword": "Passwort festlegen"
+    }
+  },
+  "table": {
+    "report_spec": {
+      "title": "Berichtsspezifikationen",
+      "name": "Name",
+      "desc": "Beschreibung",
+      "lang": "Sprache",
+      "dow": "Zeitplan (Wochentage)",
+      "enum_labels": {
+        "dow_short": [
+          "So",
+          "Mo",
+          "Di",
+          "Mi",
+          "Do",
+          "Fr",
+          "Sa"
+        ]
+      }
+    },
+    "email": {
+      "title": "E-Mails",
+      "messageId": "Nachrichten-ID",
+      "date": "Datum",
+      "from": "Von",
+      "to": "An",
+      "subject": "Betreff",
+      "no_subject": "(Kein Betreff)",
+      "text": "Inhalt",
+      "staging": "Staging",
+      "set_staging": "Als Staging-Element markieren",
+      "clear_staging": "Aus Staging entfernen",
+      "rules": {
+        "from": {
+          "type": "Absender muss Text sein",
+          "required": "Absender ist erforderlich",
+          "invalid": "Absender muss eine E-Mail-Adresse sein"
+        },
+        "to": {
+          "type": "Empfänger muss Text sein",
+          "required": "Empfänger ist erforderlich",
+          "invalid": "Empfänger muss eine E-Mail-Adresse sein"
+        },
+        "subject": {
+          "type": "Betreff muss Text sein",
+          "too_long": "Betreff ist zu lang (max. 255 Zeichen)"
+        },
+        "text": {
+          "type": "Inhalt muss Text sein",
+          "required": "Inhalt ist erforderlich"
+        },
+        "html": {
+          "type": "HTML-Inhalt muss Text sein"
+        },
+        "date": {
+          "type": "Datum muss Text sein",
+          "required": "Datum ist erforderlich"
+        },
+        "staging_item": {
+          "type": "Bereitgestellt muss 0 oder 1 sein"
+        }
+      },
+      "attachments": "Anhänge"
+    },
+    "report_item": {
+      "title": "Generierte Berichte",
+      "date": "Datum",
+      "email_id": "E-Mail ID",
+      "email_subject": "E-Mail Betreff",
+      "report_spec_name": "Bericht",
+      "text": "Übersicht"
+    },
+    "automation": {
+      "title": "Automatisierungen",
+      "name": "Name",
+      "active": "Aktiv",
+      "tasks": "Aufgaben",
+      "last_issue": "Letztes Problem",
+      "options": {
+        "title": "Quellen-Optionen",
+        "mark_read": "Verarbeitete E-Mails als gelesen markieren",
+        "mark_important": "Verarbeitete E-Mails als wichtig markieren",
+        "add_source_links": "Quellenlinks hinzufügen",
+        "artifact_keep_days": "Artefakte aufbewahren (Tage, 0 = immer)",
+        "artifact_keep_last": "Nur die neuesten Artefakte behalten (0 = alle)"
+      },
+      "source": "Quelle",
+      "filter_prompt": {
+        "title": "Filter-Prompt",
+        "placeholder": "Beschreibe, welche Einträge behalten werden, z. B. „Nur Newsletter zur KI-Regulierung.“ Leer: alle behalten."
+      },
+      "rules": {
+        "name": {
+          "control": "Steuerzeichen entfernen (z. B. Zeilenumbrüche)",
+          "invalid": "Name muss Text sein",
+          "min": "Name ist erforderlich",
+          "max": "Name ist zu lang (max. 100 Zeichen)",
+          "duplicate": "Eine Automatisierung mit diesem Namen gibt es schon"
+        },
+        "active": {
+          "type": "Muss an oder aus sein"
+        },
+        "source_key": {
+          "invalid": "Quelle ist ungültig",
+          "required": "Quelle wählen",
+          "deleted": "Diese Quelle, dieser Ordner oder diese Suche existiert nicht mehr. Bitte etwas anderes wählen."
+        },
+        "options": {
+          "invalid": "Optionen sind ungültig",
+          "filter_prompt": {
+            "too_long": "Filter-Prompt ist zu lang"
+          },
+          "artifact_keep_days": "Tage müssen eine ganze Zahl ab 0 sein",
+          "artifact_keep_last": "Die Anzahl muss eine ganze Zahl ab 0 sein"
+        },
+        "tasks": {
+          "invalid": "Aufgaben sind ungültig",
+          "prompt": {
+            "required": "Prompt ist erforderlich",
+            "too_long": "Prompt ist zu lang"
+          },
+          "destination": {
+            "required": "Kanal ist erforderlich"
+          },
+          "id": {
+            "duplicate": "Zwei Aufgaben haben dieselbe ID"
+          },
+          "type": {
+            "unknown": "Unbekannter Aufgabentyp"
+          },
+          "inputs": {
+            "too_few": "Mindestens eine Eingabe wählen",
+            "too_many": "Zu viele Eingaben für diese Aufgabe",
+            "not_found": "Eine Eingabe ist hier nicht verfügbar (verschoben oder gelöscht?)",
+            "no_output": "Eine Eingabe liefert keine Ausgabe",
+            "wrong_type": "Eine Eingabe liefert Elemente, die diese Aufgabe nicht lesen kann"
+          },
+          "label": {
+            "required": "Jede Aufgabe braucht eine Bezeichnung",
+            "duplicate": "Zwei Aufgaben haben dieselbe Bezeichnung"
+          }
+        }
+      }
+    },
+    "notification_channels": {
+      "title": "Benachrichtigungskanäle",
+      "name": "Name",
+      "provider": "Anbieter",
+      "type": "Typ",
+      "created_at": "Erstellt am",
+      "is_default": "Standard",
+      "set_default": "Als Standard festlegen"
+    },
+    "account": {
+      "lang": "Sprache",
+      "email": "E-Mail",
+      "role": "Rolle",
+      "set_ident": "Identität festlegen",
+      "user": "Benutzername"
+    },
+    "common": {
+      "owner": "Besitzer",
+      "actions": "Aktionen",
+      "none": "Keine",
+      "view": "Anzeigen",
+      "close": "Schließen",
+      "last_run": "Zuletzt ausgeführt",
+      "inactive": "Inaktiv"
+    },
+    "sources": {
+      "title": "Quellen",
+      "name": "Name",
+      "type": "Typ",
+      "config": "Verbindung",
+      "poll_seconds": "Abruf (Sek.)",
+      "max_items_per_fetch": "Pro Abruf",
+      "test": "Verbindung testen",
+      "connected": "Verbunden",
+      "run_now": "Jetzt ausführen",
+      "settings": "Einstellungen",
+      "retention_days": "Aufbewahren (Tage)",
+      "max_items": "Max. Einträge",
+      "max_size_mb": "Max. MB",
+      "limits_note": "Speicherlimits: 0 = unbegrenzt",
+      "rules": {
+        "name": {
+          "control": "Steuerzeichen entfernen (z. B. Zeilenumbrüche)",
+          "invalid": "Name muss Text sein",
+          "min": "Name ist erforderlich",
+          "max": "Name ist zu lang (max. 100 Zeichen)"
+        },
+        "type": {
+          "invalid": "Typ ist ungültig",
+          "required": "Typ ist erforderlich"
+        },
+        "poll_seconds": {
+          "invalid": "Abrufintervall muss eine ganze Zahl in Sekunden sein",
+          "min": "Abrufintervall ist kürzer als dieser Server erlaubt",
+          "max": "Abrufintervall ist länger als dieser Server erlaubt"
+        },
+        "max_items_per_fetch": {
+          "invalid": "Muss eine ganze Zahl sein",
+          "min": "Muss mindestens 1 sein",
+          "max": "Mehr Einträge pro Abruf als dieser Server erlaubt"
+        },
+        "limits": {
+          "invalid": "Bitte eine ganze Zahl ab 0 eingeben"
+        },
+        "settings": {
+          "invalid": "Einstellungen sind ungültig"
+        },
+        "config": {
+          "host": {
+            "required": "Host ist erforderlich",
+            "invalid": "Host muss ein Hostname oder eine IP-Adresse sein"
+          },
+          "port": {
+            "invalid": "Port muss eine ganze Zahl von 1 bis 65535 sein"
+          },
+          "use_ssl": {
+            "invalid": "SSL muss an oder aus sein"
+          },
+          "username": {
+            "required": "Benutzername ist erforderlich"
+          },
+          "auth_type": {
+            "invalid": "Unbekannte Anmeldemethode"
+          },
+          "credential": {
+            "required": "Passwort ist erforderlich"
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "title": "Artefakte",
+      "id": "Datei",
+      "extension": "Typ",
+      "size": "Größe (Bytes)",
+      "updatedAt": "Erstellt am",
+      "view": "Datei anzeigen",
+      "download": "Datei herunterladen"
+    }
+  },
+  "$vuetify": {
+    "badge": "Abzeichen",
+    "open": "Öffnen",
+    "close": "Schließen",
+    "dismiss": "X",
+    "datePicker": {
+      "itemsSelected": "{0} ausgewählt",
+      "ariaLabel": {
+        "nextMonth": "Nächster Monat",
+        "nextYear": "Nächstes Jahr",
+        "prevMonth": "Vorheriger Monat",
+        "prevYear": "Vorheriges Jahr"
+      },
+      "header": "Datum auswählen",
+      "title": "Datum auswählen"
+    },
+    "datepicker": {
+      "itemsSelected": "{0} ausgewählt",
+      "ariaLabel": {
+        "nextMonth": "Nächster Monat",
+        "nextYear": "Nächstes Jahr",
+        "prevMonth": "Vorheriger Monat",
+        "prevYear": "Vorheriges Jahr"
+      },
+      "header": "Datum auswählen",
+      "title": "Datum auswählen"
+    },
+    "dataFooter": {
+      "itemsPerPageText": "Elemente pro Seite:",
+      "itemsPerPageAll": "Alle",
+      "pageText": "{0}-{1} von {2}",
+      "firstPage": "Erste Seite",
+      "prevPage": "Vorherige Seite",
+      "nextPage": "Nächste Seite",
+      "lastPage": "Letzte Seite"
+    },
+    "pagination": {
+      "ariaLabel": {
+        "root": "Seitennavigation"
+      }
+    },
+    "noDataText": "Keine Daten verfügbar"
+  },
+  "frontend": {
+    "nav": {
+      "title": "Navigation",
+      "subtitle": "Demo App",
+      "dashboard": "Dashboard",
+      "settings": "Einstellungen",
+      "notifications": "Benachrichtigungen",
+      "howto": "Wie funktioniert das?"
+    },
+    "app": {
+      "title": "E-Mail Plattform"
+    },
+    "dashboard": {
+      "welcome": "Willkommen auf dem Dashboard",
+      "subtitle": "Erstellt mit Nuxt und Vuetify",
+      "description": "Dies ist ein grundlegendes Template-Setup mit Nuxt 4 und Vuetify 3. Sie können hier beginnen, Ihre E-Mail-Plattform aufzubauen.",
+      "action1": "Aktion 1",
+      "action2": "Aktion 2",
+      "last_issue": "Letztes Problem",
+      "no_recent_automations": "Keine kürzlich ausgeführten Automatisierungen"
+    },
+    "table": {
+      "name": "Name",
+      "status": "Status"
+    },
+    "stats": {
+      "title": "Statistiken",
+      "emails_sent": "Gesendete E-Mails"
+    },
+    "message": {
+      "title": "Schnellnachricht",
+      "to": "An",
+      "label": "Nachricht",
+      "send": "Jetzt senden"
+    },
+    "footer": {
+      "legal": "Impressum"
+    },
+    "auth": {
+      "login_title": "Anmelden",
+      "login_instructions": "Geben Sie Ihre Zugangsdaten ein, um auf Ihr Konto zuzugreifen.",
+      "password": "Passwort",
+      "login_button": "Einloggen",
+      "no_account": "Kein Konto? Hier erstellen.",
+      "signup_title": "Konto erstellen",
+      "signup_instructions": [
+        "Geben Sie Ihre Daten ein, um sich zu registrieren."
+      ],
+      "confirm_password": "Passwort bestätigen",
+      "have_account": "Sie haben bereits ein Konto? Einloggen.",
+      "username": "Benutzername",
+      "initial_password_banner": "Du meldest dich mit dem Startpasswort (ADMIN_PASSWORD) an. Bitte lege ein eigenes Passwort fest.",
+      "change_password": "Passwort ändern"
+    },
+    "landing": {
+      "hero": {
+        "title": "Bändigen Sie Ihren Posteingang mit FOMO-Mail",
+        "subtitle": "Verpassen Sie nie wieder ein wichtiges Update. Unsere KI-gesteuerte Plattform kategorisiert, fasst zusammen und priorisiert Ihre E-Mails, damit Sie sich auf das Wesentliche konzentrieren können.",
+        "cta_start": "Kostenlos starten",
+        "cta_login": "Anmelden"
+      },
+      "features": {
+        "title": "Warum FOMO-Mail?",
+        "ai": {
+          "title": "KI-gestützte Zusammenfassungen",
+          "desc": "Erfassen Sie das Wesentliche langer E-Mail-Threads in Sekundenschnelle mit unserer fortschrittlichen LLM-Integration."
+        },
+        "smart": {
+          "title": "Intelligente Kategorisierung",
+          "desc": "Organisieren Sie Ihre E-Mails automatisch in intuitive Berichte basierend auf Ihren Vorlieben."
+        },
+        "privacy": {
+          "title": "Privatsphäre zuerst",
+          "desc": "Ihre Daten gehören Ihnen. Wir verwenden modernste Sicherheit und teilen Ihre Informationen niemals."
+        }
+      },
+      "how_it_works": {
+        "title": "Einfache Integration",
+        "desc": "Leiten Sie Ihre wichtigen E-Mails einfach an Ihre eindeutige FOMO-Mail-Adresse weiter und lassen Sie unsere Engine perfekte Berichte für Sie erstellen."
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "success": "Anmeldung erfolgreich",
+      "invalid_credentials": "Benutzername oder Passwort ungültig"
+    },
+    "logout": {
+      "success": "Erfolgreich abgemeldet"
+    }
+  },
+  "account": {
+    "read": {
+      "success": "Konto erfolgreich geladen"
+    },
+    "create": {
+      "success": "Konto erfolgreich erstellt",
+      "failed": "Erstellung des Kontos fehlgeschlagen"
+    },
+    "update": {
+      "success": "Konto erfolgreich aktualisiert",
+      "failed": "Aktualisierung des Kontos fehlgeschlagen"
+    },
+    "delete": {
+      "success": "Konto erfolgreich gelöscht",
+      "failed": "Löschen des Kontos fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige Kontodaten",
+    "create_failed": "Systemfehler: Kontoerstellung fehlgeschlagen"
+  },
+  "email": {
+    "read": {
+      "success": "E-Mails erfolgreich geladen"
+    },
+    "create": {
+      "success": "E-Mail erfolgreich verarbeitet",
+      "failed": "E-Mail-Verarbeitung fehlgeschlagen",
+      "owner_not_found": "Interner Fehler: Empfängerkonto nicht zugeordnet"
+    },
+    "update": {
+      "success": "E-Mail erfolgreich aktualisiert",
+      "failed": "E-Mail-Aktualisierung fehlgeschlagen"
+    },
+    "delete": {
+      "success": "E-Mail erfolgreich gelöscht",
+      "failed": "E-Mail-Löschung fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige E-Mail-Daten",
+    "format": {
+      "invalid": "Unbekanntes Format (json oder eml)"
+    },
+    "not_found": "E-Mail nicht gefunden",
+    "remove_attachments": {
+      "success": "Anhänge entfernt"
+    }
+  },
+  "permissions": {
+    "read": {
+      "success": "Berechtigungen erfolgreich geladen"
+    }
+  },
+  "role": {
+    "read": {
+      "success": "Rollen erfolgreich geladen"
+    },
+    "create": {
+      "success": "Rolle erfolgreich erstellt",
+      "failed": "Rollenerstellung fehlgeschlagen"
+    },
+    "update": {
+      "success": "Rolle erfolgreich aktualisiert",
+      "failed": "Rollenaktualisierung fehlgeschlagen"
+    },
+    "delete": {
+      "success": "Rolle erfolgreich gelöscht",
+      "failed": "Rollenlöschung fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige Rollendaten"
+  },
+  "report_spec": {
+    "read": {
+      "success": "Berichtsvorlagen geladen"
+    },
+    "create": {
+      "success": "Berichtsvorlage erstellt",
+      "failed": "Erstellung der Berichtsvorlage fehlgeschlagen"
+    },
+    "update": {
+      "success": "Berichtsvorlage aktualisiert",
+      "failed": "Aktualisierung der Berichtsvorlage fehlgeschlagen"
+    },
+    "delete": {
+      "success": "Berichtsvorlage gelöscht",
+      "failed": "Löschen der Berichtsvorlage fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige Daten für Berichtsvorlage"
+  },
+  "report_item": {
+    "read": {
+      "success": "Berichtselemente geladen"
+    },
+    "create": {
+      "success": "Berichtselement gespeichert",
+      "failed": "Speichern des Berichtselements fehlgeschlagen"
+    },
+    "update": {
+      "success": "Berichtselement aktualisiert",
+      "failed": "Aktualisierung des Berichtselements fehlgeschlagen"
+    },
+    "delete": {
+      "success": "Berichtselement gelöscht",
+      "failed": "Löschen des Berichtselements fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige Daten für Berichtselement"
+  },
+  "notification_channel": {
+    "read": {
+      "success": "Benachrichtigungskanäle erfolgreich abgerufen"
+    },
+    "create": {
+      "success": "Benachrichtigungskanal erfolgreich erstellt",
+      "failed": "Erstellung des Benachrichtigungskanals fehlgeschlagen"
+    },
+    "update": {
+      "success": "Benachrichtigungskanal erfolgreich aktualisiert",
+      "failed": "Aktualisierung des Benachrichtigungskanals fehlgeschlagen"
+    },
+    "delete": {
+      "success": "Benachrichtigungskanal erfolgreich gelöscht",
+      "failed": "Löschen des Benachrichtigungskanals fehlgeschlagen"
+    },
+    "bad_payload": "Ungültige Benachrichtigungskanal-Daten"
+  },
+  "notification_channels": {
+    "bad_payload": "Ungültige Benachrichtigungskanal-Daten",
+    "insert": {
+      "bad_payload": "Ungültige Benachrichtigungskanal-Daten"
+    }
+  },
+  "imap_search": {
+    "builder": {
+      "and": "UND",
+      "or": "ODER",
+      "and_group": "UND",
+      "or_group": "ODER",
+      "add_rule": "Regel",
+      "add_and": "UND",
+      "add_or": "ODER",
+      "gui_builder": "GUI-Builder",
+      "json_view": "JSON-Ansicht",
+      "delete_group": "Gruppe löschen",
+      "remove_rule": "Regel entfernen",
+      "matches": "Stimmt überein (=)",
+      "not_matches": "Stimmt NICHT überein (NOT)",
+      "placeholder_search_value": "Suchwert...",
+      "placeholder_bytes": "Bytes...",
+      "placeholder_header_name": "Header-Name (z.B. X-Spam)",
+      "placeholder_header_value": "Wert",
+      "yes": "JA",
+      "no": "NEIN",
+      "select_date": "Datum auswählen",
+      "empty_group": "Leere Gruppe. Fügen Sie eine Regel oder eine verschachtelte Gruppe hinzu, um zu filtern.",
+      "fields": {
+        "from": "Von (Absender)",
+        "to": "An (Empfänger)",
+        "cc": "CC",
+        "bcc": "BCC",
+        "subject": "Betreff",
+        "body": "Textinhalt",
+        "text": "Beliebiger Text (Header/Inhalt)",
+        "seq": "Sequenzbereich (z.B. 1:*)",
+        "uid": "UID-Bereich (z.B. 100:*)",
+        "seen": "Gelesen (Seen)",
+        "flagged": "Markiert (Starred)",
+        "answered": "Beantwortet",
+        "deleted": "Gelöscht",
+        "draft": "Entwurf",
+        "recent": "Neu (Recent)",
+        "since": "Seit Datum",
+        "_since_days": "Seit (Tage zurück)",
+        "before": "Vor Datum",
+        "_before_days": "Vor (Tage zurück)",
+        "on": "Am Datum",
+        "_on_days": "Am (Tage zurück)",
+        "sentSince": "Gesendet seit Datum",
+        "_sentSince_days": "Gesendet seit (Tage zurück)",
+        "sentBefore": "Gesendet vor Datum",
+        "_sentBefore_days": "Gesendet vor (Tage zurück)",
+        "sentOn": "Gesendet am Datum",
+        "_sentOn_days": "Gesendet am (Tage zurück)",
+        "larger": "Größer als (Bytes)",
+        "smaller": "Kleiner als (Bytes)",
+        "header": "Benutzerdefinierter Header"
+      }
+    }
+  },
+  "automation": {
+    "component": {
+      "task_chooser": {
+        "title": "Aufgaben",
+        "add": "Aufgabe hinzufügen",
+        "empty": "Noch keine Aufgaben. Klicke auf \"+\", um eine hinzuzufügen.",
+        "label": "Bezeichnung",
+        "inputs": "Eingaben",
+        "source": "Abgerufene E-Mails",
+        "aggregate": "Alle Eingaben zusammenfassen",
+        "aggregate_hint": "Aus: einmal pro Element. An: einmal mit allen Elementen zusammen.",
+        "move_up": "Nach oben",
+        "move_down": "Nach unten",
+        "delete": "Löschen",
+        "expand_prompt": "Großen Editor öffnen",
+        "close": "Schließen",
+        "no_channels": "Noch keine Benachrichtigungskanäle",
+        "required": "Erforderlich",
+        "unknown_type": "Unbekannter Aufgabentyp",
+        "inputs_missing": "Mindestens eine Eingabe wählen",
+        "input_invalid": "Eine Eingabe ist hier nicht verfügbar (verschoben oder gelöscht?)",
+        "args_missing": "Ein Pflichtfeld ist leer",
+        "args_too_long": "Ein Text ist länger als erlaubt",
+        "has_problems": "Vor dem Speichern die rot markierten Aufgaben korrigieren"
+      }
+    },
+    "read": {
+      "success": "Automatisierungen erfolgreich geladen"
+    },
+    "update_failed": "Aktualisierung der Automatisierung fehlgeschlagen",
+    "create_failed": "Erstellung der Automatisierung fehlgeschlagen",
+    "delete_failed": "Löschen der Automatisierung fehlgeschlagen",
+    "create": {
+      "success": "Automatisierung erfolgreich erstellt",
+      "failed": "Erstellung der Automatisierung fehlgeschlagen"
+    },
+    "update": {
+      "success": "Automatisierung erfolgreich aktualisiert",
+      "failed": "Aktualisierung der Automatisierung fehlgeschlagen"
+    },
+    "delete": {
+      "success": "Automatisierung erfolgreich gelöscht",
+      "failed": "Löschen der Automatisierung fehlgeschlagen"
+    },
+    "already_exists": "Eine Automatisierung mit diesem Namen existiert bereits. Benennen Sie die vorhandene Automatisierung um und versuchen Sie es erneut.",
+    "name_already_exists": "Eine Automatisierung mit diesem Namen existiert bereits. Benennen Sie die vorhandene Automatisierung um und versuchen Sie es erneut.",
+    "template_added": "Automatisierungsvorlage erfolgreich hinzugefügt",
+    "bad_payload": "Ungültige Automatisierungsdaten",
+    "last_issue": "Letztes Problem",
+    "tasks": {
+      "create_artifact": {
+        "title": "Artefakt erstellen (LLM)",
+        "args": {
+          "prompt": "Prompt"
+        }
+      },
+      "notification": {
+        "title": "Benachrichtigung",
+        "args": {
+          "destination": "Kanal",
+          "keep_threadid": "Im ursprünglichen Thread antworten"
+        }
+      },
+      "chatterbox": {
+        "title": "Chatterbox"
+      }
+    }
+  },
+  "automations": {
+    "draft": {
+      "no_staged": "Keine Staging-E-Mails: markiere zuerst ein paar Beispiele",
+      "failed": "Das Modell lieferte keinen brauchbaren Entwurf, bitte erneut versuchen",
+      "channel": "Wähle einen deiner Benachrichtigungskanäle",
+      "no_staging_source": "Die Staging-Quelle fehlt",
+      "created": "Entwurf gespeichert (inaktiv)"
+    },
+    "not_found": "Automatisierung nicht gefunden",
+    "update_failed": "Aktualisierung der Automatisierung fehlgeschlagen",
+    "create_failed": "Erstellung der Automatisierung fehlgeschlagen",
+    "delete_failed": "Löschen der Automatisierung fehlgeschlagen",
+    "already_exists": "Eine Automatisierung mit diesem Namen existiert bereits. Benennen Sie die vorhandene Automatisierung um und versuchen Sie es erneut.",
+    "name_already_exists": "Eine Automatisierung mit diesem Namen existiert bereits. Benennen Sie die vorhandene Automatisierung um und versuchen Sie es erneut.",
+    "template_added": "Automatisierungsvorlage erfolgreich hinzugefügt",
+    "create": {
+      "success": "Automatisierung erfolgreich erstellt",
+      "failed": "Erstellung der Automatisierung fehlgeschlagen"
+    },
+    "update": {
+      "success": "Automatisierung erfolgreich aktualisiert",
+      "failed": "Aktualisierung der Automatisierung fehlgeschlagen"
+    },
+    "delete": {
+      "success": "Automatisierung erfolgreich gelöscht",
+      "failed": "Löschen der Automatisierung fehlgeschlagen"
+    },
+    "tasks": {
+      "invalid": "Einige Aufgaben sind ungültig: Eingaben und Pflichtfelder prüfen",
+      "channel_not_found": "Wähle für diese Aufgabe einen deiner Benachrichtigungskanäle"
+    },
+    "source_key": {
+      "source_not_found": "Die gewählte Quelle existiert nicht",
+      "invalid": "Der gewählte Quelleneintrag ist ungültig",
+      "search_deleted": "Die gewählte Suche existiert nicht mehr"
+    },
+    "options": {
+      "invalid": "Die Quellen-Optionen sind ungültig"
+    }
+  },
+  "app": {
+    "report": {
+      "read": {
+        "success": "Bericht erfolgreich generiert"
+      },
+      "missing_id": "Fehler: Bericht-ID fehlt"
+    }
+  },
+  "core": {
+    "account": {
+      "create_failed": "Core Service: Kontoerstellung fehlgeschlagen"
+    }
+  },
+  "accounts": {
+    "bad_payload": "Ungültige Kontodaten",
+    "insert": {
+      "bad_payload": "Ungültige Kontodaten"
+    }
+  },
+  "emails": {
+    "bad_payload": "Ungültige E-Mail-Daten",
+    "insert": {
+      "bad_payload": "Ungültige E-Mail-Daten"
+    }
+  },
+  "roles": {
+    "bad_payload": "Ungültige Rollendaten",
+    "insert": {
+      "bad_payload": "Ungültige Rollendaten"
+    },
+    "permissions": {
+      "invalid_type": "Berechtigungen müssen ein Array von Zeichenketten sein",
+      "invalid_permission": "Eine oder mehrere Berechtigungen sind ungültig"
+    }
+  },
+  "report_specs": {
+    "bad_payload": "Ungültige Spezifikationsdaten",
+    "insert": {
+      "bad_payload": "Ungültige Spezifikationsdaten"
+    }
+  },
+  "report_items": {
+    "bad_payload": "Ungültige Berichtselementdaten",
+    "insert": {
+      "bad_payload": "Ungültige Berichtselementdaten"
+    }
+  },
+  "howto": {
+    "title": "Wie es funktioniert",
+    "subtitle": "GMail-Weiterleitungen einrichten",
+    "step1": {
+      "title": "1. Autorisieren Sie die Weiterleitungsadresse",
+      "p1": "Gmail erfordert, dass die empfangende E-Mail die Verbindung zuerst „akzeptiert“.",
+      "p2": "Gehen Sie zu Einstellungen (Zahnrad-Symbol) > Alle Einstellungen anzeigen.",
+      "p3": "Wählen Sie den Tab Weiterleitung und POP/IMAP.",
+      "p4": "Klicken Sie auf Weiterleitungsadresse hinzufügen und geben Sie die Ziel-E-Mail-Adresse ein.",
+      "p5": "Wichtig: Melden Sie sich bei diesem Zielkonto an, öffnen Sie die Bestätigungs-E-Mail von Google und klicken Sie auf den Link zur Verifizierung."
+    },
+    "step2": {
+      "title": "2. Erstellen Sie den wortbasierten Filter",
+      "p1": "Klicken Sie auf das Symbol Suchoptionen anzeigen (die Schieberegler) in der Gmail-Suchleiste.",
+      "p2": "Geben Sie im Feld Enthält die Wörter das Wort ein, nach dem Sie filtern möchten (z. B. {word}).",
+      "p3": "Klicken Sie auf Filter erstellen.",
+      "p4": "Aktivieren Sie das Kontrollkästchen Weiterleiten an: und wählen Sie die verifizierte E-Mail-Adresse aus dem Dropdown-Menü aus.",
+      "p5": "Klicken Sie erneut auf Filter erstellen, um den Vorgang abzuschließen."
+    },
+    "image_alt": "Beispiel für Gmail-Weiterleitungseinstellungen"
+  },
+  "events": {
+    "summary": {
+      "automation": "Automatisierungen mit neuen Problemen: {count}"
+    },
+    "user": {
+      "info_automation_start": "Automatisierung '{name}' gestartet",
+      "info_automation_end": "Automatisierung '{name}' abgeschlossen",
+      "warn_automation_already_active": "Bereits in Warteschlange: {name}",
+      "error_queue_full": "Maximale Warteschlangentiefe erreicht ({maxDepth}). Aufgabe wurde abgelehnt",
+      "warn_automation_delivery_failed": "Automatisierung '{name}': Benachrichtigung konnte nicht zugestellt werden",
+      "warn_automation_failed": "Automation '{name}': {count} Eintrag/Einträge fehlgeschlagen: {reason}",
+      "warn_llm_answer_cut": "Automation '{name}': die Antwort von Aufgabe '{task}' wurde abgeschnitten (Eingabe und Antwort waren länger, als das Modell verarbeiten kann)",
+      "warn_source_fetch_failed": "Quelle '{source}' konnte nicht gelesen werden: {reason}",
+      "warn_source_renumbered": "Quelle '{source}': Ordner '{folder}' wurde vom Server neu nummeriert; die letzten 10 passenden E-Mails wurden erneut abgerufen",
+      "warn_source_email_too_large": "Quelle '{source}': die E-Mail '{subject}' von {from} in '{folder}' wurde übersprungen: sie ist {size_mb} MB groß, die Grenze liegt bei {limit_mb} MB",
+      "warn_source_store_failed": "Quelle '{source}': eine E-Mail konnte nicht gespeichert werden: {reason}",
+      "warn_source_deleted_automation": "Automation '{name}' hat keine Quelle mehr: Quelle '{source}' wurde gelöscht",
+      "warn_source_deleted_channel": "Benachrichtigungskanal '{channel}' nutzte die gelöschte Quelle '{source}'",
+      "info_source_test_ok": "Quelle '{source}': Verbindung OK",
+      "error_source_test_failed": "Quelle '{source}': Verbindung fehlgeschlagen: {reason}",
+      "warn_source_key_broken_automation": "Automation '{name}' kann nicht mehr laufen: ihre Suche in der Quelle '{source}' wurde gelöscht",
+      "warn_source_folder_missing": "Quelle '{source}': Ordner '{folder}' existiert nicht (auf dem Server umbenannt oder gelöscht?). Automationen damit werden übersprungen.",
+      "warn_source_after_filter_failed": "Quelle '{source}': Verarbeitung der gefilterten Einträge fehlgeschlagen (z. B. E-Mails markieren): {reason}",
+      "warn_files_quota_reached": "Speicher voll ({limit_mb} MB): Anhänge neuer E-Mails wurden nicht gespeichert, die E-Mails schon.",
+      "info_admin_read": "Ein Administrator ({admin_user}) hat Ihre {type} geöffnet",
+      "info_admin_changed": "Ein Administrator ({admin_user}) hat Ihre {type} geändert",
+      "info_admin_deleted": "Ein Administrator ({admin_user}) hat Ihre {type} gelöscht"
+    }
+  },
+  "user_events": {
+    "read": {
+      "success": "Benutzer-Ereignisse erfolgreich geladen",
+      "not_logged_in": "Nicht berechtigt, Benutzer-Ereignisse zu lesen"
+    },
+    "delete": {
+      "success": "Ereignisse gelöscht",
+      "not_logged_in": "Keine Berechtigung, Ereignisse zu löschen"
+    },
+    "id": {
+      "required": "Ereignis-ID ist erforderlich"
+    }
+  },
+  "userinfo_import_export": {
+    "title": "Benutzerdaten-Sicherung & Wiederherstellung",
+    "description": "Exportieren Sie alle Ihre Verbindungen, Suchen, Filter, Artefakte und Automatisierungen in eine einzelne JSON-Datei oder stellen Sie diese aus einer Sicherungsdatei wieder her.",
+    "export_button": "Benutzerdaten exportieren",
+    "import_button": "Benutzerdaten importieren",
+    "export_success": "Benutzerdaten erfolgreich exportiert",
+    "export_failed": "Fehler beim Exportieren der Benutzerdaten",
+    "import_success": "Benutzerdaten erfolgreich importiert",
+    "import_failed": "Fehler beim Importieren der Benutzerdaten",
+    "invalid_file": "Ungültige Sicherungsdatei oder nicht unterstützte Version"
+  },
+  "dashboard": {
+    "greeting_morning": "Guten Morgen, {name}!",
+    "greeting_morning_simple": "Guten Morgen!",
+    "greeting_afternoon": "Guten Tag, {name}!",
+    "greeting_afternoon_simple": "Guten Tag!",
+    "greeting_evening": "Guten Abend, {name}!",
+    "greeting_evening_simple": "Guten Abend!",
+    "greeting_subtitle": "Hier ist, was heute Ihre Aufmerksamkeit erfordert.",
+    "last_issue": "Letztes Problem",
+    "no_recent_automations": "Keine kürzlich ausgeführten Automatisierungen",
+    "recent_automations": "Zuletzt ausgeführte Automatisierungen",
+    "new_automation": "Neue Automatisierung",
+    "no_automations": "Noch keine Automatisierungen",
+    "create_first_automation": "Erste Automatisierung erstellen",
+    "card": {
+      "last": "zuletzt",
+      "source_stale": "Seit {time} nicht gelesen: siehe Ereignisse (Glocke)",
+      "source_problems": "Probleme mit dieser Quelle: siehe Ereignisse (Glocke)",
+      "source": "Quelle",
+      "checked": "geprüft",
+      "next": "nächste",
+      "manual": "manuell",
+      "paused": "pausiert",
+      "due": "fällig"
+    },
+    "cron_on": "Cron Ein",
+    "cron_off": "Cron Aus"
+  },
+  "automation_libraries": {
+    "title": "Automatisierungs-Bibliothek",
+    "subtitle": "Vorgefertigte Automatisierungen für Ihren Posteingang. Wählen Sie eine aus und passen Sie sie an Ihre Arbeitsweise an.",
+    "search_placeholder": "Suchen",
+    "all": "Alle",
+    "all_templates": "Alle Vorlagen",
+    "all_automations": "Alle Vorlagen",
+    "items_count": "{count} Elemente",
+    "templates_count": "{count} Elemente",
+    "go_to": "Gehe zu:",
+    "automations": "Automatisierungen",
+    "view_my_automations": "Automatisierungen",
+    "view_automations": "Automatisierungen",
+    "add": "Hinzufügen",
+    "added": "Hinzugefügt",
+    "already_added": "Bereits in Ihren Automatisierungen",
+    "add_success": "Automatisierung \"{name}\" erfolgreich hinzugefügt!",
+    "add_failed": "Fehler beim Hinzufügen der Automatisierung: {error}",
+    "no_results": "Keine Automatisierungen gefunden, die Ihren Kriterien entsprechen."
+  },
+  "imap_reminder": {
+    "title": "Kein Postfach verbunden",
+    "message_prefix": "Du hast noch kein Postfach verbunden. Gehe zu ",
+    "sources_link": "Quellen",
+    "message_suffix": ", um eine IMAP-Quelle anzulegen.",
+    "ok": "OK"
+  },
+  "sources": {
+    "read": {
+      "success": "Quellen geladen"
+    },
+    "create": {
+      "success": "Quelle angelegt"
+    },
+    "update": {
+      "success": "Quelle gespeichert"
+    },
+    "delete": {
+      "success": "Quelle gelöscht"
+    },
+    "delete_many": {
+      "success": "Quellen gelöscht"
+    },
+    "export": {
+      "success": "Quellen exportiert"
+    },
+    "import": {
+      "success": "Quellen importiert"
+    },
+    "not_found": "Quelle nicht gefunden",
+    "missing_ids": "Keine Quellen ausgewählt",
+    "type": {
+      "unknown": "Unbekannter Quellentyp",
+      "builtin": "Diese Quelle ist eingebaut und kann nicht angelegt werden"
+    },
+    "config": {
+      "invalid": "Die Verbindungseinstellungen sind ungültig"
+    },
+    "run": {
+      "started": "Quelle wird ausgeführt"
+    },
+    "types": {
+      "imap": {
+        "title": "IMAP-Postfach",
+        "config": {
+          "host": "Host",
+          "port": "Port",
+          "use_ssl": "SSL verwenden",
+          "username": "Benutzername",
+          "credential": "Passwort"
+        },
+        "settings": {
+          "searches": "Gespeicherte Suchen",
+          "searches_note": "Neue Quellen erhalten die Suche „Default“, und jede neue Suche beginnt mit „empfangen seit“ einem Datum vor {days} Tagen, damit der erste Lauf nicht das ganze Postfach lädt. Für ältere Mails das Datum vor dem ersten Lauf entfernen.",
+          "download_attachments": "Anhänge herunterladen",
+          "download_attachments_hint": "Speichert die Anhänge neuer E-Mails. Welche Typen und Größen erlaubt sind, legt der Server fest.",
+          "attachments_disabled": "Anhänge sind auf diesem Server ausgeschaltet."
+        }
+      },
+      "staging": {
+        "title": "Staging"
+      }
+    },
+    "searches": {
+      "hint": "Automationen wählen einen Ordner und optional eine dieser Suchen.",
+      "add": "Suche hinzufügen",
+      "empty": "Keine gespeicherten Suchen. Automationen können trotzdem ganze Ordner verwenden.",
+      "unnamed": "(ohne Namen)",
+      "delete": "Suche löschen",
+      "name": "Name der Suche",
+      "default_name": "Suche",
+      "name_required": "Jede Suche braucht einen Namen",
+      "name_duplicate": "Eine Suche mit diesem Namen gibt es schon"
+    },
+    "settings": {
+      "invalid": "Die Einstellungen sind ungültig"
+    },
+    "max_items_per_fetch": {
+      "too_high": "Max. Einträge pro Abruf liegt über dem Systemlimit"
+    },
+    "retention_days": {
+      "too_high": "Aufbewahrungsdauer liegt über dem Systemlimit"
+    },
+    "max_items": {
+      "too_high": "Max. gespeicherte Einträge liegt über dem Systemlimit"
+    },
+    "max_size_mb": {
+      "too_high": "Max. Speichergröße liegt über dem Systemlimit"
+    }
+  },
+  "repositories": {
+    "message_pruned": "Diese Nachricht wurde bereinigt und ist nicht mehr gespeichert."
+  },
+  "automation_draft": {
+    "rules": {
+      "intent": {
+        "type": "Die Beschreibung muss Text sein",
+        "too_long": "Die Beschreibung ist zu lang"
+      },
+      "current": {
+        "type": "Der Text muss Text sein",
+        "too_long": "Der Text ist zu lang"
+      },
+      "channel_id": {
+        "required": "Wähle, wohin zugestellt wird"
+      },
+      "match": {
+        "invalid": "Themenfilter oder kein KI-Filter wählen"
+      },
+      "invalid": "Ungültige Anfrage"
+    },
+    "title": "Neue Automatisierung aus den Staging-E-Mails",
+    "based_on": "Auf Basis deiner {count} Staging-E-Mails (höchstens 10 dienen als Beispiele).",
+    "match": "Erkennen nach",
+    "match_theme": "Thema: worum es in den E-Mails geht",
+    "match_none": "Kein KI-Filter: jede E-Mail der Quelle",
+    "match_note": "Genaue Begriffe? Nimm stattdessen eine Suche an der Quelle!",
+    "none_staged": "Noch keine Staging-E-Mails: markiere zuerst ein paar Beispiele.",
+    "intent": "Was soll mit solchen E-Mails passieren?",
+    "intent_hint": "z. B. In 3 Stichpunkten zusammenfassen und an mein Handy schicken",
+    "channel": "Benachrichtigung",
+    "create": "Entwurf erstellen",
+    "name": "Name",
+    "filter_prompt": "Filter",
+    "tasks": "Aufgaben",
+    "saved_inactive": "Als inaktive Automatisierung auf der Staging-Quelle gespeichert: unter Automatisierungen bearbeiten, auf dein Postfach umstellen, wenn sie passt.",
+    "test": "Mit Staging-E-Mails testen",
+    "test_again": "Erneut testen",
+    "result": "{passed} von {total} Staging-E-Mails haben den Filter passiert.",
+    "aborted": "Der Lauf wurde abgebrochen: {reason}",
+    "no_files": "Keine Dateien: nichts hat passiert, oder die Automatisierung stellt nichts zu.",
+    "activate": "Aktivieren",
+    "open": "In Automatisierungen öffnen",
+    "delete": "Entwurf löschen",
+    "share": "Als JSON kopieren",
+    "copied": "kopiert",
+    "suggest_filter": "Aus den Staging-E-Mails vorschlagen",
+    "suggest_task_prompt": "Aus den Staging-E-Mails vorschlagen"
+  },
+  "media_viewer": {
+    "download": "Herunterladen",
+    "unsupported": "Dieser Inhalt ({type}) kann hier nicht angezeigt werden. Bitte herunterladen.",
+    "email": {
+      "from": "Von",
+      "to": "An",
+      "cc": "Cc",
+      "reply_to": "Antwort an",
+      "subject": "Betreff",
+      "date": "Datum",
+      "message_id": "Message-ID",
+      "no_body": "Diese E-Mail hat keinen Text.",
+      "automation_text": "Automationstext",
+      "cut": "Automationen lesen bis hier",
+      "forwarded": "Weitergeleitet",
+      "bounced": "Zurückgekommen",
+      "no_preview": "Keine Vorschau für diesen Typ",
+      "load_failed": "Die Datei konnte nicht geladen werden",
+      "embedded_skipped": "{count} weitere verschachtelte Nachricht(en) nicht angezeigt",
+      "status": {
+        "skipped_disabled": "Nicht heruntergeladen (Anhänge sind aus)",
+        "skipped_type": "Nicht heruntergeladen (Typ nicht erlaubt)",
+        "skipped_mismatch": "Nicht heruntergeladen (Inhalt passt nicht zum Typ)",
+        "skipped_count": "Nicht heruntergeladen (zu viele Anhänge)",
+        "skipped_quota": "Nicht heruntergeladen (Speicher voll)",
+        "too_large": "Nicht heruntergeladen (zu groß)",
+        "removed": "Entfernt",
+        "failed": "Herunterladen fehlgeschlagen"
+      },
+      "remove_attachments": "Anhänge entfernen",
+      "remove_confirm": "{count} gespeicherte(n) Anhang/Anhänge entfernen? Die E-Mail bleibt. Das lässt sich nicht rückgängig machen.",
+      "remove": "Entfernen"
+    }
+  },
+  "artifacts": {
+    "read": {
+      "success": "Artefakte geladen"
+    },
+    "delete": {
+      "success": "Artefakt gelöscht"
+    },
+    "not_found": "Artefakt nicht gefunden",
+    "missing_ids": "Keine Artefakte angegeben"
+  },
+  "files": {
+    "not_found": "Datei nicht gefunden"
+  },
+  "storage": {
+    "title": "Speicher",
+    "files": "Gespeicherte Dateien",
+    "of_quota": "{used} von {limit}",
+    "emails": "E-Mails",
+    "attachments": "Anhänge",
+    "artifacts": "Artefakte",
+    "count": "{count} Einträge",
+    "note": "Das Kontingent gilt für gespeicherte Dateien (Anhänge und Artefakte). Platz wird frei durch das Aufräumen der Quellen, die Aufbewahrung der Artefakte jeder Automation und das Löschen von E-Mails oder Artefakten.",
+    "read": {
+      "success": "Speicherbelegung geladen"
+    }
+  }
+}
