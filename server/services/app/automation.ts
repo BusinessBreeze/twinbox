@@ -42,10 +42,13 @@ class automationsService extends genericService {
         return norm(res);
     }
 
-    /** Form fields back into the stored columns: source_id from the key, filter_prompt into options. */
+    /**
+     * Form fields back into the stored columns: source_id from the key, filter_prompt into options. The run fields are
+     * the engine's (server/jobs/automations/record.ts): a form sends them back as text, so they're dropped, never written.
+     */
     private unpackFormFields(body: any, existing?: any) {
         if (!body) return body;
-        const { filter_prompt, source_label: _label, ...rest } = body;
+        const { filter_prompt, source_label: _label, last_run_at: _r, last_issue_at: _i, last_issue_level: _l, ...rest } = body;
         if (typeof rest.source_key === 'string') {
             rest.source_id = rest.source_key.split(':')[0];
         }

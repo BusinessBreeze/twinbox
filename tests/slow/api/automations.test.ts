@@ -112,6 +112,20 @@ describe('automations', () => {
         await client.ok('DELETE', `/api/v0.1/app/automation/${created.id}`);
     });
 
+    it('saves a form that sends back the run fields, without writing them', async () => {
+        // The edit form returns the whole record; after a run last_run_at comes back as text (it once failed with
+        // automations.update.bad_payload)
+        const created = await client.ok('POST', '/api/v0.1/app/automation', { name: 'Ran before', source_key: staging.id, tasks: [] });
+        const updated = await client.ok('PATCH', `/api/v0.1/app/automation/${created.id}`, {
+            ...created, source_key: `${imap.id}:INBOX:`,
+            last_run_at: '2026-11-11T14:25:53.000Z', last_issue_at: '2026-11-11T14:25:53.000Z', last_issue_level: 'warn',
+        });
+        expect(updated.source_key).toBe(`${imap.id}:INBOX:`);
+        expect(updated.last_run_at ?? null).toBeNull();
+        expect(updated.last_issue_level ?? null).toBeNull();
+        await client.ok('DELETE', `/api/v0.1/app/automation/${created.id}`);
+    });
+
     it('rejects a task that reads from an unknown input', async () => {
         const res = await client.post('/api/v0.1/app/automation', {
             name: 'Bad input', source_key: staging.id,
