@@ -44,6 +44,7 @@
         <template v-if="result">
           <v-divider class="my-3" />
           <p class="text-body-2 font-weight-bold">{{ t('automation_draft.result', { passed: result.passed, total: result.total }) }}</p>
+          <p v-if="result.unjudged" class="text-body-2 text-error">{{ t('automation_draft.unjudged', { count: result.unjudged }) }}</p>
           <p v-if="result.aborted" class="text-body-2 text-error">{{ t('automation_draft.aborted', { reason: result.aborted }) }}</p>
           <p v-if="!result.files.length" class="text-body-2 text-medium-emphasis">{{ t('automation_draft.no_files') }}</p>
           <!-- The files are in Artifacts; each opens in a new tab, so this dialog stays open -->

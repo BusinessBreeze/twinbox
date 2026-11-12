@@ -51,6 +51,19 @@ const failureEvent = async (automation: any, reason: string, refs: string[], url
     });
 };
 
+/** The filter could not judge these emails (unusable model answer): they were not processed; an error with links. */
+const unjudgedEvent = async (automation: any, refs: string[], urlByRef: Map<string, { label: string; url?: string }>) => {
+    await recordIssue(automation.id, 'error');
+    await emitTelemetryEvent({
+        scope: EventScope.USER,
+        level: EventLevel.ERROR,
+        category: 'automation',
+        message: 'events.user.error_automation_filter_unjudged',
+        owner_id: automation.owner_id,
+        metadata: { id: automation.id, name: automation.name, count: refs.length, links: refs.map((ref) => urlByRef.get(ref)).filter(Boolean) },
+    });
+};
+
 export const runSource = async (source: BaseSource, keys: string[]) => {
     const subscribers = await subscribedAutomations(source.id, keys);
     if (subscribers.length === 0) return;
@@ -87,7 +100,9 @@ export const runSource = async (source: BaseSource, keys: string[]) => {
         if (raw.length === 0) continue;
         const items = options.add_source_links ? raw : raw.map((i) => ({ ...i, itemUrl: undefined }));
         try {
-            subs.push({ automation, options, items, passed: await filterItems(options.filter_prompt ?? undefined, items) });
+            const { passed, unjudged } = await filterItems(options.filter_prompt ?? undefined, items);
+            subs.push({ automation, options, items, passed });
+            if (unjudged.length > 0) await unjudgedEvent(automation, unjudged.map((i) => i.sourceRefs[0]!), urlByRef);
         } catch (err: any) {
             await failureEvent(automation, `Filter: ${err?.message || err}`, items.map((i) => i.sourceRefs[0]!), urlByRef);
         }

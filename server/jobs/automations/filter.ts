@@ -3,11 +3,13 @@
 //
 // - LLM unreachable / timeout: throws. The caller skips the run (nothing saved, checkpoint unchanged)
 //   and the next poll retries, same as an outage inside a task.
-// - The model's answer for one item is unusable, or the item is too long: the item passes (fail open).
-//   Processing one email too many is better than silently missing one.
+// - The model's answer for one item is unusable (not the JSON { result: boolean }: prose, broken or cut-off JSON, a
+//   missing or wrong field, an empty answer, a refusal): the item is NOT processed (fail closed) and handed back as
+//   unjudged; the run reports it as an error with a link to the email. A wrong "yes" could move or notify; a reported
+//   "don't know" can't.
 import { z } from 'zod/v4';
 import { OutputParserException } from '@langchain/core/output_parsers';
-import { llm, limits, emitTelemetryEvent, EventScope, EventLevel } from './deps';
+import { llm, limits } from './deps';
 import { itemToText, type TaskItem } from './tasks';
 import { filterPrompt } from './prompts';
 
@@ -16,13 +18,19 @@ const outputSchema = z.object({
     result: z.boolean().describe('True if the text matches the filter criteria, false otherwise'),
 });
 
-/** Returns the items that match the filter prompt; all items when there is no prompt. */
-export const filterItems = async (prompt: string | undefined, items: TaskItem[]): Promise<TaskItem[]> => {
+export interface FilterResult {
+    passed: TaskItem[];         // matched (all items when there is no prompt)
+    unjudged: TaskItem[];       // the model's answer was unusable: not processed, to be reported
+}
+
+/** Splits the items by the filter prompt: matched, and unjudged (unusable answer). */
+export const filterItems = async (prompt: string | undefined, items: TaskItem[]): Promise<FilterResult> => {
     const criteria = prompt?.trim();
-    if (!criteria || items.length === 0) return items;
+    if (!criteria || items.length === 0) return { passed: items, unjudged: [] };
 
     const structuredLlm = llm.withStructuredOutput(outputSchema, { method: 'jsonSchema' });
     const passed: TaskItem[] = [];
+    const unjudged: TaskItem[] = [];
 
     for (const item of items) {
         // A long email is judged on its beginning (subject, sender and the first part of the body)
@@ -32,19 +40,10 @@ export const filterItems = async (prompt: string | undefined, items: TaskItem[])
             const response = await structuredLlm.invoke(filterPrompt(criteria, text));
             if (response?.result) passed.push(item);
         } catch (err) {
-            if (!(err instanceof OutputParserException)) throw err;   // outage: abort, retry next poll
-            await passUnjudged(item, 'the model returned no usable answer');
-            passed.push(item);
+            if (!(err instanceof OutputParserException)) throw err;   // outage: this automation stops for this run
+            unjudged.push(item);
         }
     }
 
-    return passed;
+    return { passed, unjudged };
 };
-
-const passUnjudged = (item: TaskItem, reason: string) => emitTelemetryEvent({
-    scope: EventScope.SYSTEM,
-    level: EventLevel.WARN,
-    category: 'automation',
-    message: `Filter could not judge "${item.label}", passing it on: ${reason}`,
-    metadata: { sourceRefs: item.sourceRefs }
-});

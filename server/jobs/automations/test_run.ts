@@ -6,15 +6,16 @@ import { runTasks, type TaskInstance, type TaskItem } from './tasks';
 export interface TestRunResult {
     total: number;              // items given
     passed: number;             // items the filter let through
+    unjudged: number;           // items the filter could not judge (unusable model answer): not processed
     aborted: string | null;     // why the run stopped (a task failed), else null
 }
 
 export const testRun = async (automation: any, items: TaskItem[], lang: string): Promise<TestRunResult> => {
-    const passed = await filterItems(automation.options?.filter_prompt ?? undefined, items);
+    const { passed, unjudged } = await filterItems(automation.options?.filter_prompt ?? undefined, items);
     const run = await runTasks({
         tasks: (automation.tasks || []) as TaskInstance[],
         source: passed,
         ctx: { ownerId: automation.owner_id, automationId: automation.id, automationName: automation.name, lang, deliverLocally: true },
     });
-    return { total: items.length, passed: passed.length, aborted: run.aborted ? run.aborted.message : null };
+    return { total: items.length, passed: passed.length, unjudged: unjudged.length, aborted: run.aborted ? run.aborted.message : null };
 };
