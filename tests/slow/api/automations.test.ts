@@ -58,6 +58,26 @@ describe('automations', () => {
         expect(onImap.options).toEqual(opts);
     });
 
+    it('keeps copy / move folders on IMAP, drops them on staging and refuses a bad folder name', async () => {
+        const opts = { copy_to: ' Archive ', move_to: 'News:2026' };
+        const onImap = await client.ok('POST', '/api/v0.1/app/automation', { name: 'Copy move', source_key: `${imap.id}:INBOX:`, options: opts, tasks: [] });
+        expect(onImap.options).toEqual({ copy_to: 'Archive', move_to: 'News:2026' });
+        expect((await client.ok('GET', `/api/v0.1/app/automation/${onImap.id}`)).options).toEqual({ copy_to: 'Archive', move_to: 'News:2026' });
+
+        // "— none —" in the form: the folder is no longer stored
+        const cleared = await client.ok('PATCH', `/api/v0.1/app/automation/${onImap.id}`, { options: { copy_to: '', move_to: 'News:2026' } });
+        expect(cleared.options).toEqual({ move_to: 'News:2026' });
+
+        const onStaging = await client.ok('POST', '/api/v0.1/app/automation', { name: 'Copy move staging', source_key: staging.id, options: opts, tasks: [] });
+        expect(onStaging.options).toEqual({});
+
+        for (const move_to of ['Arch\nive', 'x'.repeat(501), 7]) {
+            const res = await client.post('/api/v0.1/app/automation', { name: `Bad folder ${String(move_to).slice(0, 10)}`, source_key: `${imap.id}:INBOX:`, options: { move_to }, tasks: [] });
+            expect(res.status, JSON.stringify(move_to).slice(0, 20)).toBe(400);
+            expect(res.body.statusMessage).toBe('error automations.options.invalid');
+        }
+    });
+
     it('keeps the options when only "active" changes', async () => {
         const created = await client.ok('POST', '/api/v0.1/app/automation', {
             name: 'Toggle', source_key: staging.id, filter_prompt: 'x', options: { add_source_links: true }, tasks: [],

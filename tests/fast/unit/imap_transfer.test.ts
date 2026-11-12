@@ -68,5 +68,10 @@ describe('IMAP automation options', () => {
         expect(parsed.copy_to).toBe('News');
         expect(parsed.move_to).toBeUndefined();
         expect(imapDefinition.optionsSchema.safeParse({ move_to: 'Arch\nive' }).success).toBe(false);
+        expect(imapDefinition.optionsSchema.parse({ copy_to: null }).copy_to).toBeUndefined();
+        expect(imapDefinition.optionsSchema.safeParse({ copy_to: 'x'.repeat(500) }).success).toBe(true);
+        expect(imapDefinition.optionsSchema.safeParse({ copy_to: 'x'.repeat(501) }).success).toBe(false);
+        expect(imapDefinition.optionsSchema.safeParse({ move_to: 7 }).success).toBe(false);
+        expect(imapDefinition.optionsSchema.safeParse({ move_to: ['INBOX'] }).success).toBe(false);
     });
 });
