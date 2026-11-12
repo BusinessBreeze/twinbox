@@ -1,7 +1,7 @@
 // Live updates (base: server/api/user/stream.get.ts, server/utils/user_stream.ts): event names only, only the owner's,
 // session only, at most limits.stream.max_per_user streams per user.
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { TestClient, adminClient } from '../../helpers/client';
+import { TestClient, adminClient, fixture } from '../../helpers/client';
 
 const PASSWORD = 'stream-test-password';
 const rows = (body: any): any[] => (Array.isArray(body) ? body : Array.isArray(body?.data) ? body.data : []);
@@ -91,6 +91,31 @@ describe('live update stream', () => {
         await new Promise((r) => setTimeout(r, 1100));     // past the cooldown of the event above
         await a.request('DELETE', '/api/user/event', { ids: [events[0].id] });
         expect(await until(() => messages(tab).includes('data: events'))).toBe(true);
+    });
+
+    it('tells the owner about automation changes and a source run: jobs, sources, automations', async () => {
+        const tab = await open(a);
+        await until(() => tab.text.includes('retry'));
+        await new Promise((r) => setTimeout(r, 1100));     // past the cooldown of earlier names
+        const staging = (await a.ok<any[]>('GET', '/api/v0.1/app/sources')).find((src) => src.type === 'staging');
+        await a.ok('POST', '/api/v0.1/app/email/import', fixture('emails.json').slice(0, 2));
+        const automation = await a.ok('POST', '/api/v0.1/app/automation', { name: 'Stream run', source_key: staging.id, tasks: [] });
+        expect(await until(() => messages(tab).includes('data: automations'))).toBe(true);
+
+        await new Promise((r) => setTimeout(r, 1100));
+        const before = messages(tab).length;
+        await a.ok('POST', `/api/v0.1/app/sources/${staging.id}/run`);
+        // queued (jobs), polled (sources), ran (automations), ended (jobs); names within a second may arrive together
+        expect(await until(() => {
+            const after = messages(tab).slice(before);
+            return ['data: jobs', 'data: sources', 'data: automations'].every((m) => after.includes(m));
+        }, 20_000)).toBe(true);
+        expect(messages(tab).slice(before)[0]).toBe('data: jobs');
+
+        await new Promise((r) => setTimeout(r, 1100));
+        const beforeDelete = messages(tab).length;
+        await a.ok('DELETE', `/api/v0.1/app/automation/${automation.id}`);
+        expect(await until(() => messages(tab).slice(beforeDelete).includes('data: automations'))).toBe(true);
     });
 
     it('closes the oldest stream above the limit of one user', async () => {

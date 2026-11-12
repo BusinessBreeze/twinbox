@@ -1,5 +1,6 @@
 import { limits } from '#shared/limits';
 import { emitTelemetryEvent, EventScope, EventLevel } from '#bs/utils/telemetry/event';
+import { notifyUser } from '#bs/utils/user_stream';
 
 export type JobTask = () => Promise<void>;
 
@@ -82,6 +83,7 @@ export class InMemoryQueue {
 
     this.activeIds.add(job.id);
     this.queue.push(job);
+    notifyUser(job.ownerId, 'jobs');               // live updates: "My Queue"
 
     await emitTelemetryEvent({
       scope: EventScope.SYSTEM,
@@ -137,6 +139,7 @@ export class InMemoryQueue {
       if (!job) break;
 
       this.runningJobs.add(job);
+      notifyUser(job.ownerId, 'jobs');
 
       // Process job asynchronously with safety wrapper
       (async () => {
@@ -153,6 +156,7 @@ export class InMemoryQueue {
         } finally {
           this.runningJobs.delete(job);
           this.activeIds.delete(job.id);
+          notifyUser(job.ownerId, 'jobs');
         }
       })();
     }

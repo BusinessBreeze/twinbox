@@ -181,7 +181,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import KpiText from '~/components/kpi/text.vue';
 import KpiTextSparkline from '~/components/kpi/text_sparkline.vue';
@@ -344,22 +344,14 @@ const fetchUserStatus = async () => {
   }
 };
 
-const fetchAllStatus = () => {
-  fetchStatus();
-  fetchUserStatus();
-};
-
-let pollTimer: any = null;
+// Live updates (no polling): the system figures are recomputed every 30 s ('system', to every user); the activity
+// changes with the user's jobs and stored emails / artifacts. Every reconnect reloads both.
+useUserStream(['system'], fetchStatus);
+useUserStream(['jobs', 'emails', 'artifacts'], fetchUserStatus);
 
 onMounted(() => {
-  fetchAllStatus();
-  pollTimer = setInterval(fetchAllStatus, 10000);
-});
-
-onUnmounted(() => {
-  if (pollTimer) {
-    clearInterval(pollTimer);
-  }
+  fetchStatus();
+  fetchUserStatus();
 });
 </script>
 

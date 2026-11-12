@@ -91,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import DashboardCard, { type AutomationCardData } from '~/components/dashboard/card.vue';
 import { getSourceType } from '#shared/source_types';
@@ -137,79 +137,80 @@ const onCreatedAutomation = () => {
 };
 
 // The automations that ran, newest first (last run and last problem are kept on the automation), each with the
-// number of its warnings and errors in the log (the bell only counts them; they are deleted here, in its events)
-const fetchRecentAutomations = async () => {
-  try {
-    const [automationsRes, problemsRes, sourcesRes, sourceProblemsRes] = await Promise.all([
-      $fetch<any>('/api/v0.1/app/automation').catch(() => ({ data: [] })),
-      $fetch<any>('/api/user/event/search?limit=100&sortBy=createdAt&sortDir=desc&level=warn,warning,error&category=automation')
-        .catch(() => ({ data: [] })),
-      $fetch<any>('/api/v0.1/app/sources').catch(() => ({ data: [] })),
-      $fetch<any>('/api/user/event/search?limit=100&sortBy=createdAt&sortDir=desc&level=warn,warning,error&category=source')
-        .catch(() => ({ data: [] })),
-    ]);
-    const automations: any[] = automationsRes?.data || [];
-    const sources = new Map<string, any>((sourcesRes?.data || []).map((src: any) => [src.id, src]));
-    hasAutomations.value = automations.length > 0;
+// number of its warnings and errors in the log (the bell only counts them; they are deleted here, in its events).
+// Four lists, each reloaded on its own live update (no polling); the cards are built from all four.
+const automationRows = ref<any[]>([]);
+const sourceRows = ref<any[]>([]);
+const automationProblemEvents = ref<any[]>([]);
+const sourceProblemEvents = ref<any[]>([]);
 
-    const problems = new Map<string, number>();
-    for (const event of problemsRes?.data || []) {
-      let meta = event.metadata;
-      if (typeof meta === 'string') {
-        try { meta = JSON.parse(meta); } catch {}
-      }
-      if (meta?.id) problems.set(String(meta.id), (problems.get(String(meta.id)) ?? 0) + 1);
-    }
+const problemSearch = (category: string) =>
+  `/api/user/event/search?limit=100&sortBy=createdAt&sortDir=desc&level=warn,warning,error&category=${category}`;
+const listOf = async (url: string) => (await $fetch<any>(url).catch(() => ({ data: [] })))?.data || [];
 
-    // Sources with warnings / errors in the log (by source_id; older events only name the source)
-    const sourceProblems = new Set<string>();
-    const sourceIdByName = new Map<string, string>([...sources.values()].map((src: any) => [src.name, src.id]));
-    for (const event of sourceProblemsRes?.data || []) {
-      let meta = event.metadata;
-      if (typeof meta === 'string') {
-        try { meta = JSON.parse(meta); } catch {}
-      }
-      const id = meta?.source_id ?? sourceIdByName.get(meta?.source);
-      if (id) sourceProblems.add(String(id));
-    }
+const loadAutomations = async () => { automationRows.value = await listOf('/api/v0.1/app/automation'); buildCards(); };
+const loadSources = async () => { sourceRows.value = await listOf('/api/v0.1/app/sources'); buildCards(); };
+const loadProblems = async () => {
+  [automationProblemEvents.value, sourceProblemEvents.value] = await Promise.all([listOf(problemSearch('automation')), listOf(problemSearch('source'))]);
+  buildCards();
+};
+const fetchRecentAutomations = () => Promise.all([loadAutomations(), loadSources(), loadProblems()]);
 
-    recentAutomations.value = automations
-      .filter((a) => a.last_run_at)
-      .sort((a, b) => new Date(b.last_run_at).getTime() - new Date(a.last_run_at).getTime())
-      .slice(0, 10)
-      .map((a) => {
-        const source = sources.get(a.source_id);
-        return {
-          id: a.id,
-          title: a.name,
-          active: a.active ?? 1,
-          lastRun: a.last_run_at,
-          lastIssueLevel: a.last_issue_level ?? null,
-          problems: problems.get(String(a.id)) ?? 0,
-          sourceLabel: a.source_label || source?.name || '',
-          lastPoll: source?.last_successful_poll ?? null,
-          sourceProblems: !!source && sourceProblems.has(String(source.id)),
-          // Only pollable types have a schedule (staging runs by hand)
-          pollSeconds: source && getSourceType(source.type)?.pollable ? Number(source.poll_seconds) || null : null,
-        };
-      });
-  } catch (err) {
-    console.error('Failed to fetch recent automations:', err);
-  }
+const metaOf = (event: any) => {
+  if (typeof event.metadata !== 'string') return event.metadata;
+  try { return JSON.parse(event.metadata); } catch { return undefined; }
 };
 
-let pollTimer: any = null;
+const buildCards = () => {
+  const automations = automationRows.value;
+  const sources = new Map<string, any>(sourceRows.value.map((src: any) => [src.id, src]));
+  hasAutomations.value = automations.length > 0;
+
+  const problems = new Map<string, number>();
+  for (const event of automationProblemEvents.value) {
+    const meta = metaOf(event);
+    if (meta?.id) problems.set(String(meta.id), (problems.get(String(meta.id)) ?? 0) + 1);
+  }
+
+  // Sources with warnings / errors in the log (by source_id; older events only name the source)
+  const sourceProblems = new Set<string>();
+  const sourceIdByName = new Map<string, string>([...sources.values()].map((src: any) => [src.name, src.id]));
+  for (const event of sourceProblemEvents.value) {
+    const meta = metaOf(event);
+    const id = meta?.source_id ?? sourceIdByName.get(meta?.source);
+    if (id) sourceProblems.add(String(id));
+  }
+
+  recentAutomations.value = automations
+    .filter((a) => a.last_run_at)
+    .sort((a, b) => new Date(b.last_run_at).getTime() - new Date(a.last_run_at).getTime())
+    .slice(0, 10)
+    .map((a) => {
+      const source = sources.get(a.source_id);
+      return {
+        id: a.id,
+        title: a.name,
+        active: a.active ?? 1,
+        lastRun: a.last_run_at,
+        lastIssueLevel: a.last_issue_level ?? null,
+        problems: problems.get(String(a.id)) ?? 0,
+        sourceLabel: a.source_label || source?.name || '',
+        lastPoll: source?.last_successful_poll ?? null,
+        sourceProblems: !!source && sourceProblems.has(String(source.id)),
+        // Only pollable types have a schedule (staging runs by hand)
+        pollSeconds: source && getSourceType(source.type)?.pollable ? Number(source.poll_seconds) || null : null,
+      };
+    });
+};
+
+// Live updates: each list on its own event (and all of them after every reconnect)
+useUserStream(['automations'], loadAutomations);
+useUserStream(['sources'], loadSources);
+useUserStream(['events'], loadProblems);
 
 onMounted(async () => {
   automationMeta.value = await automationMetaFcn(t);
   fetchRecentAutomations();
-  pollTimer = setInterval(fetchRecentAutomations, 10000);
-});
-
-onUnmounted(() => {
-  if (pollTimer) {
-    clearInterval(pollTimer);
-  }
 });
 </script>
 

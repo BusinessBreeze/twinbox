@@ -16,6 +16,7 @@ export { encryptValue, decryptValue } from '#server/utils/crypto/simple';
 
 // --- Telemetry ---
 export { emitTelemetryEvent, EventScope, EventLevel } from '#bs/utils/telemetry/event';
+export { notifyUser } from '#bs/utils/user_stream';
 
 // --- Configuration ---
 import { limits } from '#shared/limits';

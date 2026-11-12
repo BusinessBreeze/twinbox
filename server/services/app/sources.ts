@@ -1,6 +1,7 @@
 // Sources CRUD (docs/specs/SPEC_sources.md): type validation, whole-config encryption with secret masking, type
 // settings, the keys automations can subscribe to, deletion warnings, the lazily created built-in sources, and keeping
 // the poll manager in sync.
+import { notifyUser } from '#bs/utils/user_stream';
 import { db } from "hub:db";
 import { limits } from '#shared/limits';
 import { and, eq } from "drizzle-orm";
@@ -26,6 +27,11 @@ const deletedListeners: Array<(source: DeletedSource) => Promise<void>> = [];
 export const onSourceDeleted = (listener: (source: DeletedSource) => Promise<void>) => { deletedListeners.push(listener); };
 
 class sourcesService extends genericService {
+    /** Live updates: the owner's sources table and dashboard cards reload. */
+    private changed(ownerId?: string | null) {
+        notifyUser(this.user_id ?? ownerId, 'sources');
+    }
+
     /** What the browser gets: config without secret fields, no runtime state (the type's own). */
     private toClient(row: any) {
         if (!row) return row;
@@ -153,6 +159,7 @@ class sourcesService extends genericService {
             state: {},                                  // the type's own runtime state, never from the client
         }, hooks);
         this.syncPollManager(row);
+        this.changed(row?.owner_id);
         return this.toClient(row);
     }
 
@@ -167,6 +174,7 @@ class sourcesService extends genericService {
             if (Object.keys(limits).length === 0) return this.toClient(existing);
             const row = await super.update(id, limits, hooks);
             this.syncPollManager(row);
+            this.changed(existing.owner_id);
             return this.toClient(row);
         }
 
@@ -181,6 +189,7 @@ class sourcesService extends genericService {
         const row = await super.update(id, { ...rest, type, config: encryptConfig(config), settings }, hooks);
         await this.warnBrokenKeys(existing, row);
         this.syncPollManager(row);
+        this.changed(existing.owner_id);
         return this.toClient(row);
     }
 
@@ -190,7 +199,9 @@ class sourcesService extends genericService {
         if (getSourceClass(existing.type)?.definition.builtin) return this.toClient(existing);   // built-in: no-op
         await this.warnOrphans(existing);
         sourcePollManager.unregister(id);
-        return this.toClient(await super.delete(id));
+        const deleted = await super.delete(id);
+        this.changed(existing.owner_id);
+        return this.toClient(deleted);
     }
 
     async deleteMany(ids: string[]) {
@@ -283,6 +294,7 @@ class sourcesService extends genericService {
                 max_size_mb: item.max_size_mb,
             })));
         }
+        if (created.length > 0) this.changed(created[0]?.owner_id);
         return created;
     }
 }

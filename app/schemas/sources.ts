@@ -44,6 +44,7 @@ export default async function (t: any, callbacks?: { onRunNow?: (item: any) => v
         path_base: '/api/v0.1/app/sources',
         features: ['create', 'update', 'delete', 'deleteMany'],
         readOnMount: true,
+        live: ['sources'],              // live updates: created, changed, polled
         formActions: [
             {
                 label: t('table.sources.test'),

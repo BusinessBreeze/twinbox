@@ -6,6 +6,7 @@ import { validateTasks, getTaskDefinition } from "#server/jobs/automations";
 import { getSourceClass, createSourceInstance, type BaseSource } from "#server/jobs/sources";
 import { zod_rules } from "#shared/rules/app/automation";
 import { genericService } from "#layers/nuxt-base-app/server/services/generic";
+import { notifyUser } from "#bs/utils/user_stream";
 
 /** A request body must be one record (an object), not a list, text or null. */
 const requireRecord = (body: unknown) => {
@@ -18,6 +19,11 @@ const requireRecord = (body: unknown) => {
 const ENGINE_OPTIONS = ['filter_prompt', 'add_source_links'];
 
 class automationsService extends genericService {
+    /** Live updates: the owner's automations table and dashboard cards reload. */
+    private changed(ownerId?: string | null) {
+        notifyUser(this.user_id ?? ownerId, 'automations');
+    }
+
     /** Adds `filter_prompt` (its own form field, stored in options) and `source_label` (table text). */
     private normalize(res: any) {
         if (!res) return res;
@@ -171,7 +177,9 @@ class automationsService extends genericService {
         await this.checkNameFree(body.name, undefined, body.owner_id);
         await this.validateReferences(body);
         await this.filterOptions(body);
-        return this.normalize(await super.create(body, hooks));
+        const created = await super.create(body, hooks);
+        this.changed(created?.owner_id);
+        return this.normalize(created);
     }
 
     async update(id: string, input: any, hooks?: any) {
@@ -186,7 +194,23 @@ class automationsService extends genericService {
         if (body.name !== undefined) await this.checkNameFree(body.name, id, body.owner_id ?? existing?.owner_id);
         await this.validateReferences(body, existing);
         await this.filterOptions(body, existing);
-        return this.normalize(await super.update(id, body, hooks));
+        const updated = await super.update(id, body, hooks);
+        this.changed(existing?.owner_id);
+        return this.normalize(updated);
+    }
+
+    async delete(id: string) {
+        const deleted = await super.delete(id);
+        if (deleted) this.changed(deleted.owner_id);
+        return deleted;
+    }
+
+    async deleteMany(ids: string[]) {
+        const deleted = await super.deleteMany(ids);
+        const owners = new Set((Array.isArray(deleted) ? deleted : []).map((row: any) => row?.owner_id));
+        if (this.user_id) this.changed();
+        else for (const owner of owners) this.changed(owner);
+        return deleted;
     }
 
     /** Source ids differ between installations: the export names the source and keeps the rest of the key. */
@@ -233,7 +257,9 @@ class automationsService extends genericService {
             },
         };
 
-        return super.import(payload, transformFields, transformMap);
+        const res = await super.import(payload, transformFields, transformMap);
+        this.changed();
+        return res;
     }
 }
 

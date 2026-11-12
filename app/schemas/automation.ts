@@ -96,6 +96,7 @@ export default async function (t: any) {
         ],
         path_base: '/api/v0.1/app/automation',
         features: ['create', 'update', 'delete', 'deleteMany'],
-        readOnMount: true
+        readOnMount: true,
+        live: ['automations'],          // live updates: created, changed, ran, had an issue
     }
 }

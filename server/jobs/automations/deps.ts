@@ -16,6 +16,7 @@ export { Local as LocalNotifications } from '#server/services/app/notification_l
 
 // --- Telemetry ---
 export { emitTelemetryEvent, EventScope, EventLevel } from '#bs/utils/telemetry/event';
+export { notifyUser } from '#bs/utils/user_stream';
 export { userMetrics } from '#server/utils/telemetry/user';
 
 // --- Configuration and helpers ---
