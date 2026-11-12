@@ -1,7 +1,7 @@
 // Pruning for the email-producing source types: deletes a source's stored emails beyond its limits, and the files of
 // their attachments. Staged emails are kept while they are staged.
 import { and, desc, eq, inArray, isNull, lt, ne, or, type SQL } from 'drizzle-orm';
-import { db, emails, emailStoredSize, releaseEmailFiles } from '../../deps';
+import { db, emails, emailStoredSize, notifyUser, releaseEmailFiles } from '../../deps';
 import type { PruneLimits } from '../../limits';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -9,6 +9,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const remove = async (where: SQL | undefined) => {
     const removed = await db.delete(emails).where(where).returning({ owner_id: emails.owner_id, content: emails.content });
     await releaseEmailFiles(removed);
+    for (const owner of new Set(removed.map((r) => r.owner_id))) notifyUser(owner, 'emails');
     return removed.length;
 };
 

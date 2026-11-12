@@ -16,6 +16,7 @@ export default function (t: any, callbacks?: { onViewEmail?: (item: any) => void
         path_base: "/api/v0.1/app/email",
         features: ["delete", "deleteMany"],
         readOnMount: true,
+        live: ['emails'],               // live updates: stored, deleted, pruned, imported, staged
         // Always shown (top right): a new automation drafted from the staged emails
         customAdd: [
             { icon: "mdi-creation", tooltip: t("automation_draft.title"), onClick: callbacks?.onDraftAutomation }

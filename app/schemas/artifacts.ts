@@ -13,6 +13,7 @@ export default function (t: any, callbacks?: { onView?: (item: any) => void; onD
     path_base: '/api/v0.1/app/artifacts',
     features: ['delete', 'deleteMany'],
     readOnMount: true,
+    live: ['artifacts'],              // live updates: created, deleted (also by retention)
     customActions: [
       {
         icon: 'mdi-eye',

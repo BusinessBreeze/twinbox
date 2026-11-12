@@ -1,6 +1,6 @@
 # SPEC: Live updates (server-sent events)
 
-Status: proposed (decisions of section 12 answered 2026-11-12). Replaces the timed polling of the dashboard and the
+Status: implemented (steps 1–4, 2026-11-12; base v0.1.0). Replaces the timed polling of the dashboard and the
 bell (the polling code is removed), and adds live refresh to pages that today only change on reload.
 
 ## 1. Goal
@@ -55,8 +55,8 @@ Every event means "reload what you show of this kind". Sent to the **owner** of 
 | E2 | `jobs` | a job of the user is queued, starts (leaves the queue), or ends (also when it fails) | `server/queue/core.ts`: `enqueue` (accepted), worker start, worker `finally` | dashboard activity (`/api/v0.1/app/status/activity`, "My Queue") |
 | E3 | `sources` | a source is created, changed, deleted or imported; a source was polled | `server/services/app/sources.ts` (create, update, delete, import); `server/jobs/automations/record.ts` (`recordPoll`) | `app/pages/sources.vue`; dashboard cards: last poll, next poll |
 | E4 | `automations` | an automation is created, changed, deleted or imported; it ran; it had an issue | the automation service (create, update, delete, import, add from template); `server/jobs/automations/record.ts` (`recordRun`, `recordIssue`) | `app/pages/automations.vue`; dashboard cards: last run, issue |
-| E5 | `emails` | emails are stored, deleted, pruned, imported, or their attachments removed | `server/services/app/email.ts` (`createFromParsed`, `createFromBuilt`, `import`, `delete`, `deleteMany`, `removeAttachments`); `server/jobs/sources/types/email/prune.ts` | `app/pages/repositories.vue`; `app/pages/storage.vue`; dashboard activity (ingested mails) |
-| E6 | `artifacts` | an artifact is created or deleted (by the user or by retention) | `server/services/app/artifacts.ts` (`create`, `delete`, `applyRetention`) | `app/pages/artifacts.vue`; `app/pages/storage.vue`; dashboard activity (artifacts) |
+| E5 | `emails` | emails are stored, deleted, pruned, imported, staged / unstaged, or their attachments removed | `server/services/app/email.ts` (`store`, used by `createFromBuilt` and `import`; `deleteMany`, used by `delete`; `removeAttachments`; `setStaging`); `server/jobs/sources/types/email/prune.ts` | `app/pages/repositories.vue`; `app/pages/storage.vue`; dashboard activity (ingested mails) |
+| E6 | `artifacts` | an artifact is created or deleted (by the user or by retention) | `server/services/app/artifacts.ts` (`create`, `delete`; `applyRetention` deletes through `delete`) | `app/pages/artifacts.vue`; `app/pages/storage.vue`; dashboard activity (artifacts) |
 | E7 | `system` | the system figures were recomputed (every 30 s) | `server/cron/system_metrics.ts`, after `updateSystemMetrics` | dashboard: `/api/v0.1/app/status/system`. Sent to **every** open stream: the route is open to every signed-in user and the figures are the same for all |
 
 E1 is the only event the base sends itself. E2–E7 are twinbox's.

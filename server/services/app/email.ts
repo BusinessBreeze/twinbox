@@ -4,6 +4,7 @@ import { zod_rules } from "#shared/rules/app/email";
 import { genericService } from "#layers/nuxt-base-app/server/services/generic";
 import { and, eq, inArray } from 'drizzle-orm';
 import { emitTelemetryEvent, EventScope, EventLevel } from '#bs/utils/telemetry/event';
+import { notifyUser } from '#bs/utils/user_stream';
 import { userMetrics } from '#server/utils/telemetry/user';
 import { limits } from '#shared/limits';
 import MailComposer from 'nodemailer/lib/mail-composer/index.js';
@@ -94,6 +95,7 @@ class emailService extends genericService {
             if (res && this.user_id) {
                 userMetrics.recordIngestedMail(this.user_id);
             }
+            if (res) notifyUser(record.owner_id, 'emails');     // live updates: emails and storage pages, dashboard counts
             return res;
         } catch (err: any) {
             await emitTelemetryEvent({
@@ -127,6 +129,7 @@ class emailService extends genericService {
         const removed = await this.db.delete(this.table).where(where)
             .returning({ id: this.table.id, owner_id: this.table.owner_id, content: this.table.content });
         await releaseFiles(removed);
+        for (const owner of new Set(removed.map((r: any) => r.owner_id as string))) notifyUser(owner, 'emails');
         return removed.map((r: any) => ({ id: r.id as string, owner_id: r.owner_id as string }));
     }
 
@@ -151,6 +154,7 @@ class emailService extends genericService {
         const [saved] = await this.db.update(this.table).set({ content: updated, updatedAt: new Date() })
             .where(and(eq(this.table.id, id), eq(this.table.owner_id, this.user_id))).returning();
         await fileService.release(this.user_id!, fileIds);
+        notifyUser(this.user_id, 'emails');
         return saved;
     }
 
@@ -163,10 +167,12 @@ class emailService extends genericService {
             conditions = and(conditions, eq(this.table.owner_id, this.user_id));
         }
 
-        return await this.db.update(this.table)
+        const updated = await this.db.update(this.table)
             .set({ staging_item: stagingValue, updatedAt: new Date() })
             .where(conditions)
             .returning();
+        for (const owner of new Set(updated.map((r: any) => r.owner_id as string))) notifyUser(owner, 'emails');
+        return updated;
     }
 
     async export(id?: string, stripFields: string[] = ['id', 'owner_id', 'createdAt', 'updatedAt'], transformFields: string[] = []) {

@@ -4,6 +4,7 @@ import { db } from 'hub:db';
 import { and, desc, eq, gte, inArray, lt, notInArray } from 'drizzle-orm';
 import { artifacts, automations, files } from '#server/db/schema';
 import { fileService } from './files';
+import { notifyUser } from '#bs/utils/user_stream';
 
 export interface NewArtifact {
     bytes: Buffer;
@@ -42,6 +43,7 @@ export const artifactService = {
             label: item.label || null,
             source_refs: item.sourceRefs ?? [],
         }).returning();
+        notifyUser(ownerId, 'artifacts');               // live updates: artifacts and storage pages, dashboard counts
         return { ...artifact!, mime: file.mime, size: file.size };
     },
 
@@ -98,6 +100,7 @@ export const artifactService = {
             await fileService.release(ownerId, removed.map((r) => r.file_id));
             count += removed.length;
         }
+        if (count > 0) notifyUser(ownerId, 'artifacts');     // also retention (applyRetention deletes through here)
         return count;
     },
 };

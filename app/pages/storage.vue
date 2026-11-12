@@ -48,7 +48,13 @@ const rows = computed(() => (usage.value ? [
   { key: 'artifacts', icon: 'mdi-file-multiple-outline', ...usage.value.artifacts },
 ] : []));
 
-onMounted(async () => {
+const loadUsage = async () => {
   usage.value = (await apiGet<any>('/api/v0.1/app/storage'))?.data ?? null;
+};
+// Live updates: emails and artifacts take the space (and every reconnect)
+useUserStream(['emails', 'artifacts'], loadUsage);
+
+onMounted(async () => {
+  await loadUsage();
 });
 </script>

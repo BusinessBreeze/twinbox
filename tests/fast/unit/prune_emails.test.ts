@@ -10,9 +10,11 @@ const client = createClient({ url: ':memory:' });
 const db = drizzle({ client });
 const released: Array<{ owner_id: string; content?: any }> = [];
 const releaseEmailFiles = async (rows: typeof released) => { released.push(...rows); };
+const notified: Array<[string, string]> = [];        // live updates sent: [owner, name]
+const notifyUser = (owner: string, name: string) => { notified.push([owner, name]); };
 vi.mock('hub:db', () => ({ db }));
 vi.mock('#server/jobs/sources/deps', async () => ({
-    db, emails, releaseEmailFiles, emailStoredSize: (await import('#server/db/email_content')).emailStoredSize,
+    db, emails, releaseEmailFiles, notifyUser, emailStoredSize: (await import('#server/db/email_content')).emailStoredSize,
 }));
 
 const { pruneEmails, ownEmails, unownedEmails } = await import('#server/jobs/sources/types/email/prune');
@@ -40,11 +42,12 @@ const subjects = async () => (await db.select({ s: emails.subject }).from(emails
 const none = { retention_days: 0, max_items: 0, max_size_mb: 0 };
 
 describe('pruneEmails', () => {
-    beforeEach(async () => { await client.execute('DELETE FROM emails'); n = 0; released.length = 0; });
+    beforeEach(async () => { await client.execute('DELETE FROM emails'); n = 0; released.length = 0; notified.length = 0; });
 
     it('deletes nothing without limits', async () => {
         await add({ ageDays: 400 });
         expect(await pruneEmails(ownEmails('u1', 'src'), none)).toBe(0);
+        expect(notified).toEqual([]);                       // nothing deleted: no live update
     });
 
     it('deletes by age, keeps staged emails and other sources\' emails', async () => {
@@ -54,6 +57,7 @@ describe('pruneEmails', () => {
         await add({ ageDays: 40, source: 'other' });        // Email 4: another source's
         expect(await pruneEmails(ownEmails('u1', 'src'), { ...none, retention_days: 30 })).toBe(1);
         expect(await subjects()).toEqual(['Email 2', 'Email 3', 'Email 4']);
+        expect(notified).toEqual([['u1', 'emails']]);       // the owner's emails page reloads
     });
 
     it('keeps the newest N', async () => {

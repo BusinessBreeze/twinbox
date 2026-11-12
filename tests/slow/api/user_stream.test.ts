@@ -1,7 +1,7 @@
 // Live updates (base: server/api/user/stream.get.ts, server/utils/user_stream.ts): event names only, only the owner's,
 // session only, at most limits.stream.max_per_user streams per user.
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { TestClient, adminClient, fixture } from '../../helpers/client';
+import { TestClient, adminClient, fixture, seedArtifact } from '../../helpers/client';
 
 const PASSWORD = 'stream-test-password';
 const rows = (body: any): any[] => (Array.isArray(body) ? body : Array.isArray(body?.data) ? body.data : []);
@@ -77,7 +77,8 @@ describe('live update stream', () => {
         await a.post('/api/user/notification/test', {});
         expect(await until(() => messages(sa).includes('data: events'))).toBe(true);
         await new Promise((r) => setTimeout(r, 1500));
-        expect(messages(sb)).toEqual([]);
+        // B gets nothing of A's ('system' goes to everyone every 30 s and may arrive meanwhile)
+        expect(messages(sb).filter((m) => m !== 'data: system')).toEqual([]);
 
         // Nothing but names and comments on the wire
         for (const line of sa.text.split('\n').filter(Boolean)) expect(line).toMatch(/^(data: [a-z_]+|retry: \d+|: ping)$/);
@@ -116,6 +117,26 @@ describe('live update stream', () => {
         const beforeDelete = messages(tab).length;
         await a.ok('DELETE', `/api/v0.1/app/automation/${automation.id}`);
         expect(await until(() => messages(tab).slice(beforeDelete).includes('data: automations'))).toBe(true);
+    });
+
+    it('tells the owner when emails and artifacts change', async () => {
+        const tab = await open(a);
+        await until(() => tab.text.includes('retry'));
+        const after = async (action: () => Promise<unknown>, name: string) => {
+            await new Promise((r) => setTimeout(r, 1100));                 // past the cooldown of earlier names
+            const before = messages(tab).length;
+            await action();
+            return until(() => messages(tab).slice(before).includes(`data: ${name}`));
+        };
+        // stored (an import of emails not yet known), then deleted
+        const fresh = fixture<any[]>('emails.json').slice(2, 3).map((e) => ({ ...e, messageId: e.messageId.replace('@', '.stream@') }));
+        expect(await after(() => a.ok('POST', '/api/v0.1/app/email/import', fresh), 'emails')).toBe(true);
+        const email = (await a.ok<any[]>('GET', '/api/v0.1/app/email')).find((e) => e.messageId === fresh[0].messageId);
+        expect(await after(() => a.ok('DELETE', `/api/v0.1/app/email/${email.id}`), 'emails')).toBe(true);
+
+        const me = await a.ok('GET', '/api/user/account');
+        const artifact = await seedArtifact(me.id ?? me[0]?.id, 'stream.txt', 'text/plain', 'live update test');
+        expect(await after(() => a.ok('DELETE', `/api/v0.1/app/artifacts/${artifact.id}`), 'artifacts')).toBe(true);
     });
 
     it('closes the oldest stream above the limit of one user', async () => {
