@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   components: [{ path: '~/components', ignore: ['**/renderers/**'] }],
   devtools: { enabled: true },
   extends: [ // Managed by tools/release.mjs  DO NOT EDIT MANUALLY
-    ['github:mwolf-pi3g/nuxt-base-app#v0.0.4', { install: true }],
+    ['github:mwolf-pi3g/nuxt-base-app#v0.1.0', { install: true }],
     // Working on the base: use a local checkout instead (never commit it, image builds can't reach it)
     // '/home/mwolf/Desktop/Git/GITHUB/nuxt-base-app'
   ],
