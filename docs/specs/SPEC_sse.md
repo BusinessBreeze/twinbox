@@ -1,7 +1,7 @@
 # SPEC: Live updates (server-sent events)
 
-Status: proposed. Replaces the timed polling of the dashboard and the bell, and adds live refresh to pages that
-today only change on reload.
+Status: proposed (decisions of section 12 answered 2026-11-12). Replaces the timed polling of the dashboard and the
+bell (the polling code is removed), and adds live refresh to pages that today only change on reload.
 
 ## 1. Goal
 
@@ -42,7 +42,7 @@ same values two times out of three.
 | D5 | Bursts (an IMAP run storing 200 emails) | coalesced per connection: a name is sent at most once per second | 200 `emails` events would mean 200 refetches |
 | D6 | Where it lives | stream, notifier and client composable in the **base** (the bell is there); twinbox only calls `notifyUser` with its own names | no twinbox names or code in the base: the base accepts any name matching `^[a-z_]+$` |
 | D7 | Authentication | session cookie only, no API tokens | `EventSource` can't send an `Authorization` header; API clients use the routes |
-| D8 | When the stream is unavailable | the page falls back to polling as today, every 60 s | proxies that buffer, or a blocked connection, must not leave the page frozen |
+| D8 | When the stream is unavailable | **no polling**: the page shows what it loaded last and keeps trying to reconnect; every reconnect reloads (D4) | one way to stay current instead of two; no polling code left to maintain |
 | D9 | Message bus | in memory, in the server process | one process today (the job queue is in memory too); section 9 |
 
 ## 4. Events
@@ -52,7 +52,7 @@ Every event means "reload what you show of this kind". Sent to the **owner** of 
 | # | Event | Sent when | Sent from | Who reloads what |
 |---|---|---|---|---|
 | E1 | `events` | a user event is stored, or the user deletes events | base: `server/utils/telemetry/event.ts` (after the insert of a USER event with `owner_id`); `server/api/user/event/index.delete.ts` | the bell (`app/components/user_events.vue`, base): events and summaries. Dashboard events panel (`app/components/dashboard/events.vue`). Dashboard cards (`app/components/dashboard/row.vue`): issue state |
-| E2 | `jobs` | a job of the user is queued, starts, or ends (also when it fails) | `server/queue/core.ts`: `enqueue` (accepted), worker start, worker `finally` | dashboard activity (`/api/v0.1/app/status/activity`, "your jobs"). Dashboard cards and `app/pages/sources.vue`: running state (section 6c) |
+| E2 | `jobs` | a job of the user is queued, starts (leaves the queue), or ends (also when it fails) | `server/queue/core.ts`: `enqueue` (accepted), worker start, worker `finally` | dashboard activity (`/api/v0.1/app/status/activity`, "your jobs"). Dashboard cards and `app/pages/sources.vue`: running state (section 6c) |
 | E3 | `sources` | a source is created, changed, deleted or imported; a source was polled | `server/services/app/sources.ts` (create, update, delete, import); `server/jobs/automations/record.ts` (`recordPoll`) | `app/pages/sources.vue`; dashboard cards: last poll, next poll |
 | E4 | `automations` | an automation is created, changed, deleted or imported; it ran; it had an issue | the automation service (create, update, delete, import, add from template); `server/jobs/automations/record.ts` (`recordRun`, `recordIssue`) | `app/pages/automations.vue`; dashboard cards: last run, issue |
 | E5 | `emails` | emails are stored, deleted, pruned, imported, or their attachments removed | `server/services/app/email.ts` (`createFromParsed`, `createFromBuilt`, `import`, `delete`, `deleteMany`, `removeAttachments`); `server/jobs/sources/types/email/prune.ts` | `app/pages/repositories.vue`; `app/pages/storage.vue`; dashboard activity (ingested mails) |
@@ -112,10 +112,23 @@ reloading at once sees it.
 
 ### 6c. Running state
 
-E2 tells a page that a job started; the page also needs to see **which** source runs:
-- `GET /api/v0.1/app/sources` gets a `running: boolean` per source (`jobQueue.isBusy('source:<id>')`).
-- The dashboard cards show an automation as running when its source runs (an automation runs as part of its
+E2 tells a page that a job was queued, started or ended; the page also needs to see **which** source is waiting or
+running:
+- The queue (`server/queue/core.ts`) gets `state(id): 'queued' | 'running' | null` (waiting list vs running set; today
+  only `isBusy(id)`, which doesn't tell them apart).
+- `GET /api/v0.1/app/sources` gets `run_state: 'queued' | 'running' | null` per source (`jobQueue.state('source:<id>')`).
+- The dashboard cards show an automation as queued or running when its source is (an automation runs as part of its
   source's job).
+
+### 6d. Tables (base)
+
+The pages built on the base table (`app/pages/sources.vue`, `automations.vue`, `repositories.vue`, `artifacts.vue`)
+load once on mount. The table gets a generic option in its meta, with no twinbox names in the base:
+- `meta.live: string[]`: event names; the table subscribes with `useUserStream(meta.live, loadData)` and reloads its
+  rows when one arrives (and on every reconnect). Twinbox's schemas set e.g. `live: ['sources', 'jobs']`.
+- Rows are matched by id across a reload (`item-value="id"`), so a selection survives it; rows that are gone drop
+  out of the selection.
+- An open edit form or delete confirmation is not touched: the form edits its own copy of the row.
 
 ## 7. Client
 
@@ -125,12 +138,22 @@ E2 tells a page that a job started; the page also needs to see **which** source 
     on every (re)connect (D4). Unsubscribes on unmount.
   - Debounces `reload` by 300 ms per subscriber, so `emails` and `artifacts` arriving together reload the storage
     page once.
-  - If the stream is not open after 3 failed attempts, or `EventSource` is missing: calls `reload` every 60 s
-    instead (D8), and keeps trying to reconnect in the background.
-  - Closes the stream when the tab is hidden for more than 5 minutes (`visibilitychange`), reopens it (with a
-    reload) when the tab is shown again. Saves connections for forgotten tabs.
-- The `setInterval` in `app/pages/dashboard.vue`, `app/components/dashboard/row.vue` and
-  `app/components/user_events.vue` are removed.
+  - No polling (D8): while the stream is down the browser reconnects (`retry: 5000`); the reconnect reloads (D4).
+  - Connection state for the UI: `useUserStreamState()` returns `'open' | 'connecting' | 'down'`. `down` after 3
+    failed attempts in a row (about 15 s), or when `EventSource` is missing; back to `open` on the next successful
+    connect. Closing the stream for a hidden tab (below) is not `down`.
+  - The bell (`app/components/user_events.vue`, base) shows `down`: the bell turns `error` coloured and its list
+    holds a single message, "Can't connect for live updates" (i18n), instead of the events (they may be stale). On
+    `open` it reloads and shows the events again.
+  - Hidden tab: the stream is closed when the tab has been hidden for 5 minutes (`visibilitychange`). The components
+    stay mounted and keep their subscriptions; nothing reaches them while it is closed. When the tab is shown again
+    the stream reopens, and the open itself calls every subscriber's `reload` (the same path as any reconnect, D4).
+    Subscribers are the components mounted in the tab: the current page's (other pages are unmounted by the router)
+    and the layout's (the bell). A mounted but hidden part of the page (a closed panel) reloads too; tracking actual
+    visibility isn't worth its code for one reload per tab switch.
+    The reload is the frontend's: the server can't push data (D1). Saves connections for forgotten tabs.
+- The polling code is removed: the `setInterval` in `app/pages/dashboard.vue`, `app/components/dashboard/row.vue`
+  and `app/components/user_events.vue` (base).
 - `app/components/dashboard/row.vue`: today four requests per reload. With events, each request is only made for its
   own event (`automations`, `sources`, `events`, `jobs`).
 - "Run now" (`app/pages/sources.vue`): the source shows a running indicator until `jobs` arrives and the source is
@@ -166,24 +189,21 @@ E2 tells a page that a job started; the page also needs to see **which** source 
   - anonymous request to `/api/user/stream`: 401. API token without session: 401.
   - the 11th stream of one user closes the first.
   - a source run via `POST /api/v0.1/app/sources/:id/run`: `jobs`, then `sources` (polled), `emails`, `jobs`, in
-    that order; `running` is true in between and false after.
+    that order; `run_state` is `running` in between and null after.
   - every message on the wire matches `^data: [a-z_]+$` or is a comment (no data, D1).
 - Isolation sweep (`tests/helpers/routes.ts`): the new route is included.
 
 ## 11. Steps
 
-1. Base: notifier, route, composable, E1; the bell uses the stream (removes the 60 s poll).
-2. Twinbox: E2, E3, E4 and the `running` flag; "Run now" feedback; dashboard cards and activity on the stream.
+1. Base: notifier, route, composable, E1, the table's `meta.live` (6d); the bell uses the stream (removes the 60 s poll).
+2. Twinbox: E2, E3, E4 and `run_state` (queue `state()`); "Run now" feedback; dashboard cards and activity on the stream.
 3. Twinbox: E7; the dashboard's 10 s poll removed.
 4. Twinbox: E5, E6; emails, artifacts and storage pages refresh live.
 
-Each step works on its own; pages not yet converted keep their polling.
+Each step works on its own; a page not yet converted keeps its current behaviour until its step.
 
-## 12. Open questions
+## 12. Decisions on the former open questions (2026-11-12)
 
-1. Hidden tab (section 7): close the stream after 5 minutes hidden, or keep it open always? Closing saves
-   connections for forgotten tabs; the page reloads when shown again either way.
-2. Fallback interval (D8): 60 s for every page, or keep 10 s for the dashboard?
-3. Should the dashboard cards also show "running" for an automation queued but not yet started (waiting for a free
-   worker)? Today the queue doesn't tell waiting from running per job; `jobs` would then need a separate `queued`
-   state in the sources list.
+1. Hidden tab: close the stream after 5 minutes hidden; on show it reopens and the frontend reloads (section 7).
+2. No polling fallback at all (D8); the polling code is removed.
+3. Queued and running are shown apart (section 6c).
