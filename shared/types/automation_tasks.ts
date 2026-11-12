@@ -18,6 +18,9 @@ export interface TaskArgInfo {
     enum_values?: string[];
     required?: boolean;
     opts?: { max_chars?: number };                  // options of the widget ('prompt': its character limit)
+    // Shown only when the channel picked in another argument (`arg`, a 'channel') has one of these providers.
+    // Only what the form shows: a hidden value is kept, and the provider decides whether it reads it.
+    show_if?: { arg: string; provider: string[] };
 }
 
 /** A task type as GET /api/v0.1/app/automation/tasks returns it. */

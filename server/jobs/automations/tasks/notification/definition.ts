@@ -20,6 +20,8 @@ export const notificationDefinition: TaskDefinition = {
             title: 'automation.tasks.notification.args.keep_threadid',
             set_type: 'boolean',
             default: false,
+            // Threading is the IMAP channel's (it appends to the original thread); the others ignore it
+            show_if: { arg: 'destination', provider: ['imap'] },
         },
     ],
 };

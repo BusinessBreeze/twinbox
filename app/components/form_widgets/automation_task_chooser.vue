@@ -88,7 +88,7 @@
             @update:model-value="emitChange"
           />
 
-          <template v-for="arg in defOf(task)?.args || []" :key="arg.key">
+          <template v-for="arg in visibleArgs(task)" :key="arg.key">
             <div v-if="arg.set_type === 'prompt'" class="mb-2">
               <v-textarea
                 v-model="task.args[arg.key]"
@@ -197,8 +197,15 @@ const emit = defineEmits(['update:modelValue']);
 const { t } = useI18n();
 
 const definitions = ref<TaskDefinition[]>([]);
-const channels = ref<{ title: string; value: string }[]>([]);
+const channels = ref<{ title: string; value: string; provider: string }[]>([]);
 const tasks = ref<TaskInstance[]>([]);
+
+/** The task's arguments to show: one with `show_if` only when the channel picked in its `arg` has a listed provider. */
+const visibleArgs = (task: TaskInstance) => (defOf(task)?.args || []).filter((arg) => {
+  if (!arg.show_if) return true;
+  const provider = channels.value.find((c) => c.value === task.args[arg.show_if!.arg])?.provider;
+  return !!provider && arg.show_if.provider.includes(provider);
+});
 const openPanel = ref<string | null>(null);
 const promptEditor = reactive<{ open: boolean; title: string; task: TaskInstance | null; key: string | null; arg: TaskArg | null }>({
   open: false, title: '', task: null, key: null, arg: null,
@@ -358,7 +365,7 @@ onMounted(async () => {
     ]);
     definitions.value = Array.isArray(defs) ? defs : [];
     const list = Array.isArray(channelRes) ? channelRes : (channelRes?.data || []);
-    channels.value = list.map((c: any) => ({ title: c.name || c.id, value: c.id }));
+    channels.value = list.map((c: any) => ({ title: c.name || c.id, value: c.id, provider: String(c.provider || '').toLowerCase() }));
   } catch (err) {
     console.error('Failed to load task chooser data', err);
   }
