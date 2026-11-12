@@ -35,10 +35,17 @@ Test files run one after another on the shared server and clean up their automat
 ## Local suite (by hand)
 
 `npm run test:local` starts the same throwaway server, but without stubs: the LLM, TTS and Apprise are the ones in the
-developer's `.env`. `local/imap_to_ntfy.test.ts` reads the two emails in the folder "Test" of the test mailbox
-(`fixtures/sources.json`, `TEST_IMAP_PASSWORD`), summarizes each, reads the summary aloud, and delivers both to the
-artifacts and to ntfy (`fixtures/channels.json`, `TEST_NTFY_TOPIC`); it checks the emails, the artifacts and the
-messages on the ntfy topic. Each run leaves two messages on that topic.
+developer's `.env`. The test mailbox is an account of its own (`fixtures/sources.json`, `TEST_IMAP_USER`,
+`TEST_IMAP_PASSWORD`); the tests fill their folders themselves (`helpers/test_mailbox.ts`, made-up emails from
+`fixtures/emails.json`) and only ever touch folders named "Test…".
+
+- `local/imap_to_ntfy.test.ts` puts two emails into the folder "Test", summarizes each, reads the summary aloud, and
+  delivers both to the artifacts and to ntfy (`fixtures/channels.json`, `TEST_NTFY_TOPIC`); it checks the emails, the
+  artifacts and the messages on the ntfy topic. Each run leaves two messages on that topic. Apprise (`APPRISE_URL`)
+  must be able to reach that ntfy server.
+- `local/imap_copy_move.test.ts` copies and moves emails between "TestCm…" folders (no LLM): copy and move, two
+  automations moving one email to different folders, a destination that doesn't exist. It removes its folders
+  afterwards.
 
 ## CI (later)
 

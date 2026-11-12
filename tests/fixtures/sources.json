@@ -7,8 +7,7 @@
     "config": {
       "host": "mail.pi3g.com",
       "port": 993,
-      "use_ssl": true,
-      "username": "michael@businessbreeze.de"
+      "use_ssl": true
     },
     "settings": {
       "searches": [

@@ -1,11 +1,12 @@
 // End to end with the real services (by hand: npm run test:local). The test mailbox (tests/fixtures/sources.json,
-// password TEST_IMAP_PASSWORD) has two emails in its folder "Test". An automation on that folder summarizes each
+// user TEST_IMAP_USER, password TEST_IMAP_PASSWORD) gets two emails in its folder "Test" first. An automation on that folder summarizes each
 // with the real LLM, reads the summary aloud with the real TTS, and delivers both to the local channel (artifacts)
 // and to ntfy through Apprise (topic TEST_NTFY_TOPIC). Checked: the stored emails, the artifacts, the ntfy messages.
 // Runs on the throwaway test server (tests/helpers/global_setup.ts), never on the developer's database.
 import { describe, it, expect, beforeAll } from 'vitest';
 import { adminClient, createLocalChannel, fixture, userEvents, waitForEvent, type TestClient } from '../helpers/client';
 import { requireEnv } from '../helpers/env';
+import { fillFolder, testMailboxSource } from '../helpers/test_mailbox';
 
 const FOLDER = 'Test';
 const EMAILS = 2;
@@ -21,13 +22,8 @@ describe('IMAP folder → summary + speech → artifacts and ntfy (live services
     beforeAll(async () => {
         client = await adminClient();
 
-        const [mailbox] = fixture<any[]>('sources.json');
-        source = await client.ok('POST', '/api/v0.1/app/sources', {
-            ...mailbox,
-            name: `Live test mailbox ${started}`,
-            config: { ...mailbox.config, credential: requireEnv('TEST_IMAP_PASSWORD') },
-            settings: {},
-        });
+        await fillFolder(FOLDER, EMAILS);
+        source = await client.ok('POST', '/api/v0.1/app/sources', { ...testMailboxSource(), name: `Live test mailbox ${started}`, settings: {} });
 
         const ntfyFixture = fixture<any[]>('channels.json').find((c) => c.type === 'ntfy');
         const topic = requireEnv('TEST_NTFY_TOPIC');
@@ -59,7 +55,9 @@ describe('IMAP folder → summary + speech → artifacts and ntfy (live services
     }, RUN_TIMEOUT_MS + 60_000);
 
     it('runs without failures or failed deliveries', async () => {
-        const problems = (await userEvents(client)).filter((e) => ['warn', 'warning', 'error'].includes(e.level));
+        // Only this test's events: the other local tests run on the same server first (and warn on purpose)
+        const problems = (await userEvents(client))
+            .filter((e) => Date.parse(e.createdAt ?? '') >= started * 1000 && ['warn', 'warning', 'error'].includes(e.level));
         expect(problems.map((e) => `${e.message} ${JSON.stringify(e.metadata).slice(0, 200)}`)).toEqual([]);
     });
 
