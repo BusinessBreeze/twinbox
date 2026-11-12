@@ -6,7 +6,8 @@ import staging from './staging'
 export interface SourceForm {
     config: (isNew: boolean) => any[]              // headers of the nested config form
     settings: () => any[]                          // fields of source_settings_editor ('note' or a widget's set_type)
-    automationOptions: () => any[]                 // "Source options" block of the automation form
+    // "Source options" block of the automation form; folders: those of the selected source (IMAP, listed live)
+    automationOptions: (ctx: { folders: string[]; t: (key: string) => string }) => any[]
 }
 
 const forms: Record<string, SourceForm> = { imap, staging }

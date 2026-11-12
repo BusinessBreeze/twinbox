@@ -168,3 +168,55 @@ export const appendMessage = (config: ImapConnectionConfig, folder: string, raw:
             lock.release();
         }
     });
+
+/** One copy or move of messages from `folder` to `destination`. */
+export interface Transfer {
+    op: 'copy' | 'move';
+    folder: string;
+    destination: string;
+    uids: number[];
+}
+
+export type TransferStatus = 'done' | 'unsupported' | 'folder_missing' | 'failed';
+
+/**
+ * Copies and moves messages between folders in one session: per folder all copies first (the message must still be
+ * there), then the moves. A missing destination fails only its own transfers.
+ * Moves need the MOVE extension (RFC 6851). Without it imapflow would emulate a move with COPY + \Deleted + EXPUNGE, and
+ * unless the server also has UIDPLUS that EXPUNGE removes every message flagged \Deleted in the folder, not only these.
+ * So without MOVE nothing is moved ('unsupported'); copying is part of the base protocol.
+ */
+export const transferMessages = (
+    config: ImapConnectionConfig,
+    transfers: Transfer[],
+): Promise<Array<Transfer & { status: TransferStatus; reason?: string }>> => withClient(config, async (client) => {
+    const moveSupported = client.capabilities.has('MOVE');
+    const folders = new Set((await client.list()).map((m) => m.path));
+    const results: Array<Transfer & { status: TransferStatus; reason?: string }> = [];
+    const byFolder = new Map<string, Transfer[]>();
+    for (const t of transfers) byFolder.set(t.folder, [...(byFolder.get(t.folder) ?? []), t]);
+
+    for (const [folder, list] of byFolder) {
+        const ordered = [...list.filter((t) => t.op === 'copy'), ...list.filter((t) => t.op === 'move')];
+        const lock = await client.getMailboxLock(folder);
+        try {
+            for (const t of ordered) {
+                if (t.uids.length === 0) continue;
+                if (t.op === 'move' && !moveSupported) { results.push({ ...t, status: 'unsupported' }); continue; }
+                if (!folders.has(t.destination)) { results.push({ ...t, status: 'folder_missing' }); continue; }
+                // imapflow reports a refused command as `false` (it doesn't throw)
+                try {
+                    const res = t.op === 'copy'
+                        ? await client.messageCopy(t.uids, t.destination, { uid: true })
+                        : await client.messageMove(t.uids, t.destination, { uid: true });
+                    results.push(res ? { ...t, status: 'done' } : { ...t, status: 'failed', reason: `${t.op} refused by the server` });
+                } catch (err: any) {
+                    results.push({ ...t, status: 'failed', reason: err?.message || String(err) });
+                }
+            }
+        } finally {
+            lock.release();
+        }
+    }
+    return results;
+});

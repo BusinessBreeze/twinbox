@@ -35,6 +35,12 @@ export default async function (t: any) {
     // A source whose server can't be reached right now: its stored keys are kept as they are
     const unavailable = (key: string) => keyList.unavailable.some((u) => u.source_id === sourceIdOf(key))
     const options = keyList.keys.map((k) => ({ title: k.label, value: k.key }))
+    // The folders of a key's source: its keys without a search ('<sourceId>:<folder>:')
+    const foldersOf = (key: string) => {
+        const id = sourceIdOf(key) ?? ''
+        return keyList.keys.filter((k) => k.source_id === id && k.key.endsWith(':') && k.key.startsWith(`${id}:`))
+            .map((k) => k.key.slice(id.length + 1, -1))
+    }
 
     // A stored key that isn't offered any more (source, folder or search gone): shown with its saved label and a red note
     const withStored = (formData: any) => {
@@ -64,7 +70,7 @@ export default async function (t: any) {
                 set_type: 'form',
                 opts: {
                     nested_headers: (header: any, formData: any) => [
-                        ...(sourceForm(typeOfKey(formData?.source_key))?.automationOptions() ?? []),
+                        ...(sourceForm(typeOfKey(formData?.source_key))?.automationOptions({ folders: foldersOf(formData?.source_key), t }) ?? []),
                         ...retentionOptions,
                     ],
                 },

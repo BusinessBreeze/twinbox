@@ -4,13 +4,16 @@
 import { and, eq, inArray } from 'drizzle-orm';
 import { buildEmail, db, emails, getEmailService, limits, parseMessage, type BuiltEmail } from '../../deps';
 import { BaseSource } from '../../base_source';
-import { toEmailItem } from '../email/item';
+import { emailUrl, toEmailItem } from '../email/item';
 import { ownEmails, pruneEmails } from '../email/prune';
 import type { FetchResult, FilterResults, SourceKeyOption, TaskItem } from '../../types';
 import { randomUUID } from 'node:crypto';
 import { imapDefinition } from './definition';
-import { addFlags, fetchSince, listFolders, type ImapConnectionConfig } from './client';
+import { addFlags, fetchSince, listFolders, transferMessages, type ImapConnectionConfig, type Transfer } from './client';
 import { withCreationSince } from './search_dates';
+
+// Events list at most this many of the emails they are about
+const EVENT_LINKS = 50;
 
 // The search every new IMAP source starts with; a supplied search of the same name replaces it
 const DEFAULT_SEARCH_NAME = 'Default';
@@ -196,6 +199,80 @@ export default class ImapSource extends BaseSource {
             if (read.size) await addFlags(config, folder, [...read], ['\\Seen']);
             if (important.size) await addFlags(config, folder, [...important], ['\\Flagged']);
         }
+    }
+
+    /**
+     * copy_to / move_to: the emails that passed an automation's filter, copied or moved to a folder of this account,
+     * after its tasks. Copies run before moves. An email two automations move to different folders is not moved (it
+     * can only be in one place; which one would be chance): reported. Moves need the server's MOVE extension (see
+     * transferMessages); without it nothing is moved and that is reported. Every done copy and move is an event with
+     * the emails, so a wrong one can be undone by hand.
+     */
+    override async afterTasks(results: FilterResults): Promise<void> {
+        // Who asked for what, per source folder: op → destination → uid → automation names
+        type Wanted = Map<string, Map<number, Set<string>>>;
+        const plan = new Map<string, { copy: Wanted; move: Wanted }>();
+        const add = (wanted: Wanted, destination: string, uid: number, name: string) => {
+            const uids = wanted.get(destination) ?? new Map<number, Set<string>>();
+            uids.set(uid, (uids.get(uid) ?? new Set()).add(name));
+            wanted.set(destination, uids);
+        };
+        for (const { options, refs, automation } of results) {
+            const copyTo = typeof options.copy_to === 'string' ? options.copy_to.trim() : '';
+            const moveTo = typeof options.move_to === 'string' ? options.move_to.trim() : '';
+            if (!copyTo && !moveTo) continue;
+            for (const ref of refs) {
+                const p = this.#pending.get(ref);
+                if (!p) continue;
+                const entry = plan.get(p.folder) ?? { copy: new Map(), move: new Map() };
+                // Into its own folder: nothing to move, and a copy would only duplicate it
+                if (copyTo && copyTo !== p.folder) add(entry.copy, copyTo, p.uid, automation?.name ?? '');
+                if (moveTo && moveTo !== p.folder) add(entry.move, moveTo, p.uid, automation?.name ?? '');
+                plan.set(p.folder, entry);
+            }
+        }
+
+        const transfers: Array<Transfer & { names: Map<number, Set<string>> }> = [];
+        for (const [folder, { copy, move }] of plan) {
+            // An email moved to two folders: neither (its copies still happen)
+            const targets = new Map<number, string[]>();
+            for (const [destination, uids] of move) for (const uid of uids.keys()) targets.set(uid, [...(targets.get(uid) ?? []), destination]);
+            const conflicts = [...targets].filter(([, dests]) => dests.length > 1);
+            for (const [uid, destinations] of conflicts) {
+                await this.warn('events.user.warn_source_move_conflict', { folder, destinations: destinations.join(', '), links: this.links(folder, [uid]) });
+                for (const destination of destinations) move.get(destination)!.delete(uid);
+            }
+            for (const [destination, uids] of copy) {
+                // Moved there anyway: a copy as well would put it there twice
+                const moved = move.get(destination);
+                for (const uid of [...uids.keys()]) if (moved?.has(uid)) uids.delete(uid);
+                transfers.push({ op: 'copy', folder, destination, uids: [...uids.keys()], names: uids });
+            }
+            for (const [destination, uids] of move) transfers.push({ op: 'move', folder, destination, uids: [...uids.keys()], names: uids });
+        }
+        const todo = transfers.filter((t) => t.uids.length > 0);
+        if (todo.length === 0) return;
+
+        const done = await transferMessages(this.record.config as ImapConnectionConfig, todo);
+        for (const [i, res] of done.entries()) {
+            const names = [...new Set([...todo[i]!.names.values()].flatMap((n) => [...n]))].filter(Boolean).join(', ');
+            const metadata = { name: names, folder: res.folder, destination: res.destination, count: res.uids.length, links: this.links(res.folder, res.uids) };
+            if (res.status === 'done') await this.info(`events.user.info_source_${res.op === 'copy' ? 'copied' : 'moved'}`, metadata);
+            else if (res.status === 'unsupported') await this.warn('events.user.warn_source_move_unsupported', metadata);
+            else if (res.status === 'folder_missing') await this.warn('events.user.warn_source_target_folder_missing', metadata);
+            else await this.warn('events.user.warn_source_transfer_failed', { ...metadata, reason: (res.reason ?? '').slice(0, 300) });
+        }
+    }
+
+    /** Event links to the stored emails (they are stored at the end of this run), by folder and UID. */
+    private links(folder: string, uids: number[]) {
+        const wanted = new Set(uids);
+        const links: Array<{ label: string; url?: string }> = [];
+        for (const p of this.#pending.values()) {
+            if (p.folder !== folder || !wanted.has(p.uid) || links.length >= EVENT_LINKS) continue;
+            links.push({ label: p.built.subject || '(No Subject)', url: p.built.messageId ? emailUrl(p.built.messageId) : undefined });
+        }
+        return links;
     }
 
     /** Per key: { last_uid, uidvalidity }, in this source's state (sources.state.checkpoints). */

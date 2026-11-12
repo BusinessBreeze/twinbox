@@ -1,4 +1,4 @@
-// One source run: fetch → filter per subscribed automation → afterFilter → tasks → complete (docs/specs/SPEC_sources.md, section 6).
+// One source run: fetch → filter per subscribed automation → afterFilter → tasks → afterTasks → complete (docs/specs/SPEC_sources.md, section 6).
 // Failure model: visible failure, no retries. The run always completes (emails stored, checkpoints advanced); every
 // failure becomes one grouped user event per automation with links to the affected emails.
 import { and, eq, inArray, ne, or, isNull } from 'drizzle-orm';
@@ -96,7 +96,7 @@ export const runSource = async (source: BaseSource, keys: string[]) => {
     // 3. Right after the filter, one call for all automations: the source acts on its own options
     //    (IMAP: mark read / important in one short session). The engine doesn't interpret them.
     const results = subs.filter((sub) => sub.passed.length > 0)
-        .map((sub) => ({ options: sub.options, refs: sub.passed.map((i) => i.sourceRefs[0]!) }));
+        .map((sub) => ({ options: sub.options, refs: sub.passed.map((i) => i.sourceRefs[0]!), automation: { id: sub.automation.id, name: sub.automation.name } }));
     if (results.length > 0) {
         try {
             await source.afterFilter(results);
@@ -147,7 +147,24 @@ export const runSource = async (source: BaseSource, keys: string[]) => {
         });
     }
 
-    // 5. Complete: store everything fetched, advance checkpoints (always).
+    // 5. Last, by the filter's outcome (not the tasks'): the source acts on its options once more (IMAP: copy / move to
+    //    a folder). The items are already fetched, so this changes nothing for this run's tasks or its storing.
+    if (results.length > 0) {
+        try {
+            await source.afterTasks(results);
+        } catch (err: any) {
+            await emitTelemetryEvent({
+                scope: EventScope.USER,
+                level: EventLevel.WARN,
+                category: 'source',
+                message: 'events.user.warn_source_after_tasks_failed',
+                owner_id: source.ownerId,
+                metadata: { source: source.name, source_id: source.id, reason: String(err?.message || err).slice(0, 300) },
+            });
+        }
+    }
+
+    // 6. Complete: store everything fetched, advance checkpoints (always).
     try {
         await source.complete();
     } catch (err: any) {

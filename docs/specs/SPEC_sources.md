@@ -97,6 +97,7 @@ abstract class BaseSource {                  // one instance per source record; 
   get maxItems()                             // max_items_per_fetch, never above the system limit
   protected abstract fetch(keys)             // per-type run steps, called by the source run (section 6)
   afterFilter(results)                       // default no-op; IMAP: mark read / important (section 6)
+  afterTasks(results)                        // default no-op; IMAP: copy / move to a folder (section 6)
   protected abstract complete()
 }
 ```
@@ -125,7 +126,7 @@ static definition = {                                     // data, like task def
                                                           //   defaultName?, itemMime, secretKeys, configSchema
   settingsSchema                                          // non-secret saved data (IMAP: searches)
   optionsSchema                                           // the type's own automation option keys (IMAP: mark_read,
-                                                          // mark_important); engine options are separate
+                                                          // mark_important, copy_to, move_to); engine options are separate
 }
 static migrate?(config, settings, fromVersion)            // upgrade stored config/settings when version increases
 static test(config): Promise<{ ok: boolean; reason?: string }>
@@ -136,6 +137,8 @@ protected fetch(keys): Promise<Map<key, TaskItem[]>>      // new items per key s
 afterFilter(results): Promise<void>                       // after the filter, per automation { options, refs }: the type
                                                           // acts on its own options (IMAP: mark read / important,
                                                           // one short session); the engine never interprets them
+afterTasks(results): Promise<void>                        // after the tasks, the same results: the last thing done on
+                                                          // the source (IMAP: copy / move, one short session)
 protected complete(): Promise<void>                       // store all fetched items, save how far it got
                                                           // (IMAP: checkpoints in its state)
 getState(key) / setState(key, value)                      // the type's runtime state (sources.state), see section 5
@@ -190,16 +193,24 @@ notification channel imports the IMAP type's `append` directly.
    server allows attachments; see `docs/specs/SPEC_attachments.md` 7d), up to `limits.imap.max_email_mb` (default
    10) of what is downloaded; a larger one is not downloaded, moves the checkpoint and produces a warning
    (`warn_source_email_too_large`). Each email is parsed and built once here (`buildEmail`): its automation text
-   feeds the filter and tasks, the built structure is stored in step 6.
+   feeds the filter and tasks, the built structure is stored in step 7.
 3. **Filter** per subscribed automation (LLM, no open IMAP session). The LLM gets at most `limits.llm.max_input_chars`
    of an email (the same cut applies to the artifact task): a long email is judged on its beginning.
 4. **After the filter**: `afterFilter()` gets each automation's options and the items that passed; the type acts on
    its own options (IMAP: mark read / important, one short second session).
 5. **Tasks** per automation → outcomes.
-6. **Complete**: store all fetched emails (and their attachments, as 4a/4b of SPEC_attachments allow; one warning
+6. **After the tasks**, last: `afterTasks()` gets the same results as step 4 (the filter's outcome, not the tasks').
+   IMAP copies the passed emails to `copy_to` and moves them to `move_to` (folders of the same account), one short
+   session, copies before moves. Every done copy and move is an info event with the emails (`info_source_copied`,
+   `info_source_moved`). Moves need the server's MOVE extension (RFC 6851): without it nothing is moved
+   (`warn_source_move_unsupported`), since imapflow's fallback (COPY, `\Deleted`, EXPUNGE) can expunge other
+   messages flagged `\Deleted` in the folder. A missing destination (`warn_source_target_folder_missing`), an email
+   two automations move to different folders (not moved, `warn_source_move_conflict`) and a refused command
+   (`warn_source_transfer_failed`) are reported; nothing is ever deleted.
+7. **Complete**: store all fetched emails (and their attachments, as 4a/4b of SPEC_attachments allow; one warning
    per run when the storage quota stops some) and save how far the source got (IMAP: every key's checkpoint in its
    state), always (see 7).
-7. Other triggers ("run now" endpoint; later IMAP IDLE, SMTP push) call `instance.run(keys)`.
+8. Other triggers ("run now" endpoint; later IMAP IDLE, SMTP push) call `instance.run(keys)`.
 
 **Pruning** (every `limits.sources.prune_every_hours` per source, default daily, by the source poll manager): each source deletes what it downloaded beyond its
 limits: older than `retention_days`, beyond the newest `max_items`, beyond the newest `max_size_mb` (text and

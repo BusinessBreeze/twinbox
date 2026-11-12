@@ -134,7 +134,7 @@ export abstract class BaseSource {
     async start(): Promise<void> {}
     async stop(): Promise<void> {}
 
-    // --- run steps, called by the source run in this order: fetch → (filter) → afterFilter → (tasks) → complete ---
+    // --- run steps, called by the source run in this order: fetch → (filter) → afterFilter → (tasks) → afterTasks → complete ---
     /** New items of each key since its checkpoint, at most max_items_per_fetch; no connection stays open. */
     abstract fetch(keys: string[]): Promise<FetchResult>;
     /**
@@ -142,13 +142,26 @@ export abstract class BaseSource {
      * that passed (IMAP: mark read / important, one short session). The engine never interprets these options.
      */
     async afterFilter(_results: FilterResults): Promise<void> {}
+    /**
+     * After the tasks, the last thing done on the source: act on it according to each automation's options and the
+     * items that passed the filter (IMAP: copy / move to a folder, one short session).
+     */
+    async afterTasks(_results: FilterResults): Promise<void> {}
     /** Store everything fetched and save how far the source got (IMAP: checkpoints); always, see the failure model. */
     abstract complete(): Promise<void>;
 
     protected warn(message: string, metadata: Record<string, unknown> = {}) {
+        return this.event(EventLevel.WARN, message, metadata);
+    }
+
+    protected info(message: string, metadata: Record<string, unknown> = {}) {
+        return this.event(EventLevel.INFO, message, metadata);
+    }
+
+    private event(level: EventLevel, message: string, metadata: Record<string, unknown>) {
         return emitTelemetryEvent({
             scope: EventScope.USER,
-            level: EventLevel.WARN,
+            level,
             category: 'source',
             message,
             owner_id: this.ownerId,

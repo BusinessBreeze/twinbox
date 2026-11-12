@@ -28,9 +28,14 @@ const imapForm: SourceForm = {
             },
         },
     ],
-    automationOptions: () => [
+    automationOptions: ({ folders, t }) => [
         { key: 'mark_read', title: 'table.automation.options.mark_read', set_type: 'boolean', default: false },
         { key: 'mark_important', title: 'table.automation.options.mark_important', set_type: 'boolean', default: false },
+        // Done last, after the tasks, for the emails that passed the filter; empty = not at all
+        ...(['copy_to', 'move_to'] as const).map((key) => ({
+            key, title: `table.automation.options.${key}`, set_type: 'enum', default: '',
+            opts: { enum_values: [{ title: t('table.automation.options.no_folder'), value: '' }, ...folders.map((f) => ({ title: f, value: f }))] },
+        })),
         { key: 'add_source_links', title: 'table.automation.options.add_source_links', set_type: 'boolean', default: false },
     ],
 }

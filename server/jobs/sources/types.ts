@@ -31,8 +31,8 @@ export interface SourceRecord {
     last_successful_poll: Date | null;              // last fetch without error (the engine writes it)
 }
 
-/** After the filter, per automation: its options and the sourceRefs of the items that passed. */
-export type FilterResults = Array<{ options: Record<string, any>; refs: string[] }>;
+/** After the filter, per automation: its options and the sourceRefs of the items that passed (the automation for events). */
+export type FilterResults = Array<{ options: Record<string, any>; refs: string[]; automation?: { id: string; name: string } }>;
 
 /** What a source run hands back per subscribed key: the items for the automations. */
 export type FetchResult = Map<string, TaskItem[]>;
