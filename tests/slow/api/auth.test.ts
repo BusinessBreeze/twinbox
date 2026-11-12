@@ -52,3 +52,21 @@ describe('login and the initial admin', () => {
         expect((await client.get('/api/v0.1/app/sources')).status).toBe(403);
     });
 });
+
+// The account page of a user who is not an admin: role names come with the account (the role list is an admin route)
+describe('own account of a user', () => {
+    it('shows the names of the user\'s roles without the admin role list', async () => {
+        const { adminClient, TestClient } = await import('../../helpers/client');
+        const admin = await adminClient();
+        const roles = await admin.ok<any[]>('GET', '/api/admin/role');
+        const userRole = (Array.isArray(roles) ? roles : []).find((r: any) => r.name === 'user');
+        await admin.ok('POST', '/api/admin/account', { user: 'roles-of-a-user', password: 'roles-test-password', roles: [userRole.id] });
+        const user = new TestClient(admin.baseUrl);
+        expect((await user.login('roles-of-a-user', 'roles-test-password')).status).toBe(200);
+
+        const [account] = await user.ok<any[]>('GET', '/api/user/account');
+        expect(account.roles).toEqual([userRole.id]);
+        expect(account.role_names).toEqual(['user']);
+        expect((await user.get('/api/admin/role')).status).toBe(403);
+    });
+});
