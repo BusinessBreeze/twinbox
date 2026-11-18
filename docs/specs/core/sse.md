@@ -170,7 +170,7 @@ load once on mount. The table gets a generic option in its meta, with no twinbox
   streams held by another. The job queue is in memory as well, so twinbox is single-process anyway; when that
   changes, both move to a shared bus (Redis pub/sub or similar) behind the same `notifyUser`.
 - **Reverse proxies** must not buffer the route. `X-Accel-Buffering: no` covers nginx; other proxies need it in
-  their configuration (documented in `docs/architecture.md`).
+  their configuration (documented in `docs/reviews/architecture.md`).
 - **HTTP/1.1**: browsers allow 6 connections per host; one stream per tab uses one of them. Behind HTTP/2 this limit
   does not apply.
 

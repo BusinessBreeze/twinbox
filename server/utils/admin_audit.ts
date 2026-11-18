@@ -1,4 +1,4 @@
-// Admins may read and delete other users' records (docs/specs/SPEC_attachments.md 11); each such access is written to
+// Admins may read and delete other users' records (docs/specs/store/attachments.md 11); each such access is written to
 // the affected user's event log: who, what, which records. Listing metadata in the admin tables is not logged.
 import type { H3Event } from 'h3';
 import { emitTelemetryEvent, EventScope, EventLevel } from '#bs/utils/telemetry/event';

@@ -1,4 +1,4 @@
-// Selective download (docs/specs/SPEC_attachments.md 7d): from a message's BODYSTRUCTURE, which parts to download
+// Selective download (docs/specs/store/attachments.md 7d): from a message's BODYSTRUCTURE, which parts to download
 // (planParts), and the message rebuilt from just those parts (rebuildMessage). The rebuilt message is what mailparser
 // and the email builder read, so decoding (transfer encodings, charsets, inline images) stays theirs. A part that is
 // not downloaded stays in the rebuilt message as an empty placeholder carrying OMITTED_HEADER (why, and its size), so

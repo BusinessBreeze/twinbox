@@ -1,7 +1,7 @@
 // Builds the stored structure of an email (shared/types/email.ts) from a parsed message: envelope, renditions, parts,
 // embedded messages (one level), and the automation text. Pure apart from parsing embedded messages: nothing is stored
 // here; the parts' bytes come back as `pending` for the email service to store (or not). Every ingestion path (IMAP,
-// raw messages, imports) goes through here, so records don't differ by path. See docs/specs/SPEC_attachments.md 7.
+// raw messages, imports) goes through here, so records don't differ by path. See docs/specs/store/attachments.md 7.
 import { simpleParser, type AddressObject, type Attachment, type ParsedMail } from 'mailparser';
 import { convert } from 'html-to-text';
 import { fileTypeFromBuffer } from 'file-type';

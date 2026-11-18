@@ -487,8 +487,8 @@ fetched again.
 3. **Retention + storage page**: artifact retention, "remove attachments", storage usage page and API.
 4. **Selective IMAP download** (7d).
 
-Docs to update with each step: `docs/specs/source/sources.md` (fetch, settings), `docs/media_viewer.md` (message renderer),
-`docs/architecture.md` (file store), `.env.example`.
+Docs to update with each step: `docs/specs/source/sources.md` (fetch, settings), `docs/specs/component/media_viewer.md` (message renderer),
+`docs/reviews/architecture.md` (file store), `.env.example`.
 
 ## 14. Layer boundary (base-app)
 

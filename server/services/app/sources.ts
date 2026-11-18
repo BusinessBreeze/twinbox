@@ -1,4 +1,4 @@
-// Sources CRUD (docs/specs/SPEC_sources.md): type validation, whole-config encryption with secret masking, type
+// Sources CRUD (docs/specs/source/sources.md): type validation, whole-config encryption with secret masking, type
 // settings, the keys automations can subscribe to, deletion warnings, the lazily created built-in sources, and keeping
 // the poll manager in sync.
 import { notifyUser } from '#bs/utils/user_stream';

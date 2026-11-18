@@ -1,7 +1,7 @@
 // The file store: every stored binary is a `files` row (owner, mime, size, hash) plus a blob on disk
 // (./files_storage.ts). This module is the only code that touches either; records (artifacts, email parts) reference
 // files by id. Every lookup is scoped to the owner, so another user's file is "not found", never "forbidden".
-// Same bytes for the same owner are stored once; never shared across owners. See docs/specs/SPEC_attachments.md.
+// Same bytes for the same owner are stored once; never shared across owners. See docs/specs/store/attachments.md.
 //
 // Consistency without cross-store transactions: the blob is written before its row, and a row before the record that
 // references it. Whatever a failure leaves behind (a blob without a row, a row without a reference) is removed by

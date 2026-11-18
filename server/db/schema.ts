@@ -3,7 +3,7 @@ import type { MessageContent } from '#shared/types/email';
 
 // --- Emails Table ---
 // Columns: what is filtered, sorted or read by the engine. content: the structure (envelope, renditions, parts,
-// embedded messages; shared/types/email.ts, docs/specs/SPEC_attachments.md).
+// embedded messages; shared/types/email.ts, docs/specs/store/attachments.md).
 export const emails = sqliteTable('emails', {
     id: text('id').primaryKey(),
     messageId: text('message_id').notNull(),
@@ -25,7 +25,7 @@ export const emails = sqliteTable('emails', {
 ]);
 
 // --- Sources Table ---
-// Where items come from (IMAP mailbox, staging, ...). See docs/specs/SPEC_sources.md.
+// Where items come from (IMAP mailbox, staging, ...). See docs/specs/source/sources.md.
 export const sources = sqliteTable('sources', {
     id: text('id').primaryKey(),
     owner_id: text('owner_id').notNull(),
@@ -88,7 +88,7 @@ export const automations = sqliteTable('automations', {
 
 // --- Files table ---
 // Every stored binary (artifacts; email attachments). The bytes are on disk under storage_key, reached only through
-// server/services/app/files.ts. See docs/specs/SPEC_attachments.md.
+// server/services/app/files.ts. See docs/specs/store/attachments.md.
 export const files = sqliteTable('files', {
     id: text('id').primaryKey(),
     owner_id: text('owner_id').notNull(),

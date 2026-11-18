@@ -1,5 +1,5 @@
 // The structure of a stored email (emails.content), shared by the server (builder, routes) and the viewer.
-// Type-neutral on purpose: other input types (RSS, chat) can use it later (docs/specs/SPEC_attachments.md, D14).
+// Type-neutral on purpose: other input types (RSS, chat) can use it later (docs/specs/store/attachments.md, D14).
 
 /** MIME type of an email record as the viewer gets it (the record as JSON, not a raw message). */
 export const MESSAGE_RECORD_MIME = 'application/vnd.twinbox.message+json';

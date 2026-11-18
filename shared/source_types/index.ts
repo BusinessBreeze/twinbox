@@ -1,4 +1,4 @@
-// Source types as the app and the server both know them (docs/specs/SPEC_sources.md section 4): the facts and the
+// Source types as the app and the server both know them (docs/specs/source/sources.md section 4): the facts and the
 // field rules the form shows while typing. The server adds its class (server/jobs/sources/registry.ts), the app its
 // form (app/schemas/source_types/). Checks that need more than one field or the database live in the server class.
 // Adding a source type = a file here + its class + its form.

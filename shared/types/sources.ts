@@ -1,5 +1,5 @@
 // Source contract shared by the app (sources page, automation form) and the server (source layer).
-// See docs/specs/SPEC_sources.md.
+// See docs/specs/source/sources.md.
 
 import type { AnyZodObject } from 'zod';
 

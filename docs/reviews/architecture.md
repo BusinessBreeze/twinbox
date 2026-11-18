@@ -41,7 +41,7 @@ This document presents concrete, evidence-based recommendations to standardize, 
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-**File store** (`docs/specs/SPEC_attachments.md`): every stored binary is a `files` row plus a blob under a random
+**File store** (`docs/specs/store/attachments.md`): every stored binary is a `files` row plus a blob under a random
 key; records (email parts, artifacts) reference files by id. Only `server/services/app/files.ts` touches them, every
 lookup is scoped to the owner, `/api/v0.1/app/files/:id` is the one hardened route serving bytes, and an hourly
 sweeper (`server/cron/file_sweeper.ts`) removes leftovers and applies artifact retention.

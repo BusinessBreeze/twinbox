@@ -1,4 +1,4 @@
-// One source run: fetch → filter per subscribed automation → afterFilter → tasks → afterTasks → complete (docs/specs/SPEC_sources.md, section 6).
+// One source run: fetch → filter per subscribed automation → afterFilter → tasks → afterTasks → complete (docs/specs/source/sources.md, section 6).
 // Failure model: visible failure, no retries. The run always completes (emails stored, checkpoints advanced); every
 // failure becomes one grouped user event per automation with links to the affected emails.
 import { and, eq, inArray, ne, or, isNull } from 'drizzle-orm';

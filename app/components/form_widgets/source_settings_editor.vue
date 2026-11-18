@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-// Saved, non-secret data of a source (docs/specs/SPEC_sources.md): the settings fields of the selected type's form
+// Saved, non-secret data of a source (docs/specs/source/sources.md): the settings fields of the selected type's form
 // (app/schemas/source_types/). Types without settings (staging) show nothing. Type-specific widgets are looked up by set_type;
 // 'note' fields are text only (no value), 'checkbox' fields a checkbox (opts: label, disabled, hint).
 import { ref, computed, watch, type Component } from 'vue';
