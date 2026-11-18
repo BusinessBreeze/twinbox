@@ -76,4 +76,4 @@ The email page gives the viewer the stored record (`GET /api/v0.1/app/email/:id`
 
 Download is the server's `.eml` (`?format=eml`, the `download-url` prop), with the stored attachments and forwarded
 messages; it opens in any mail program. `EmailRenderer` still shows `.eml` files opened as files (e.g. an artifact).
-See `docs/specs/SPEC_attachments.md`.
+See `docs/specs/store/attachments.md`.

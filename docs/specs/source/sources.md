@@ -2,6 +2,13 @@
 
 Status: implemented. Replaces `connections_imap`, `imap_searches` and per-automation polling.
 
+> **Partly superseded by the store specs (draft):** where items are stored, pruning (moves from the source types into
+> the store), the source run (sections 6, 7: split into ingest and automation queries) and source deletion (section 8:
+> items are kept with `source_id = null`) change with `docs/specs/store/store.md` and
+> `docs/specs/source/rules.md` (rules, part of the source core), `docs/specs/source/classification.md` and `docs/specs/core/automations.md`. IMAP-specific changes: `docs/specs/source/imap.md`.
+> When sources move to `server/modules/source/` (`source.ts`, `internal/`, `providers/<name>/`; store spec section 19),
+> "source types" become **source providers** and the `sources` table becomes **`source_instances`** (decided 2026-11-18).
+
 ## 1. Goal
 
 Separate **where items come from** (sources) from **what is done with them** (automations).
@@ -190,7 +197,7 @@ notification channel imports the IMAP type's `append` directly.
    the IMAP session is closed afterwards. IMAP lists the folders first: a key whose folder doesn't exist
    (renamed or deleted on the server) produces a warning on **every poll** and is skipped; the other keys run.
    Only the body and the wanted attachments are downloaded (the source's `download_attachments` setting, when the
-   server allows attachments; see `docs/specs/SPEC_attachments.md` 7d), up to `limits.imap.max_email_mb` (default
+   server allows attachments; see `docs/specs/store/attachments.md` 7d), up to `limits.imap.max_email_mb` (default
    10) of what is downloaded; a larger one is not downloaded, moves the checkpoint and produces a warning
    (`warn_source_email_too_large`). Each email is parsed and built once here (`buildEmail`): its automation text
    feeds the filter and tasks, the built structure is stored in step 7.
@@ -207,7 +214,7 @@ notification channel imports the IMAP type's `append` directly.
    messages flagged `\Deleted` in the folder. A missing destination (`warn_source_target_folder_missing`), an email
    two automations move to different folders (not moved, `warn_source_move_conflict`) and a refused command
    (`warn_source_transfer_failed`) are reported; nothing is ever deleted.
-7. **Complete**: store all fetched emails (and their attachments, as 4a/4b of SPEC_attachments allow; one warning
+7. **Complete**: store all fetched emails (and their attachments, as 4a/4b of docs/specs/store/attachments.md allow; one warning
    per run when the storage quota stops some) and save how far the source got (IMAP: every key's checkpoint in its
    state), always (see 7).
 8. Other triggers ("run now" endpoint; later IMAP IDLE, SMTP push) call `instance.run(keys)`.

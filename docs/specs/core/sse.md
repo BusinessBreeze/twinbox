@@ -13,7 +13,7 @@ bell (the polling code is removed), and adds live refresh to pages that today on
   routes it already uses, with their owner checks. The stream adds no new way to read records.
 
 Not in scope:
-- IMAP IDLE (the mail server pushing new mail to twinbox): server side, planned in `docs/specs/SPEC_sources.md`,
+- IMAP IDLE (the mail server pushing new mail to twinbox): server side, planned in `docs/specs/source/sources.md`,
   independent of this spec.
 - Progress of the automation test run in the draft dialog: the request already waits for the result.
 - More than one server process (section 9).

@@ -1,5 +1,11 @@
 # SPEC: File Store, Email Structure and Attachments
 
+> **Describes the current implementation.** Superseded by `docs/specs/store/store.md` once step 1 of its build
+> order ships (section 20 there). Then the still-valid sections move: serving files (9) and isolation (11) to
+> store.md and `docs/specs/store/local.md`, the email builder and renditions (7, 17) and the `.eml` download (D7) to
+> store.md / `docs/specs/source/imap.md`; the rest goes with the old code and this file is deleted. Not the target
+> design: for that, read store.md (marker added 2026-11-18).
+
 Status: implemented (steps 1–4; deviations from the plan are noted in section 16). Replaces the `emails.html` column, the folder-based artifact store (`Artifacts/<userId>/`) and the
 base app's artifact routes and local channel.
 
@@ -481,7 +487,7 @@ fetched again.
 3. **Retention + storage page**: artifact retention, "remove attachments", storage usage page and API.
 4. **Selective IMAP download** (7d).
 
-Docs to update with each step: `docs/specs/SPEC_sources.md` (fetch, settings), `docs/media_viewer.md` (message renderer),
+Docs to update with each step: `docs/specs/source/sources.md` (fetch, settings), `docs/media_viewer.md` (message renderer),
 `docs/architecture.md` (file store), `.env.example`.
 
 ## 14. Layer boundary (base-app)
@@ -512,3 +518,26 @@ second app needs the file store, `fileService` and the storage driver move to th
 5. **`artifacts.filename`**: each artifact keeps its own name; identical bytes share one file.
 6. **Account deletion** removes files and artifacts (sweeper), not emails (no hook in the base).
 7. **Not built**: fetching a skipped or removed attachment again later.
+
+## 17. Changes from the store spec (draft, not implemented)
+
+`docs/specs/store/store.md` changes this spec as follows; everything not listed stays.
+
+1. **Table**: `emails` becomes `items` with `mime: message/rfc822` (store spec section 4). `content`
+   (`MessageContent`) keeps its shape. Column mapping: `from`, `to` → `untrusted_attributes`; `subject` → `title`;
+   `messageId` → `external_id`; `thread_id` → `group_id` (same derivation as 5b); `text` → `extracted_text`;
+   `staging_item` → `arrival = 'staging'`. Supersedes D3, D14 and open point 15.1.
+2. **Extracted text** (7c): built as today, stored as `extracted_text` with a `extractor`, rebuildable from `content`
+   when the builder improves.
+3. **Inline images become parts** (`disposition: inline`, with `file_id` and `content_id`) instead of `data:` URIs
+   inside the HTML (7a step 2, implementation note 16.1). The viewer resolves `cid:` through the file route. **They
+   are stored even when attachments are off** (the reason for note 16.1: inline images must not disappear with the
+   default setting): the type policy treats `disposition: inline` images of the HTML rendition separately from
+   attachments, with their own size limit.
+4. **File storage** (5a): `files_storage.ts` becomes the local store provider behind the store interface
+   (`docs/specs/store/local.md`); `storage_key` → `locator`, plus `provider_instance_id` and `owned`.
+5. **References** (8): `item_files` replaces the JSON scan of `fileIdsReferencedByEmails`.
+6. **Attachment limits** (4a): `limits.attachments` grows into the type policy (store spec section 12, adds
+   `extract_text`, `keep_original`, `promote`).
+7. **Artifacts** become items with `arrival: internal` (store spec S8); D15's separate `artifacts` API goes to
+   `/items`.
